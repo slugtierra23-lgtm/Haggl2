@@ -29,7 +29,7 @@ contract BoltyEscrow {
     // ─── State ──────────────────────────────────────────────────────────
     address public admin;
     address public platformWallet;
-    address public immutable boltyToken;             // BOLTY ERC-20 on Base
+    address public immutable boltyToken;             // legacy BOLTY (Base ERC-20, deprecated — new token launching on Solana) on Base
 
     uint256 public constant PLATFORM_FEE_BPS_ETH   = 700; // 7.0 %
     uint256 public constant PLATFORM_FEE_BPS_BOLTY = 300; // 3.0 %
@@ -76,7 +76,7 @@ contract BoltyEscrow {
     // ─── Constructor ────────────────────────────────────────────────────
     constructor(address _platformWallet, address _boltyToken) {
         require(_platformWallet != address(0), "Invalid platform wallet");
-        require(_boltyToken != address(0), "Invalid BOLTY token");
+        require(_boltyToken != address(0), "Invalid HAGGL token");
         admin = msg.sender;
         platformWallet = _platformWallet;
         boltyToken = _boltyToken;
@@ -107,7 +107,7 @@ contract BoltyEscrow {
 
     /**
      * @notice Buyer deposits BOLTY for a specific order. 3% platform fee on release.
-     *         Buyer must have called `approve(escrow, amount)` on the BOLTY token first.
+     *         Buyer must have called `approve(escrow, amount)` on the HAGGL token first.
      */
     function depositBOLTY(string calldata orderId, address seller, uint256 amount) external {
         require(amount > 0, "Must send BOLTY");

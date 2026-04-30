@@ -37,7 +37,7 @@ export class ChartService {
       return JSON.parse(cached) as z.infer<typeof PriceSchema>;
     }
 
-    const tokenAddress = this.config.get<string>('BOLTY_TOKEN_ADDRESS');
+    const tokenAddress = this.config.get<string>('HAGGL_TOKEN_ADDRESS');
     const priceApiUrl = this.config.get<string>('PRICE_API_URL', 'https://price.jup.ag/v6/price');
 
     if (!tokenAddress) {

@@ -16,7 +16,7 @@ interface PaymentConsentModalProps {
   baseUsd: number;
   buyerAddress: string;
   /** When true, ATLAS option is hidden (token not configured for this build). */
-  boltyDisabled?: boolean;
+  hagglDisabled?: boolean;
   onConsent: (signature: string, message: string, paymentMethod: PaymentMethod) => void;
   onCancel: () => void;
 }
@@ -33,7 +33,7 @@ export function PaymentConsentModal({
   sellerAddress,
   baseUsd,
   buyerAddress,
-  boltyDisabled = false,
+  hagglDisabled = false,
   onConsent,
   onCancel,
 }: PaymentConsentModalProps) {
@@ -41,7 +41,7 @@ export function PaymentConsentModal({
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState('');
   // Default to ATLAS when available — it's the strictly cheaper option.
-  const [method, setMethod] = useState<PaymentMethod>(boltyDisabled ? 'SOL' : 'ATLAS');
+  const [method, setMethod] = useState<PaymentMethod>(hagglDisabled ? 'SOL' : 'ATLAS');
 
   const escrow = isEscrowEnabled();
 
@@ -202,7 +202,7 @@ export function PaymentConsentModal({
             <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest mb-2">
               Choose payment method on Base
             </p>
-            <div className={`grid gap-2.5 ${boltyDisabled ? 'grid-cols-1' : 'grid-cols-2'}`}>
+            <div className={`grid gap-2.5 ${hagglDisabled ? 'grid-cols-1' : 'grid-cols-2'}`}>
               <MethodCard
                 active={method === 'SOL'}
                 onClick={() => setMethod('SOL')}
@@ -210,7 +210,7 @@ export function PaymentConsentModal({
                 subtitle={`7% fee · you pay $${fmtUsd(ethTotal)}`}
                 accent="#60a5fa"
               />
-              {!boltyDisabled && (
+              {!hagglDisabled && (
                 <MethodCard
                   active={method === 'ATLAS'}
                   onClick={() => setMethod('ATLAS')}
@@ -222,7 +222,7 @@ export function PaymentConsentModal({
                 />
               )}
             </div>
-            {!boltyDisabled && savingsUsd > 0 && (
+            {!hagglDisabled && savingsUsd > 0 && (
               <p className="mt-2 flex items-center gap-1.5 text-[10.5px] font-light text-zinc-400 leading-relaxed">
                 <TrendingDown className="w-3 h-3 text-emerald-400 shrink-0" strokeWidth={2} />
                 Paying in ATLAS costs ${fmtUsd(savingsUsd)} less. The seller receives $

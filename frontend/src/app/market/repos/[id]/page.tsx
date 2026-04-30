@@ -33,9 +33,9 @@ import { useWalletPicker } from '@/lib/hooks/useWalletPicker';
 import { platformWeiForSeller } from '@/lib/payments/fees';
 import {
   encodeErc20Transfer,
-  loadBoltyTokenConfig,
+  loadHagglTokenConfig,
   usdToTokenUnits,
-} from '@/lib/wallet/bolty-token';
+} from '@/lib/wallet/haggl-token';
 import { getMetaMaskProvider } from '@/lib/wallet/ethereum';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -90,7 +90,7 @@ interface ConsentState {
   /** USD the seller takes home (= listing price). Wei is computed at sign time. */
   baseUsd: number;
   /** Whether the ATLAS option should be hidden in the modal. */
-  boltyDisabled: boolean;
+  hagglDisabled: boolean;
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
@@ -225,7 +225,7 @@ export default function RepoDetailPage() {
         sellerWallet,
         buyerAddress,
         baseUsd: repo.lockedPriceUsd,
-        boltyDisabled: !(await loadBoltyTokenConfig()),
+        hagglDisabled: !(await loadHagglTokenConfig()),
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Could not connect to MetaMask';
@@ -248,8 +248,8 @@ export default function RepoDetailPage() {
     // always receives `baseUsd` worth of the chosen currency; the platform
     // fee is added on top so ATLAS (3%) is strictly cheaper for the buyer
     // than SOL (7%).
-    const boltyCfg = method === 'ATLAS' ? await loadBoltyTokenConfig() : null;
-    if (method === 'ATLAS' && !boltyCfg) {
+    const hagglCfg = method === 'ATLAS' ? await loadHagglTokenConfig() : null;
+    if (method === 'ATLAS' && !hagglCfg) {
       setError('ATLAS payments are not enabled — please retry with SOL');
       return;
     }
@@ -257,8 +257,8 @@ export default function RepoDetailPage() {
     let sellerWei: bigint;
     let platformWei: bigint;
     try {
-      if (boltyCfg) {
-        sellerWei = usdToTokenUnits(baseUsd, boltyCfg);
+      if (hagglCfg) {
+        sellerWei = usdToTokenUnits(baseUsd, hagglCfg);
       } else {
         let ethPrice = 2000;
         try {
@@ -280,13 +280,13 @@ export default function RepoDetailPage() {
       // eth_sendTransaction to the token contract with encoded
       // transfer(seller, amount) calldata, value 0.
       let txHash: string;
-      if (boltyCfg) {
+      if (hagglCfg) {
         txHash = (await ethereum.request({
           method: 'eth_sendTransaction',
           params: [
             {
               from: buyerAddress,
-              to: boltyCfg.address,
+              to: hagglCfg.address,
               data: encodeErc20Transfer(sellerWallet, sellerWei),
               value: '0x0',
             },
@@ -301,13 +301,13 @@ export default function RepoDetailPage() {
 
       let platformFeeTxHash: string | undefined;
       if (platformWallet) {
-        if (boltyCfg) {
+        if (hagglCfg) {
           platformFeeTxHash = (await ethereum.request({
             method: 'eth_sendTransaction',
             params: [
               {
                 from: buyerAddress,
-                to: boltyCfg.address,
+                to: hagglCfg.address,
                 data: encodeErc20Transfer(platformWallet, platformWei),
                 value: '0x0',
               },
@@ -687,7 +687,7 @@ export default function RepoDetailPage() {
           sellerAddress={consent.sellerWallet}
           baseUsd={consent.baseUsd}
           buyerAddress={consent.buyerAddress}
-          boltyDisabled={consent.boltyDisabled}
+          hagglDisabled={consent.hagglDisabled}
           onConsent={executePurchase}
           onCancel={() => setConsent(null)}
         />

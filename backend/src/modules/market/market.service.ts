@@ -2555,7 +2555,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     input: { durationDays?: number; amountTokens?: number; txHash?: string },
   ) {
     const days = Math.min(30, Math.max(1, Math.floor(input.durationDays ?? 7)));
-    // Fixed pricing tiers (in BOLTY tokens) — keep simple/predictable for now.
+    // Fixed pricing tiers (in HAGGL tokens) — keep simple/predictable for now.
     const priceByDays: Record<number, number> = { 1: 5, 3: 12, 7: 25, 14: 45, 30: 80 };
     const price = priceByDays[days] ?? Math.ceil(days * 4);
 
@@ -2587,13 +2587,13 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       throw new BadRequestException('Platform wallet not configured — boosts disabled');
     }
     const rpcUrl = this.config.get<string>('ETH_RPC_URL', 'https://mainnet.base.org');
-    const tokenContract = this.config.get<string>('BOLTY_TOKEN_CONTRACT', '');
+    const tokenContract = this.config.get<string>('HAGGL_TOKEN_CONTRACT', '');
     const provider = new ethers.JsonRpcProvider(rpcUrl);
     const receipt = await provider.getTransactionReceipt(txHash);
     if (!receipt || receipt.status !== 1) {
       throw new BadRequestException('Payment transaction failed or not found');
     }
-    // Boosts are priced in BOLTY tokens (18 decimals); the same scale
+    // Boosts are priced in HAGGL tokens (18 decimals); the same scale
     // applies whether we accept the token or raw ETH as a fallback.
     const expectedWei = ethers.parseEther(price.toString());
     if (tokenContract) {
@@ -2606,7 +2606,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
           '0x' + log.topics[2].slice(26).toLowerCase() === platformWallet.toLowerCase(),
       );
       if (!transferLog) {
-        throw new BadRequestException('No valid BOLTY transfer to platform wallet found');
+        throw new BadRequestException('No valid HAGGL transfer to platform wallet found');
       }
       if (BigInt(transferLog.data) < expectedWei) {
         throw new BadRequestException('Payment is below the required boost amount');
@@ -2658,9 +2658,9 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
 
   getBoostPricing() {
     return {
-      currency: 'BOLTY',
+      currency: 'HAGGL',
       platformWallet: this.config.get<string>('PLATFORM_WALLET', '') || null,
-      tokenContract: this.config.get<string>('BOLTY_TOKEN_CONTRACT', '') || null,
+      tokenContract: this.config.get<string>('HAGGL_TOKEN_CONTRACT', '') || null,
       tiers: [
         { days: 1, price: 5 },
         { days: 3, price: 12 },

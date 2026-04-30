@@ -8,7 +8,7 @@ import { PrismaService } from '../../common/prisma/prisma.service';
 interface RaysPackConfig {
   pack: RaysPack;
   rays: number;
-  boltyPrice: number; // in BOLTY
+  hagglPrice: number; // in HAGGL
 }
 
 @Injectable()
@@ -17,11 +17,11 @@ export class RaysService {
 
   // Pack configurations
   private readonly PACKS: RaysPackConfig[] = [
-    { pack: RaysPack.PACK_10, rays: 10, boltyPrice: 12 },
-    { pack: RaysPack.PACK_25, rays: 25, boltyPrice: 28 },
-    { pack: RaysPack.PACK_50, rays: 50, boltyPrice: 48 },
-    { pack: RaysPack.PACK_120, rays: 120, boltyPrice: 110 },
-    { pack: RaysPack.PACK_250, rays: 250, boltyPrice: 230 },
+    { pack: RaysPack.PACK_10, rays: 10, hagglPrice: 12 },
+    { pack: RaysPack.PACK_25, rays: 25, hagglPrice: 28 },
+    { pack: RaysPack.PACK_50, rays: 50, hagglPrice: 48 },
+    { pack: RaysPack.PACK_120, rays: 120, hagglPrice: 110 },
+    { pack: RaysPack.PACK_250, rays: 250, hagglPrice: 230 },
   ];
 
   // Rank configurations (rays needed for each rank)
@@ -116,8 +116,8 @@ export class RaysService {
         throw new BadRequestException('Payment was not sent to the correct wallet');
       }
 
-      // Verify amount matches pack price (in BOLTY wei)
-      const expectedAmountWei = ethers.parseEther(packConfig.boltyPrice.toString());
+      // Verify amount matches pack price (in HAGGL wei)
+      const expectedAmountWei = ethers.parseEther(packConfig.hagglPrice.toString());
       if (tx.value !== expectedAmountWei) {
         throw new BadRequestException(
           `Payment amount mismatch. Expected ${expectedAmountWei}, received ${tx.value}`,
@@ -135,7 +135,7 @@ export class RaysService {
         agentId,
         raysPack: pack,
         raysAmount: packConfig.rays,
-        boltyAmount: packConfig.boltyPrice.toString(),
+        boltyAmount: packConfig.hagglPrice.toString(),
         txHash,
         status: PurchaseStatus.COMPLETED,
       },

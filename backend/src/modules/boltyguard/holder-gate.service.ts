@@ -14,8 +14,8 @@ const FREE_QUOTA_PER_DAY = 5; // anonymous quota — IP-bucketed in the controll
 
 /**
  * Gates the public BoltyGuard scan API on holding a configurable
- * amount of $BOLTY. Free tier (no auth, no holding) gets a small
- * daily quota; paid tier (≥ MIN_HOLDING $BOLTY in any wallet linked
+ * amount of $HAGGL. Free tier (no auth, no holding) gets a small
+ * daily quota; paid tier (≥ MIN_HOLDING $HAGGL in any wallet linked
  * to the user) is unmetered.
  *
  * Reads on-chain balance with a 1-min in-memory cache so we don't
@@ -41,7 +41,7 @@ export class HolderGateService {
       this.config.get<string>('ETH_RPC_URL') ??
       this.config.get<string>('BASE_RPC_URL') ??
       'https://mainnet.base.org';
-    this.tokenAddress = this.config.get<string>('BOLTY_TOKEN_ADDRESS') ?? null;
+    this.tokenAddress = this.config.get<string>('HAGGL_TOKEN_ADDRESS') ?? null;
     const minRaw = this.config.get<string>('BOLTYGUARD_MIN_HOLDING') ?? '1000';
     // Default 1,000 BOLTY in 18-decimal units. Override via env.
     this.minHolding = ethers.parseUnits(minRaw, 18);
@@ -50,7 +50,7 @@ export class HolderGateService {
   }
 
   /**
-   * Returns whether the user has enough $BOLTY to bypass the free
+   * Returns whether the user has enough $HAGGL to bypass the free
    * quota. If the gate isn't configured (no RPC / token address) we
    * fail open and treat everyone as a holder — this is dev mode.
    */

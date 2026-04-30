@@ -4,11 +4,11 @@ import axios from 'axios';
 import { RedisService } from '../../common/redis/redis.service';
 
 /**
- * BOLTY token contract on Base. Deployed via Flaunch, tradable on
+ * HAGGL token contract on Base. Deployed via Flaunch, tradable on
  * Uniswap V4 (which Flaunch is built on).
  */
-export const BOLTY_CONTRACT = '0xA383e85a626171edCB2727AEcAED4Fc5e27E42a7';
-export const BOLTY_CHAIN = 'base';
+export const HAGGL_CONTRACT = '0xA383e85a626171edCB2727AEcAED4Fc5e27E42a7';
+export const HAGGL_CHAIN = 'base';
 
 const CACHE_TTL_SEC = 60;
 const CACHE_KEY = 'token:bolty:stats:v1';
@@ -145,14 +145,14 @@ export class TokenService {
   }
 
   private async fetchFromDexScreener(): Promise<TokenStats | null> {
-    const url = `https://api.dexscreener.com/latest/dex/tokens/${BOLTY_CONTRACT}`;
+    const url = `https://api.dexscreener.com/latest/dex/tokens/${HAGGL_CONTRACT}`;
     const res = await axios.get<DexScreenerResponse>(url, {
       timeout: 6000,
       headers: { Accept: 'application/json' },
       validateStatus: (s) => s >= 200 && s < 300,
       maxRedirects: 0,
     });
-    const pairs = (res.data?.pairs ?? []).filter((p) => p.chainId === BOLTY_CHAIN);
+    const pairs = (res.data?.pairs ?? []).filter((p) => p.chainId === HAGGL_CHAIN);
     if (pairs.length === 0) return null;
 
     // Pick the pair with the deepest liquidity — DexScreener returns
@@ -167,8 +167,8 @@ export class TokenService {
       priceUsd != null && priceNative != null && priceNative > 0 ? priceUsd / priceNative : null;
 
     return {
-      contract: BOLTY_CONTRACT,
-      chain: BOLTY_CHAIN,
+      contract: HAGGL_CONTRACT,
+      chain: HAGGL_CHAIN,
       symbol: p.baseToken.symbol,
       name: p.baseToken.name,
       imageUrl: p.info?.imageUrl ?? null,
@@ -183,7 +183,7 @@ export class TokenService {
       pairAddress: p.pairAddress,
       pairUrl: p.url,
       dexId: p.dexId,
-      flaunchUrl: `https://flaunch.gg/base/coin/${BOLTY_CONTRACT}`,
+      flaunchUrl: `https://flaunch.gg/base/coin/${HAGGL_CONTRACT}`,
       ethPriceUsd,
       updatedAt: new Date().toISOString(),
     };
@@ -353,7 +353,7 @@ export class TokenService {
    * CTA so users can still reach the token.
    */
   /**
-   * Recent swaps on the deepest-liquidity BOLTY pool. Backed by
+   * Recent swaps on the deepest-liquidity HAGGL pool. Backed by
    * GeckoTerminal which publishes per-pool trade history for free —
    * DexScreener charges for this. Cached 4s so the live feed can hit
    * this endpoint aggressively without proxying every user to the
@@ -397,7 +397,7 @@ export class TokenService {
       const side =
         a.kind === 'buy' || a.kind === 'sell'
           ? a.kind
-          : a.from_token_address?.toLowerCase() === BOLTY_CONTRACT.toLowerCase()
+          : a.from_token_address?.toLowerCase() === HAGGL_CONTRACT.toLowerCase()
             ? 'sell'
             : 'buy';
       return {
@@ -416,9 +416,9 @@ export class TokenService {
 
   private fallback(): TokenStats {
     return {
-      contract: BOLTY_CONTRACT,
-      chain: BOLTY_CHAIN,
-      symbol: 'BOLTY',
+      contract: HAGGL_CONTRACT,
+      chain: HAGGL_CHAIN,
+      symbol: 'HAGGL',
       name: 'Bolty',
       imageUrl: null,
       priceUsd: null,
@@ -432,7 +432,7 @@ export class TokenService {
       pairAddress: null,
       pairUrl: null,
       dexId: null,
-      flaunchUrl: `https://flaunch.gg/base/coin/${BOLTY_CONTRACT}`,
+      flaunchUrl: `https://flaunch.gg/base/coin/${HAGGL_CONTRACT}`,
       ethPriceUsd: null,
       updatedAt: new Date().toISOString(),
     };

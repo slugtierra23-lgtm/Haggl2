@@ -72,8 +72,8 @@ export class BoltyGuardController {
    *  Tiering:
    *  - Anonymous / non-holder: limited to FREE_TIER_DAILY_QUOTA scans
    *    per day per user (or per IP fallback). Returns 403 once quota
-   *    is exhausted with a hint to top up $BOLTY.
-   *  - Holder of ≥ MIN_HOLDING $BOLTY (env): unlimited.
+   *    is exhausted with a hint to top up $HAGGL.
+   *  - Holder of ≥ MIN_HOLDING $HAGGL (env): unlimited.
    *
    *  Holder check is read-only — we don't burn tokens. Holding alone
    *  unlocks the API.
@@ -95,7 +95,7 @@ export class BoltyGuardController {
       const remaining = await this.consumeFreeQuota(userId ?? null);
       if (remaining < 0) {
         throw new ForbiddenException(
-          `Free quota exhausted. Hold ≥ ${gate.minHolding} $BOLTY in a linked wallet to unlock unmetered scans (current balance: ${gate.balance}).`,
+          `Free quota exhausted. Hold ≥ ${gate.minHolding} $HAGGL in a linked wallet to unlock unmetered scans (current balance: ${gate.balance}).`,
         );
       }
     }
@@ -168,7 +168,7 @@ export class BoltyGuardController {
       const remaining = await this.consumeFreeQuota(userId ?? null);
       if (remaining < 0) {
         throw new ForbiddenException(
-          `Free quota exhausted. Hold ≥ ${gate.minHolding} $BOLTY in a linked wallet to unlock unmetered scans (current balance: ${gate.balance}).`,
+          `Free quota exhausted. Hold ≥ ${gate.minHolding} $HAGGL in a linked wallet to unlock unmetered scans (current balance: ${gate.balance}).`,
         );
       }
     }
@@ -221,7 +221,7 @@ export class BoltyGuardController {
       const remaining = await this.consumeFreeQuota(userId ?? null);
       if (remaining < 0) {
         throw new ForbiddenException(
-          `Free quota exhausted. Hold ≥ ${gate.minHolding} $BOLTY in a linked wallet to unlock unmetered scans (current balance: ${gate.balance}).`,
+          `Free quota exhausted. Hold ≥ ${gate.minHolding} $HAGGL in a linked wallet to unlock unmetered scans (current balance: ${gate.balance}).`,
         );
       }
     }

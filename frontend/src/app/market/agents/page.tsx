@@ -30,9 +30,9 @@ import { useWalletPicker } from '@/lib/hooks/useWalletPicker';
 import { platformWeiForSeller, grossWeiForSeller } from '@/lib/payments/fees';
 import {
   encodeErc20Transfer,
-  loadBoltyTokenConfig,
+  loadHagglTokenConfig,
   usdToTokenUnits,
-} from '@/lib/wallet/bolty-token';
+} from '@/lib/wallet/haggl-token';
 import { isEscrowEnabled, getEscrowAddress, escrowDeposit } from '@/lib/wallet/escrow';
 import { getMetaMaskProvider } from '@/lib/wallet/ethereum';
 
@@ -1021,7 +1021,7 @@ function AgentsPageContent() {
     /** Seller's net amount in SOL (the listing price) — wei is computed at sign time. */
     baseEth: number;
     baseUsd: number;
-    boltyDisabled: boolean;
+    hagglDisabled: boolean;
   } | null>(null);
   const [buyPaying, setBuyPaying] = useState(false);
   const [buyError, setBuyError] = useState('');
@@ -1246,7 +1246,7 @@ function AgentsPageContent() {
         buyerAddress,
         baseEth: listing.price,
         baseUsd: listing.price * ethPrice,
-        boltyDisabled: !(await loadBoltyTokenConfig()),
+        hagglDisabled: !(await loadHagglTokenConfig()),
       });
     } catch (err: unknown) {
       const msg = (err as Error)?.message || String(err);
@@ -1270,8 +1270,8 @@ function AgentsPageContent() {
       return;
     }
 
-    const boltyCfg = paymentMethod === 'ATLAS' ? await loadBoltyTokenConfig() : null;
-    if (paymentMethod === 'ATLAS' && !boltyCfg) {
+    const hagglCfg = paymentMethod === 'ATLAS' ? await loadHagglTokenConfig() : null;
+    if (paymentMethod === 'ATLAS' && !hagglCfg) {
       setBuyError('ATLAS payments are not enabled — please retry with SOL');
       return;
     }
@@ -1280,8 +1280,8 @@ function AgentsPageContent() {
     let platformWei: bigint;
     let totalWei: bigint;
     try {
-      if (boltyCfg) {
-        sellerWei = usdToTokenUnits(baseUsd, boltyCfg);
+      if (hagglCfg) {
+        sellerWei = usdToTokenUnits(baseUsd, hagglCfg);
       } else {
         sellerWei = BigInt(Math.ceil(baseEth * 1e18));
       }
@@ -1308,13 +1308,13 @@ function AgentsPageContent() {
         });
       } else {
         const platformWallet = process.env.NEXT_PUBLIC_PLATFORM_WALLET;
-        const txHash = boltyCfg
+        const txHash = hagglCfg
           ? ((await ethereum.request({
               method: 'eth_sendTransaction',
               params: [
                 {
                   from: buyerAddress,
-                  to: boltyCfg.address,
+                  to: hagglCfg.address,
                   data: encodeErc20Transfer(sellerWallet, sellerWei),
                   value: '0x0',
                 },
@@ -1328,13 +1328,13 @@ function AgentsPageContent() {
             })) as string);
         let platformFeeTxHash: string | undefined;
         if (platformWallet) {
-          platformFeeTxHash = boltyCfg
+          platformFeeTxHash = hagglCfg
             ? ((await ethereum.request({
                 method: 'eth_sendTransaction',
                 params: [
                   {
                     from: buyerAddress,
-                    to: boltyCfg.address,
+                    to: hagglCfg.address,
                     data: encodeErc20Transfer(platformWallet, platformWei),
                     value: '0x0',
                   },
@@ -1654,7 +1654,7 @@ function AgentsPageContent() {
           sellerAddress={buyConsentData.sellerWallet}
           baseUsd={buyConsentData.baseUsd}
           buyerAddress={buyConsentData.buyerAddress}
-          boltyDisabled={buyConsentData.boltyDisabled}
+          hagglDisabled={buyConsentData.hagglDisabled}
           onConsent={executeBuy}
           onCancel={() => {
             setBuyConsentData(null);

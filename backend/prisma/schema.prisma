@@ -559,7 +559,7 @@ model ListingBoost {
   listing      MarketListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
   buyerId      String
   buyer        User          @relation(fields: [buyerId], references: [id], onDelete: Cascade)
-  amountTokens Float         @default(0) // BOLTY tokens spent
+  amountTokens Float         @default(0) // HAGGL tokens spent
   durationDays Int           @default(7)
   expiresAt    DateTime
   txHash       String?       @unique

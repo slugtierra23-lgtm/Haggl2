@@ -110,9 +110,9 @@ const SEED: SeedListing[] = [
   },
   {
     ownerUsername: 'mintak',
-    title: 'Welcome pack for $BOLTY holders',
+    title: 'Welcome pack for $HAGGL holders',
     description:
-      "Free onboarding pack for new $BOLTY holders. Includes: how to launch your first agent (5 min walkthrough), how to use BoltyGuard, how to monetize your repo, and a curated list of 10 agent ideas that haven't been built yet but should.\n\nBuilt for: anyone holding $BOLTY who wants to actually use the platform, not just hodl.",
+      "Free onboarding pack for new $HAGGL holders. Includes: how to launch your first agent (5 min walkthrough), how to use BoltyGuard, how to monetize your repo, and a curated list of 10 agent ideas that haven't been built yet but should.\n\nBuilt for: anyone holding $HAGGL who wants to actually use the platform, not just hodl.",
     type: ListingType.OTHER,
     priceEth: 0,
     tags: ['onboarding', 'bolty', 'guide', 'free', 'community'],

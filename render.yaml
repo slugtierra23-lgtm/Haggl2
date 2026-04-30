@@ -89,7 +89,7 @@ services:
         value: 15m
       - key: JWT_REFRESH_EXPIRES_IN
         value: 30d
-      - key: BOLTY_TOKEN_DECIMALS
+      - key: HAGGL_TOKEN_DECIMALS
         value: '18'
       - key: BOLTYGUARD_MIN_HOLDING
         value: '0'
@@ -137,7 +137,7 @@ services:
         sync: false
       - key: ETH_RPC_URL
         sync: false
-      - key: BOLTY_TOKEN_ADDRESS
+      - key: HAGGL_TOKEN_ADDRESS
         sync: false
-      - key: BOLTY_TOKEN_CONTRACT
+      - key: HAGGL_TOKEN_CONTRACT
         sync: false

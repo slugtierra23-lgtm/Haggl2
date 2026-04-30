@@ -38,9 +38,9 @@ import { useWalletPicker } from '@/lib/hooks/useWalletPicker';
 import { platformWeiForSeller } from '@/lib/payments/fees';
 import {
   encodeErc20Transfer,
-  loadBoltyTokenConfig,
+  loadHagglTokenConfig,
   usdToTokenUnits,
-} from '@/lib/wallet/bolty-token';
+} from '@/lib/wallet/haggl-token';
 import { getMetaMaskProvider } from '@/lib/wallet/ethereum';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -1246,7 +1246,7 @@ function ReposMarketPageContent() {
     sellerWallet: string;
     buyerAddress: string;
     baseUsd: number;
-    boltyDisabled: boolean;
+    hagglDisabled: boolean;
   } | null>(null);
 
   useEffect(() => {
@@ -1385,7 +1385,7 @@ function ReposMarketPageContent() {
         sellerWallet,
         buyerAddress,
         baseUsd: repo.lockedPriceUsd,
-        boltyDisabled: !(await loadBoltyTokenConfig()),
+        hagglDisabled: !(await loadHagglTokenConfig()),
       });
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Could not connect to MetaMask';
@@ -1404,8 +1404,8 @@ function ReposMarketPageContent() {
     }
     const platformWallet = process.env.NEXT_PUBLIC_PLATFORM_WALLET;
 
-    const boltyCfg = method === 'ATLAS' ? await loadBoltyTokenConfig() : null;
-    if (method === 'ATLAS' && !boltyCfg) {
+    const hagglCfg = method === 'ATLAS' ? await loadHagglTokenConfig() : null;
+    if (method === 'ATLAS' && !hagglCfg) {
       setError('ATLAS payments are not enabled — please retry with SOL');
       return;
     }
@@ -1413,8 +1413,8 @@ function ReposMarketPageContent() {
     let sellerWei: bigint;
     let platformWei: bigint;
     try {
-      if (boltyCfg) {
-        sellerWei = usdToTokenUnits(baseUsd, boltyCfg);
+      if (hagglCfg) {
+        sellerWei = usdToTokenUnits(baseUsd, hagglCfg);
       } else {
         let ethPrice = 2000;
         try {
@@ -1432,13 +1432,13 @@ function ReposMarketPageContent() {
     }
 
     try {
-      const txHash = boltyCfg
+      const txHash = hagglCfg
         ? ((await ethereum.request({
             method: 'eth_sendTransaction',
             params: [
               {
                 from: buyerAddress,
-                to: boltyCfg.address,
+                to: hagglCfg.address,
                 data: encodeErc20Transfer(sellerWallet, sellerWei),
                 value: '0x0',
               },
@@ -1453,13 +1453,13 @@ function ReposMarketPageContent() {
 
       let platformFeeTxHash: string | undefined;
       if (platformWallet) {
-        platformFeeTxHash = boltyCfg
+        platformFeeTxHash = hagglCfg
           ? ((await ethereum.request({
               method: 'eth_sendTransaction',
               params: [
                 {
                   from: buyerAddress,
-                  to: boltyCfg.address,
+                  to: hagglCfg.address,
                   data: encodeErc20Transfer(platformWallet, platformWei),
                   value: '0x0',
                 },
@@ -1874,7 +1874,7 @@ function ReposMarketPageContent() {
           sellerAddress={consentModal.sellerWallet}
           baseUsd={consentModal.baseUsd}
           buyerAddress={consentModal.buyerAddress}
-          boltyDisabled={consentModal.boltyDisabled}
+          hagglDisabled={consentModal.hagglDisabled}
           onConsent={executeRepoPurchase}
           onCancel={() => setConsentModal(null)}
         />

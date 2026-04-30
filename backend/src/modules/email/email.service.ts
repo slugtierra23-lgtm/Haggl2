@@ -547,7 +547,7 @@ export class EmailService {
       sellerUsername: string;
       listingTitle: string;
       orderId: string;
-      amountLabel: string; // already formatted, e.g. "0.042 ETH" or "125 BOLTY"
+      amountLabel: string; // already formatted, e.g. "0.042 ETH" or "125 HAGGL"
       txHash?: string | null;
       purchaseKind: 'listing' | 'repo';
     },

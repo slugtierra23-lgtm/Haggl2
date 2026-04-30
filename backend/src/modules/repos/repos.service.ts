@@ -886,7 +886,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       throw new BadRequestException('Transaction reverted on-chain');
     }
 
-    // Determine the recipient wallet: ETH = tx.to, BOLTY = Transfer log `to`.
+    // Determine the recipient wallet: ETH = tx.to, HAGGL = Transfer log `to`.
     const recipients = new Set<string>();
     if (tx.to && tx.value && BigInt(tx.value) > 0n) {
       recipients.add(tx.to.toLowerCase());
@@ -899,7 +899,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     }
     if (recipients.size === 0) {
       throw new BadRequestException(
-        'This transaction does not transfer ETH or BOLTY to any address — cannot match it to a repo',
+        'This transaction does not transfer ETH or HAGGL to any address — cannot match it to a repo',
       );
     }
 
@@ -958,7 +958,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
 
     // Multiple candidates — disambiguate with the paid amount against the
     // live oracle. Use the same slippage band the downstream purchase
-    // flow enforces (ETH 93% seller / BOLTY 97% seller minus 5% oracle
+    // flow enforces (ETH 93% seller / HAGGL 97% seller minus 5% oracle
     // drift) instead of the previous loose 85% band, so the selected
     // repo always also passes `purchaseRepository` verification.
     const ethPrice = await this.chart.getEthPrice().catch(() => null);
@@ -968,15 +968,15 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         .filter((w): w is string => !!w)
         .map((w) => w.toLowerCase()),
     );
-    const boltyContract = this.config.get<string>('BOLTY_TOKEN_CONTRACT', '');
+    const boltyContract = this.config.get<string>('HAGGL_TOKEN_CONTRACT', '');
     let paidWei: bigint = 0n;
-    let isBoltyPath = false;
+    let isHagglPath = false;
     if (tx.value && BigInt(tx.value) > 0n) {
       paidWei = BigInt(tx.value);
     } else if (boltyContract) {
-      isBoltyPath = true;
-      // BOLTY path: only count Transfer logs emitted by the configured
-      // BOLTY contract whose `to` topic is one of the seller candidate
+      isHagglPath = true;
+      // HAGGL path: only count Transfer logs emitted by the configured
+      // HAGGL contract whose `to` topic is one of the seller candidate
       // wallets. This prevents unrelated ERC-20 transfers in the same tx
       // from inflating `paidWei` during disambiguation.
       for (const log of receipt.logs) {
@@ -989,7 +989,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       }
     }
     if (ethPrice && ethPrice.price > 0) {
-      const feeBps = isBoltyPath ? 300n : 700n;
+      const feeBps = isHagglPath ? 300n : 700n;
       const matching = candidates.filter((r) => {
         const expectedEth = (r.lockedPriceUsd ?? 0) / ethPrice.price;
         // oracle drift window (5%) × fee split
@@ -1103,10 +1103,10 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     }
     // Base network dual-fee model:
     //   - ETH payment   → 7% platform fee (93% to seller).
-    //   - BOLTY payment → 3% platform fee (97% to seller; we incentivize BOLTY).
-    const tokenContractCfg = this.config.get<string>('BOLTY_TOKEN_CONTRACT', '');
-    const isBoltyPath = !!tokenContractCfg;
-    const feeBps = isBoltyPath ? 300n : 700n;
+    //   - HAGGL payment → 3% platform fee (97% to seller; we incentivize HAGGL).
+    const tokenContractCfg = this.config.get<string>('HAGGL_TOKEN_CONTRACT', '');
+    const isHagglPath = !!tokenContractCfg;
+    const feeBps = isHagglPath ? 300n : 700n;
     const expectedSellerWei = (expectedTotalWei * (10000n - feeBps)) / 10000n;
     const expectedPlatformFeeWei = (expectedTotalWei * feeBps) / 10000n;
 
@@ -1134,9 +1134,9 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     // Auto-detect the payment path from the actual transaction rather than
     // trusting a config flag — if the buyer sent ETH directly to the seller,
     // verify the ETH transfer; if the tx carries zero ETH but emits an
-    // ERC-20 Transfer to the seller from the configured BOLTY contract,
+    // ERC-20 Transfer to the seller from the configured HAGGL contract,
     // verify the token transfer. This avoids the old failure mode where
-    // BOLTY_TOKEN_CONTRACT being set caused every ETH purchase to fail
+    // HAGGL_TOKEN_CONTRACT being set caused every ETH purchase to fail
     // with "No valid token transfer found".
     const tokenContract = tokenContractCfg;
     // Build an untyped provider handle for waitForReceipt's first argument
@@ -1144,7 +1144,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     const provider = new ethers.JsonRpcProvider(this.baseRpcCandidates()[0]);
 
     let amountWei = '0';
-    let detectedCurrency: 'ETH' | 'BOLTY' = 'ETH';
+    let detectedCurrency: 'ETH' | 'HAGGL' = 'ETH';
 
     try {
       // Render web services time out connections after ~30s — wait up to 18s
@@ -1177,7 +1177,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         );
       }
 
-      // Detect path: ETH if tx.value > 0 and routed to the seller; else BOLTY.
+      // Detect path: ETH if tx.value > 0 and routed to the seller; else HAGGL.
       const sentEth = tx && tx.value && BigInt(tx.value) > 0n;
       const sentToSeller = tx && tx.to && tx.to.toLowerCase() === sellerWallet.toLowerCase();
 
@@ -1198,7 +1198,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         amountWei = tx!.value.toString();
         detectedCurrency = 'ETH';
       } else if (tokenContract) {
-        // BOLTY / ERC-20 path: require a Transfer(sender -> seller) log
+        // HAGGL / Solana SPL path: require a Transfer(sender -> seller) log
         // whose `from` topic is a wallet owned by the authenticated buyer.
         const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
         const transferLog = receipt.logs.find((log) => {
@@ -1222,11 +1222,11 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
           );
           if (anyTransferToSeller) {
             throw new ForbiddenException(
-              'BOLTY transfer was sent from a wallet that is not linked to your account',
+              'HAGGL transfer was sent from a wallet that is not linked to your account',
             );
           }
           throw new BadRequestException(
-            'Payment did not reach the seller wallet (no ETH value and no BOLTY transfer)',
+            'Payment did not reach the seller wallet (no ETH value and no HAGGL transfer)',
           );
         }
         const paid = BigInt(transferLog.data);
@@ -1237,7 +1237,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
           );
         }
         amountWei = paid.toString();
-        detectedCurrency = 'BOLTY';
+        detectedCurrency = 'HAGGL';
       } else {
         throw new BadRequestException('Transaction did not transfer funds to the seller wallet');
       }
@@ -1381,7 +1381,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         });
         const buyerRec = parties.find((p) => p.id === buyerId);
         const sellerRec = parties.find((p) => p.id === repo.userId);
-        const currency = isBoltyPath ? 'BOLTY' : 'ETH';
+        const currency = isHagglPath ? 'HAGGL' : 'ETH';
         const amount = amountWei ? Number(amountWei) / 1e18 : 0;
         const amountLabel =
           Number.isFinite(amount) && amount > 0

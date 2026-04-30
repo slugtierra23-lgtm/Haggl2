@@ -10,7 +10,7 @@ const ERC20_TRANSFER_IFACE = new Interface([
   'function transfer(address to, uint256 amount) returns (bool)',
 ]);
 
-export interface BoltyTokenConfig {
+export interface HagglTokenConfig {
   /** ERC-20 contract address on Base (0x…). */
   address: string;
   /** USD price per 1 ATLAS — used to convert USD listing prices to token units. */
@@ -22,19 +22,19 @@ export interface BoltyTokenConfig {
 /**
  * Synchronous fast-path: read ATLAS token config from NEXT_PUBLIC_*
  * env vars. Returns null when any var is missing or malformed —
- * callers should fall back to {@link loadBoltyTokenConfig}, which
+ * callers should fall back to {@link loadHagglTokenConfig}, which
  * additionally fetches the backend's live config when env is not set.
  *
  * Kept for any caller that runs before async work is OK (none exist
  * today, but the export stays as a stable API).
  */
-export function getBoltyTokenConfig(): BoltyTokenConfig | null {
-  const address = process.env.NEXT_PUBLIC_BOLTY_TOKEN_CONTRACT;
+export function getHagglTokenConfig(): HagglTokenConfig | null {
+  const address = process.env.NEXT_PUBLIC_HAGGL_TOKEN_CONTRACT;
   const usdPriceRaw = process.env.NEXT_PUBLIC_BOLTY_USD_PRICE;
   if (!address || !/^0x[0-9a-fA-F]{40}$/.test(address)) return null;
   const usdPrice = usdPriceRaw ? Number(usdPriceRaw) : NaN;
   if (!Number.isFinite(usdPrice) || usdPrice <= 0) return null;
-  const decimalsRaw = process.env.NEXT_PUBLIC_BOLTY_TOKEN_DECIMALS;
+  const decimalsRaw = process.env.NEXT_PUBLIC_HAGGL_TOKEN_DECIMALS;
   const decimals = decimalsRaw ? Number(decimalsRaw) : 18;
   return {
     address,
@@ -62,10 +62,10 @@ interface BoltyStatsResponse {
 }
 
 const REMOTE_TTL_MS = 60_000;
-let remoteCache: { value: BoltyTokenConfig | null; at: number } | null = null;
-let inflight: Promise<BoltyTokenConfig | null> | null = null;
+let remoteCache: { value: HagglTokenConfig | null; at: number } | null = null;
+let inflight: Promise<HagglTokenConfig | null> | null = null;
 
-async function fetchRemoteConfig(): Promise<BoltyTokenConfig | null> {
+async function fetchRemoteConfig(): Promise<HagglTokenConfig | null> {
   try {
     const stats = await api.get<BoltyStatsResponse>('/token/bolty');
     const address = stats?.contract ?? null;
@@ -87,8 +87,8 @@ async function fetchRemoteConfig(): Promise<BoltyTokenConfig | null> {
  * callers must hide the ATLAS payment option in that case so the
  * user only sees ETH.
  */
-export async function loadBoltyTokenConfig(): Promise<BoltyTokenConfig | null> {
-  const fromEnv = getBoltyTokenConfig();
+export async function loadHagglTokenConfig(): Promise<HagglTokenConfig | null> {
+  const fromEnv = getHagglTokenConfig();
   if (fromEnv) return fromEnv;
 
   const cached = remoteCache;
@@ -111,7 +111,7 @@ export async function loadBoltyTokenConfig(): Promise<BoltyTokenConfig | null> {
  * `usd / usdPrice` tokens, rounded up in the last base unit so the
  * seller never receives fractionally less than quoted due to rounding.
  */
-export function usdToTokenUnits(usd: number, cfg: BoltyTokenConfig): bigint {
+export function usdToTokenUnits(usd: number, cfg: HagglTokenConfig): bigint {
   if (!Number.isFinite(usd) || usd <= 0) {
     throw new Error('Invalid USD amount');
   }

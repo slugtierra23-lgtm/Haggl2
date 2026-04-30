@@ -10,7 +10,7 @@ export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
   /**
-   * Public — the BOLTY token page on the landing site needs to load
+   * Public — the HAGGL token page on the landing site needs to load
    * price data for unauthenticated visitors. The service caches to
    * Redis for 60s so this is cheap.
    */
@@ -23,7 +23,7 @@ export class TokenController {
   }
 
   /**
-   * Recent trade feed for the BOLTY page — last ~30 swaps with side,
+   * Recent trade feed for the HAGGL page — last ~30 swaps with side,
    * USD size, and tx hash. Served public so unauthed visitors see the
    * live tape. Backend caches for 4s so hammering this endpoint from
    * a client polling loop doesn't pierce GeckoTerminal's rate limit.

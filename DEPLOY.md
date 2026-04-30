@@ -54,7 +54,7 @@ The `render.yaml` already wires `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`,
 | `X_CLIENT_ID` / `X_CLIENT_SECRET` | developer.x.com → projects |
 | `ANTHROPIC_API_KEY` | console.anthropic.com |
 | `ETH_RPC_URL` | Helius / QuickNode (or Solana public RPC) |
-| `BOLTY_TOKEN_ADDRESS` / `BOLTY_TOKEN_CONTRACT` | your token mint + escrow program addresses |
+| `HAGGL_TOKEN_ADDRESS` / `HAGGL_TOKEN_CONTRACT` | your token mint + escrow program addresses |
 
 ### Health check
 

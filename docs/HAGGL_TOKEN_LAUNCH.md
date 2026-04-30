@@ -1,4 +1,4 @@
-# Launching the BOLTY token
+# Launching the HAGGL token
 
 This is a checklist for switching BOLTY payments on once the ERC-20 is live
 on Base. No code changes are required — everything is gated on environment
@@ -18,22 +18,22 @@ OpenZeppelin ERC-20 works. Write down:
 ### Backend service
 
 ```
-BOLTY_TOKEN_CONTRACT=0x<token address>
+HAGGL_TOKEN_CONTRACT=0x<token address>
 PLATFORM_WALLET=0x<bolty treasury address — must already be set>
 ```
 
 That's all the backend needs. It auto-detects ETH vs BOLTY payments per
 transaction: if `tx.value > 0` routed to the seller it's ETH (7% fee, 93%
 to seller); if `tx.value = 0` and there's an ERC-20 `Transfer(seller, …)`
-log from `BOLTY_TOKEN_CONTRACT`, it's BOLTY (3% fee, 97% to seller).
+log from `HAGGL_TOKEN_CONTRACT`, it's BOLTY (3% fee, 97% to seller).
 
 ### Frontend service
 
 ```
-NEXT_PUBLIC_BOLTY_TOKEN_CONTRACT=0x<same address as backend>
+NEXT_PUBLIC_HAGGL_TOKEN_CONTRACT=0x<same address as backend>
 NEXT_PUBLIC_BOLTY_USD_PRICE=0.05
 # optional, defaults to 18
-NEXT_PUBLIC_BOLTY_TOKEN_DECIMALS=18
+NEXT_PUBLIC_HAGGL_TOKEN_DECIMALS=18
 ```
 
 Both variables must be set for the frontend toggle to appear. If either is
@@ -70,12 +70,12 @@ no broken purchases.
 
 When volume grows, replace the hardcoded USD price with a live oracle
 (CoinGecko, CL feed, Uniswap TWAP). The plug-in point is
-`frontend/src/lib/wallet/bolty-token.ts::getBoltyTokenConfig`. Replace
+`frontend/src/lib/wallet/haggl-token.ts::getHagglTokenConfig`. Replace
 the `usdPrice` read with a cached fetch from `/api/v1/chart/bolty-price`
 (not yet implemented; add on the backend when needed).
 
 ## Rollback
 
 Want to disable BOLTY payments temporarily? Unset
-`NEXT_PUBLIC_BOLTY_TOKEN_CONTRACT` on the frontend. The toggle
+`NEXT_PUBLIC_HAGGL_TOKEN_CONTRACT` on the frontend. The toggle
 disappears, existing BOLTY purchases remain verified in the DB.
