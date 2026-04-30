@@ -112,7 +112,7 @@ const SEED: SeedListing[] = [
     ownerUsername: 'mintak',
     title: 'Welcome pack for $BOLTY holders',
     description:
-      'Free onboarding pack for new $BOLTY holders. Includes: how to launch your first agent (5 min walkthrough), how to use BoltyGuard, how to monetize your repo, and a curated list of 10 agent ideas that haven\'t been built yet but should.\n\nBuilt for: anyone holding $BOLTY who wants to actually use the platform, not just hodl.',
+      "Free onboarding pack for new $BOLTY holders. Includes: how to launch your first agent (5 min walkthrough), how to use BoltyGuard, how to monetize your repo, and a curated list of 10 agent ideas that haven't been built yet but should.\n\nBuilt for: anyone holding $BOLTY who wants to actually use the platform, not just hodl.",
     type: ListingType.OTHER,
     priceEth: 0,
     tags: ['onboarding', 'bolty', 'guide', 'free', 'community'],
@@ -142,7 +142,7 @@ const SEED: SeedListing[] = [
     ownerUsername: 'drbug',
     title: '1-hour repo audit: structure, security, monetization',
     description:
-      'Send your repo URL, get back a 1-page report covering: code structure (red flags, dead deps), security (BoltyGuard scan + manual review of the top findings), and monetization angles (which parts could be split into paid agents on Bolty). Delivered in under 1 hour.\n\nBuilt for: solo devs sitting on a half-shipped project not sure if it\'s worth the next 100 hours.',
+      "Send your repo URL, get back a 1-page report covering: code structure (red flags, dead deps), security (BoltyGuard scan + manual review of the top findings), and monetization angles (which parts could be split into paid agents on Bolty). Delivered in under 1 hour.\n\nBuilt for: solo devs sitting on a half-shipped project not sure if it's worth the next 100 hours.",
     type: ListingType.SCRIPT,
     priceEth: 0.0016,
     tags: ['audit', 'review', 'repo', 'monetization', 'consulting'],
@@ -461,7 +461,8 @@ export class SeedListingsService implements OnApplicationBootstrap {
     for (const item of SEED_REPOS) {
       // Same hard-skip as listings: nothing with "bolty" in name/desc/topic
       // makes it into the rebranded marketplace.
-      const blob = `${item.name} ${item.fullName} ${item.description} ${item.topics.join(' ')}`.toLowerCase();
+      const blob =
+        `${item.name} ${item.fullName} ${item.description} ${item.topics.join(' ')}`.toLowerCase();
       if (blob.includes('bolty')) {
         skipped += 1;
         continue;

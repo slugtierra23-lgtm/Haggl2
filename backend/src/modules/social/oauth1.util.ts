@@ -70,25 +70,21 @@ export function signatureBaseString(
   params: Record<string, string>,
 ): string {
   const sortedKeys = Object.keys(params).sort();
-  const paramString = sortedKeys
-    .map((k) => `${rfc3986(k)}=${rfc3986(params[k])}`)
-    .join('&');
+  const paramString = sortedKeys.map((k) => `${rfc3986(k)}=${rfc3986(params[k])}`).join('&');
   // X's docs require the URL to be lowercased on host, and stripped of
   // default ports + fragment + query. We assume callers pass clean
   // URLs so just split off any query portion as a defense in depth.
   const u = new URL(url);
   const cleanUrl = `${u.protocol}//${u.host}${u.pathname}`;
-  return [
-    method.toUpperCase(),
-    rfc3986(cleanUrl),
-    rfc3986(paramString),
-  ].join('&');
+  return [method.toUpperCase(), rfc3986(cleanUrl), rfc3986(paramString)].join('&');
 }
 
 /** OAuth percent-encoding — stricter than encodeURIComponent. */
 export function rfc3986(input: string): string {
-  return encodeURIComponent(input)
-    .replace(/[!'()*]/g, (c) => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+  return encodeURIComponent(input).replace(
+    /[!'()*]/g,
+    (c) => '%' + c.charCodeAt(0).toString(16).toUpperCase(),
+  );
 }
 
 function randomNonce(): string {

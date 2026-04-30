@@ -1,3 +1,5 @@
+import * as crypto from 'crypto';
+
 import {
   BadRequestException,
   ForbiddenException,
@@ -8,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import * as crypto from 'crypto';
 
 import { decryptToken, encryptToken } from '../../common/crypto/token-cipher.util';
 import { PrismaService } from '../../common/prisma/prisma.service';
@@ -262,10 +263,7 @@ export class SocialXService {
         throw new HttpException(`X refused tweet (403): ${xMessage}`, 403);
       }
       if (status === 429) {
-        throw new HttpException(
-          `X rate-limited the post (429): ${xMessage}`,
-          429,
-        );
+        throw new HttpException(`X rate-limited the post (429): ${xMessage}`, 429);
       }
       throw new HttpException(
         `X API ${status}: ${xMessage}`,
@@ -442,13 +440,8 @@ interface TokenResponse {
 }
 
 function b64url(buf: Buffer): string {
-  return buf
-    .toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
+  return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-
 
 /**
  * Build the launch-announcement tweet body. Kept under 280 chars even
@@ -462,10 +455,15 @@ export function composeLaunchTweet(input: {
   url: string;
   agentName?: string | null;
 }): string {
-  const sym = `$${(input.symbol || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 10) || "TOKEN"}`;
+  const sym = `$${
+    (input.symbol || '')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .slice(0, 10) || 'TOKEN'
+  }`;
   const url = input.url;
-  const agentName = (input.agentName || "").trim().slice(0, 40);
-  const fullByLine = agentName ? ` by ${agentName}` : "";
+  const agentName = (input.agentName || '').trim().slice(0, 40);
+  const fullByLine = agentName ? ` by ${agentName}` : '';
 
   // Try the rich form first.
   const rich = `Just launched ${sym} on Bolty${fullByLine}.\n\nChart, holders, and CA: ${url}`;

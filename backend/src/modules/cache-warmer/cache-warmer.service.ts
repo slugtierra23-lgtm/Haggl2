@@ -37,7 +37,9 @@ export class CacheWarmerService implements OnModuleInit {
   ) {
     const flag = process.env.CACHE_WARMER_ENABLED;
     this.enabled =
-      flag === '1' || flag === 'true' || (flag === undefined && process.env.NODE_ENV === 'production');
+      flag === '1' ||
+      flag === 'true' ||
+      (flag === undefined && process.env.NODE_ENV === 'production');
   }
 
   async onModuleInit() {
@@ -62,7 +64,10 @@ export class CacheWarmerService implements OnModuleInit {
     const started = Date.now();
     const tasks: Array<{ name: string; fn: () => Promise<unknown> }> = [
       // Marketplace landing — /market
-      { name: 'market:all:recent', fn: () => this.market.getListings({ page: 1, sortBy: 'recent' }) },
+      {
+        name: 'market:all:recent',
+        fn: () => this.market.getListings({ page: 1, sortBy: 'recent' }),
+      },
       // /market/agents
       {
         name: 'market:agents:recent',
@@ -78,7 +83,10 @@ export class CacheWarmerService implements OnModuleInit {
       // /market/leaderboard
       { name: 'market:leaderboard', fn: () => this.market.getLeaderboard() },
       // /repos (the standalone repos page)
-      { name: 'repos:list:recent', fn: () => this.repos.listRepositories({ page: 1, sortBy: 'recent' }) },
+      {
+        name: 'repos:list:recent',
+        fn: () => this.repos.listRepositories({ page: 1, sortBy: 'recent' }),
+      },
       // /bolty token page header stats
       { name: 'token:bolty:stats', fn: () => this.token.getBoltyStats() },
     ];
@@ -97,6 +105,8 @@ export class CacheWarmerService implements OnModuleInit {
       }),
     );
     const ms = Date.now() - started;
-    this.logger.log(`warmed ${ok}/${tasks.length} hot caches in ${ms}ms${failed ? ` (${failed} failed)` : ''}`);
+    this.logger.log(
+      `warmed ${ok}/${tasks.length} hot caches in ${ms}ms${failed ? ` (${failed} failed)` : ''}`,
+    );
   }
 }

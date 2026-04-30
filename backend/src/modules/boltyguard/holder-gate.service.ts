@@ -28,10 +28,7 @@ export class HolderGateService {
   private readonly provider: ethers.JsonRpcProvider | null;
   private readonly tokenAddress: string | null;
   private readonly minHolding: bigint;
-  private readonly balanceCache = new Map<
-    string,
-    { balance: bigint; checkedAt: number }
-  >();
+  private readonly balanceCache = new Map<string, { balance: bigint; checkedAt: number }>();
 
   constructor(
     private readonly config: ConfigService,

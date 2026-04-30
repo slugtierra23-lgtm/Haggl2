@@ -114,8 +114,8 @@ export function RanksPanel({ points }: { points: number }) {
         <div className="mb-3">
           <h3 className="text-[14px] text-white font-light">Tier ladder</h3>
           <p className="text-[11.5px] text-zinc-500 mt-0.5">
-            Every rank, the rays it takes to reach it, and what it unlocks. Tap a tier to
-            see its perks.
+            Every rank, the rays it takes to reach it, and what it unlocks. Tap a tier to see its
+            perks.
           </p>
         </div>
         <ul className="space-y-1.5">
@@ -129,12 +129,8 @@ export function RanksPanel({ points }: { points: number }) {
                 key={tier.rank}
                 className="rounded-lg overflow-hidden transition"
                 style={{
-                  background: isCurrent
-                    ? `${tier.color}10`
-                    : 'var(--bg-card2)',
-                  border: `1px solid ${
-                    isCurrent ? `${tier.color}55` : 'var(--bg-card2)'
-                  }`,
+                  background: isCurrent ? `${tier.color}10` : 'var(--bg-card2)',
+                  border: `1px solid ${isCurrent ? `${tier.color}55` : 'var(--bg-card2)'}`,
                 }}
               >
                 <button
@@ -147,9 +143,7 @@ export function RanksPanel({ points }: { points: number }) {
                     className="w-8 h-8 rounded-lg grid place-items-center shrink-0"
                     style={{
                       background: reached ? `${tier.color}1f` : 'var(--bg-card2)',
-                      border: `1px solid ${
-                        reached ? `${tier.color}55` : 'var(--bg-card2)'
-                      }`,
+                      border: `1px solid ${reached ? `${tier.color}55` : 'var(--bg-card2)'}`,
                     }}
                   >
                     {reached ? (
@@ -214,7 +208,6 @@ export function RanksPanel({ points }: { points: number }) {
           })}
         </ul>
       </div>
-
     </div>
   );
 }

@@ -20,15 +20,7 @@ const FADE = [0.22, 0.61, 0.36, 1] as const;
  * via the `.skeleton` utility class.
  */
 
-function Bar({
-  w,
-  h = '14px',
-  className = '',
-}: {
-  w: string;
-  h?: string;
-  className?: string;
-}) {
+function Bar({ w, h = '14px', className = '' }: { w: string; h?: string; className?: string }) {
   return <div className={`app-shimmer rounded ${className}`} style={{ width: w, height: h }} />;
 }
 
@@ -169,7 +161,10 @@ export function ListSkeleton({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: Math.min(i * 0.04, 0.3), duration: 0.22, ease: FADE }}
             className="flex items-center gap-3 p-3 rounded-lg"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}
+            style={{
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid rgba(255,255,255,0.04)',
+            }}
           >
             <div className="app-shimmer rounded-full" style={{ width: 32, height: 32 }} />
             <div style={{ flex: 1 }}>
@@ -184,20 +179,17 @@ export function ListSkeleton({
   );
 }
 
-export function ChatSkeleton({
-  crumbs,
-  title,
-}: {
-  crumbs: string[];
-  title: string;
-}) {
+export function ChatSkeleton({ crumbs, title }: { crumbs: string[]; title: string }) {
   return (
     <div className="mk-app-page">
       <PageHero crumbs={crumbs} title={title} />
       <div className="grid gap-3 mt-4" style={{ gridTemplateColumns: '260px 1fr', minHeight: 480 }}>
         <div
           className="space-y-2 p-3 rounded-lg"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}
+          style={{
+            background: 'rgba(255,255,255,0.02)',
+            border: '1px solid rgba(255,255,255,0.04)',
+          }}
         >
           {Array.from({ length: 7 }).map((_, i) => (
             <div key={i} className="flex items-center gap-2 p-2 rounded">
@@ -211,7 +203,10 @@ export function ChatSkeleton({
         </div>
         <div
           className="p-4 rounded-lg flex flex-col gap-3"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}
+          style={{
+            background: 'rgba(255,255,255,0.02)',
+            border: '1px solid rgba(255,255,255,0.04)',
+          }}
         >
           {Array.from({ length: 6 }).map((_, i) => (
             <motion.div

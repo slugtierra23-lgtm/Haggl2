@@ -129,8 +129,7 @@ export function SearchFilter({
               transition={{ duration: 0.15 }}
               className="absolute top-full left-0 right-0 mt-1.5 rounded-xl overflow-hidden z-50"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow:
                   '0 0 0 1px rgba(20, 241, 149, 0.2), inset 0 1px 0 rgba(255,255,255,0.04), 0 16px 40px -10px rgba(0,0,0,0.5)',
                 backdropFilter: 'blur(8px)',
@@ -192,8 +191,7 @@ export function SearchFilter({
                             'inset 0 0 0 1px rgba(20, 241, 149, 0.4), 0 0 14px -4px rgba(20, 241, 149, 0.45)',
                         }
                       : {
-                          background:
-                            'var(--bg-card)',
+                          background: 'var(--bg-card)',
                           boxShadow:
                             '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                         }

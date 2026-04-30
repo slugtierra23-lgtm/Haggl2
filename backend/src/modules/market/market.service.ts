@@ -225,9 +225,7 @@ Respond with ONLY a JSON object: {"safe": true|false, "reason": "one sentence ex
     // anything genuinely bad.
     const apiKey = this.config.get<string>('ANTHROPIC_API_KEY') || '';
     if (!apiKey) {
-      this.logger.warn(
-        'ANTHROPIC_API_KEY missing — publishing listing without content scan',
-      );
+      this.logger.warn('ANTHROPIC_API_KEY missing — publishing listing without content scan');
       return { safe: true, reason: 'Scan skipped (scanner not configured)', scanned: false };
     }
 
@@ -421,7 +419,8 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       : null;
     if (cacheKey) {
       const hit = await this.redis.get(cacheKey).catch(() => null);
-      if (hit) return JSON.parse(hit) as { data: object[]; total: number; page: number; pages: number };
+      if (hit)
+        return JSON.parse(hit) as { data: object[]; total: number; page: number; pages: number };
     }
 
     const where: Record<string, unknown> = { status: 'ACTIVE' };
@@ -461,10 +460,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         type: 'AI_AGENT',
         agentXConnection: {
           is: {
-            OR: [
-              { accessTokenEnc: { not: null } },
-              { oauth1AccessTokenEnc: { not: null } },
-            ],
+            OR: [{ accessTokenEnc: { not: null } }, { oauth1AccessTokenEnc: { not: null } }],
           },
         },
       },
@@ -811,7 +807,10 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     let byId: Map<string, { _avg: { rating: number | null }; _count: { _all: number } }>;
     if (cached) {
       byId = new Map(
-        JSON.parse(cached) as [string, { _avg: { rating: number | null }; _count: { _all: number } }][],
+        JSON.parse(cached) as [
+          string,
+          { _avg: { rating: number | null }; _count: { _all: number } },
+        ][],
       );
     } else {
       const stats = await this.prisma.marketReview.groupBy({
@@ -1268,112 +1267,107 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
    * see "+75 rays" next to the sale that triggered them.
    */
   async getMyInventory(userId: string) {
-    const [
-      publishedRepos,
-      publishedListings,
-      repoPurchases,
-      marketPurchases,
-      reputationEvents,
-    ] = await Promise.all([
-      this.prisma.repository.findMany({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-        take: 200,
-        select: {
-          id: true,
-          name: true,
-          fullName: true,
-          description: true,
-          language: true,
-          stars: true,
-          forks: true,
-          downloadCount: true,
-          githubUrl: true,
-          topics: true,
-          logoUrl: true,
-          isPrivate: true,
-          isLocked: true,
-          lockedPriceUsd: true,
-          createdAt: true,
-        },
-      }),
-      this.prisma.marketListing.findMany({
-        where: { sellerId: userId, status: { not: 'REMOVED' } },
-        orderBy: { createdAt: 'desc' },
-        take: 200,
-        select: {
-          id: true,
-          title: true,
-          type: true,
-          price: true,
-          currency: true,
-          tags: true,
-          status: true,
-          createdAt: true,
-        },
-      }),
-      this.prisma.repoPurchase.findMany({
-        where: { buyerId: userId },
-        orderBy: { createdAt: 'desc' },
-        take: 200,
-        include: {
-          repository: {
-            select: {
-              id: true,
-              name: true,
-              fullName: true,
-              githubUrl: true,
-              logoUrl: true,
-              user: {
-                select: {
-                  id: true,
-                  username: true,
-                  displayName: true,
-                  avatarUrl: true,
+    const [publishedRepos, publishedListings, repoPurchases, marketPurchases, reputationEvents] =
+      await Promise.all([
+        this.prisma.repository.findMany({
+          where: { userId },
+          orderBy: { createdAt: 'desc' },
+          take: 200,
+          select: {
+            id: true,
+            name: true,
+            fullName: true,
+            description: true,
+            language: true,
+            stars: true,
+            forks: true,
+            downloadCount: true,
+            githubUrl: true,
+            topics: true,
+            logoUrl: true,
+            isPrivate: true,
+            isLocked: true,
+            lockedPriceUsd: true,
+            createdAt: true,
+          },
+        }),
+        this.prisma.marketListing.findMany({
+          where: { sellerId: userId, status: { not: 'REMOVED' } },
+          orderBy: { createdAt: 'desc' },
+          take: 200,
+          select: {
+            id: true,
+            title: true,
+            type: true,
+            price: true,
+            currency: true,
+            tags: true,
+            status: true,
+            createdAt: true,
+          },
+        }),
+        this.prisma.repoPurchase.findMany({
+          where: { buyerId: userId },
+          orderBy: { createdAt: 'desc' },
+          take: 200,
+          include: {
+            repository: {
+              select: {
+                id: true,
+                name: true,
+                fullName: true,
+                githubUrl: true,
+                logoUrl: true,
+                user: {
+                  select: {
+                    id: true,
+                    username: true,
+                    displayName: true,
+                    avatarUrl: true,
+                  },
                 },
               },
             },
           },
-        },
-      }),
-      this.prisma.marketPurchase.findMany({
-        where: { buyerId: userId },
-        orderBy: { createdAt: 'desc' },
-        take: 200,
-        include: {
-          listing: {
-            select: {
-              id: true,
-              title: true,
-              type: true,
-              price: true,
-              currency: true,
+        }),
+        this.prisma.marketPurchase.findMany({
+          where: { buyerId: userId },
+          orderBy: { createdAt: 'desc' },
+          take: 200,
+          include: {
+            listing: {
+              select: {
+                id: true,
+                title: true,
+                type: true,
+                price: true,
+                currency: true,
+              },
+            },
+            seller: {
+              select: {
+                id: true,
+                username: true,
+                displayName: true,
+                avatarUrl: true,
+              },
             },
           },
-          seller: {
-            select: {
-              id: true,
-              username: true,
-              displayName: true,
-              avatarUrl: true,
-            },
+        }),
+        this.prisma.reputationEvent.findMany({
+          where: { userId },
+          orderBy: { createdAt: 'desc' },
+          take: 500,
+          select: {
+            id: true,
+            createdAt: true,
+            points: true,
+            reason: true,
+            resourceId: true,
+            note: true,
           },
-        },
-      }),
-      this.prisma.reputationEvent.findMany({
-        where: { userId },
-        orderBy: { createdAt: 'desc' },
-        take: 500,
-        select: {
-          id: true,
-          createdAt: true,
-          points: true,
-          reason: true,
-          resourceId: true,
-          note: true,
-        },
-      }),
-    ]);
+        }),
+      ]);
 
     // Map rays → resourceId so each published item / sold item can show
     // the rays it generated.
@@ -1977,7 +1971,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       .create({
         userId: listing.sellerId,
         type: 'MARKET_NEW_SALE',
-        title: `Your free listing was claimed`,
+        title: 'Your free listing was claimed',
         url: `/market/agents/${listingId}`,
         meta: { listingId, purchaseId: purchase.id },
       })
@@ -2322,9 +2316,10 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         const buyerRec = parties.find((p) => p.id === buyerId);
         const sellerRec = parties.find((p) => p.id === listing.sellerId);
         const eth = verifiedAmountWei ? Number(verifiedAmountWei) / 1e18 : 0;
-        const amountLabel = Number.isFinite(eth) && eth > 0
-          ? `${eth.toFixed(6).replace(/0+$/, '').replace(/\.$/, '')} ${listing.currency || 'ETH'}`
-          : `${listing.price} ${listing.currency || 'ETH'}`;
+        const amountLabel =
+          Number.isFinite(eth) && eth > 0
+            ? `${eth.toFixed(6).replace(/0+$/, '').replace(/\.$/, '')} ${listing.currency || 'ETH'}`
+            : `${listing.price} ${listing.currency || 'ETH'}`;
         const payload = {
           buyerUsername: buyerRec?.username || 'buyer',
           sellerUsername: sellerRec?.username || 'seller',

@@ -15,10 +15,10 @@ import {
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
 import { api, API_URL, WS_URL } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { io, Socket } from '@/lib/realtime/io';
 
 const API = API_URL;
 

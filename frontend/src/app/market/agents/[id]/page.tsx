@@ -13,8 +13,6 @@ import {
   Heart,
   Loader2,
   LucideIcon,
-  Lock,
-  MessageSquare,
   Package,
   ShoppingBag,
   Play,
@@ -504,7 +502,10 @@ export default function AgentDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--bg)' }}
+      >
         <div className="w-5 h-5 rounded-full border-2 border-zinc-800 border-t-atlas-500 animate-spin" />
       </div>
     );
@@ -1343,8 +1344,7 @@ function PricingCard({
       <div
         className="absolute inset-x-0 top-0 h-px"
         style={{
-          background:
-            'linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)',
           opacity: 0.55,
         }}
       />
@@ -1364,9 +1364,7 @@ function PricingCard({
         </div>
       )}
       {listing.minPrice !== null && listing.minPrice !== undefined && listing.minPrice > 0 && (
-        <p className="text-xs text-[var(--text-muted)] mt-1.5">
-          Floor · {listing.minPrice} SOL
-        </p>
+        <p className="text-xs text-[var(--text-muted)] mt-1.5">Floor · {listing.minPrice} SOL</p>
       )}
       {isOwner ? (
         <>

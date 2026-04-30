@@ -49,7 +49,7 @@ export interface AtlasListingCardProps {
 const formatPrice = (n: number | null, _ccy = 'SOL') => {
   if (n == null) return '—';
   if (n === 0) return 'Free';
-  if (n < 0.01) return `<0.01 SOL`;
+  if (n < 0.01) return '<0.01 SOL';
   if (n < 1) return `${n.toFixed(3)} SOL`;
   return `${n.toFixed(2)} SOL`;
 };
@@ -83,9 +83,7 @@ export function AtlasListingCard({
 }: AtlasListingCardProps) {
   const isFree = price === 0;
   const usdEquivalent =
-    price != null && price > 0 && solUsdRate != null && solUsdRate > 0
-      ? price * solUsdRate
-      : null;
+    price != null && price > 0 && solUsdRate != null && solUsdRate > 0 ? price * solUsdRate : null;
 
   return (
     <div
@@ -169,9 +167,7 @@ export function AtlasListingCard({
       <Link href={href} className="flex flex-col flex-1 p-5 relative z-10">
         <div className="flex items-start gap-4 mb-4">
           {/* Cover / avatar — larger, with brand glow on hover */}
-          <div
-            className="relative h-14 w-14 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--bg-card2)] grid place-items-center"
-          >
+          <div className="relative h-14 w-14 shrink-0 rounded-lg overflow-hidden border border-[var(--border)] bg-[var(--bg-card2)] grid place-items-center">
             {cover ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={cover} alt={title} className="h-full w-full object-cover" />
@@ -220,7 +216,6 @@ export function AtlasListingCard({
             className="shrink-0 w-4 h-4 text-[var(--text-muted)] opacity-0 group-hover:opacity-100 transition-opacity duration-150"
             strokeWidth={2}
           />
-
         </div>
 
         {tags.length > 0 && (
@@ -266,9 +261,7 @@ export function AtlasListingCard({
             <span
               className={cn(
                 'font-mono text-[15px] font-medium tabular-nums tracking-tight',
-                isFree
-                  ? 'text-[var(--brand)]'
-                  : 'text-[var(--text)]',
+                isFree ? 'text-[var(--brand)]' : 'text-[var(--text)]',
               )}
             >
               {formatPrice(price, currency)}

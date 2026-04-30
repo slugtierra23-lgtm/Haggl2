@@ -93,7 +93,12 @@ export class OpenAiAdapter implements IProtocolAdapter {
         return { healthy: false, latencyMs, status: res.status, reason: 'auth_failed' };
       }
       if (res.status === 404) {
-        return { healthy: false, latencyMs, status: res.status, reason: 'endpoint_or_model_missing' };
+        return {
+          healthy: false,
+          latencyMs,
+          status: res.status,
+          reason: 'endpoint_or_model_missing',
+        };
       }
       if (res.status >= 400) {
         const detail =
@@ -118,10 +123,7 @@ export class OpenAiAdapter implements IProtocolAdapter {
     }
   }
 
-  async invoke(
-    config: AgentEndpointConfig,
-    input: AgentInvokeInput,
-  ): Promise<AgentInvokeOutput> {
+  async invoke(config: AgentEndpointConfig, input: AgentInvokeInput): Promise<AgentInvokeOutput> {
     const reason = this.validateConfig(config);
     if (reason) return { reply: '', latencyMs: 0, raw: { error: reason } };
     const safe = await isSafeUrlResolving(config.endpoint);

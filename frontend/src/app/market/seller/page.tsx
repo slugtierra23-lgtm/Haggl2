@@ -160,7 +160,10 @@ export default function SellerDashboardPage() {
 
   if (isLoading || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen" style={{ background: 'var(--bg)' }}>
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{ background: 'var(--bg)' }}
+      >
         <motion.div
           className="w-5 h-5 rounded-full border-2 border-zinc-800 border-t-atlas-500"
           animate={{ rotate: 360 }}
@@ -290,8 +293,7 @@ export default function SellerDashboardPage() {
             <section
               className="relative p-6 rounded-xl overflow-hidden"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow:
                   '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 36px -20px rgba(0,0,0,0.55)',
               }}
@@ -374,8 +376,7 @@ export default function SellerDashboardPage() {
               <section
                 className="relative rounded-xl overflow-hidden"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 36px -20px rgba(0,0,0,0.55)',
                 }}
@@ -409,8 +410,7 @@ export default function SellerDashboardPage() {
                     <div
                       className="inline-flex items-center p-0.5 rounded-lg"
                       style={{
-                        background:
-                          'var(--bg-card)',
+                        background: 'var(--bg-card)',
                         boxShadow:
                           '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                       }}
@@ -457,8 +457,7 @@ export default function SellerDashboardPage() {
                         onClick={() => downloadListingsCsv(sortedListings)}
                         className="inline-flex items-center gap-1.5 text-[11px] text-zinc-400 hover:text-white transition-colors px-2.5 h-7 rounded-md"
                         style={{
-                          background:
-                            'var(--bg-card)',
+                          background: 'var(--bg-card)',
                           boxShadow:
                             '0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.03)',
                         }}
@@ -484,8 +483,7 @@ export default function SellerDashboardPage() {
                         placeholder="Filter listings by title, type, or status"
                         className="w-full rounded-lg pl-9 pr-16 py-2 text-[12px] text-white placeholder-zinc-600 focus:outline-none transition-all focus:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)]"
                         style={{
-                          background:
-                            'var(--bg-card)',
+                          background: 'var(--bg-card)',
                           boxShadow:
                             '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                         }}
@@ -626,8 +624,7 @@ export default function SellerDashboardPage() {
               <section
                 className="relative rounded-xl overflow-hidden"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 36px -20px rgba(0,0,0,0.55)',
                 }}

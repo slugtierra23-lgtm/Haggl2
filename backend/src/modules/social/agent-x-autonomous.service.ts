@@ -1,9 +1,16 @@
-import { BadRequestException, ForbiddenException, HttpException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import axios from 'axios';
 
-import { signRequest } from '../agents/agents-hmac.util';
 import { PrismaService } from '../../common/prisma/prisma.service';
+import { signRequest } from '../agents/agents-hmac.util';
 
 import { AgentXService } from './agent-x.service';
 
@@ -88,8 +95,12 @@ export class AgentXAutonomousService {
     await this.prisma.agentXConnection.update({
       where: { listingId },
       data: {
-        ...(patch.autonomousEnabled !== undefined && { autonomousEnabled: patch.autonomousEnabled }),
-        ...(patch.postIntervalHours !== undefined && { postIntervalHours: patch.postIntervalHours }),
+        ...(patch.autonomousEnabled !== undefined && {
+          autonomousEnabled: patch.autonomousEnabled,
+        }),
+        ...(patch.postIntervalHours !== undefined && {
+          postIntervalHours: patch.postIntervalHours,
+        }),
         ...(patch.requireApproval !== undefined && { requireApproval: patch.requireApproval }),
         ...(patch.mentionsEnabled !== undefined && { mentionsEnabled: patch.mentionsEnabled }),
       },
@@ -113,7 +124,10 @@ export class AgentXAutonomousService {
     return conn;
   }
 
-  async listQueue(listingId: string, status?: 'PENDING_APPROVAL' | 'POSTED' | 'FAILED' | 'REJECTED') {
+  async listQueue(
+    listingId: string,
+    status?: 'PENDING_APPROVAL' | 'POSTED' | 'FAILED' | 'REJECTED',
+  ) {
     return this.prisma.agentXScheduledPost.findMany({
       where: { listingId, ...(status && { status }) },
       orderBy: { createdAt: 'desc' },
@@ -146,7 +160,9 @@ export class AgentXAutonomousService {
   /** Manual "decide now" — bypasses the cron and asks the agent
    *  immediately. Useful for the seller to test the webhook + see what
    *  the agent currently thinks without waiting up to N hours. */
-  async decideNow(listingId: string): Promise<{ queued: boolean; postId?: string; reason?: string }> {
+  async decideNow(
+    listingId: string,
+  ): Promise<{ queued: boolean; postId?: string; reason?: string }> {
     const conn = await this.requireActiveConnection(listingId);
     const decision = await this.askAgentToTweet(conn);
     if (!decision.shouldTweet || !decision.text) {
@@ -253,14 +269,13 @@ export class AgentXAutonomousService {
 
     let res;
     try {
-      res = await axios.get<{ data?: Array<{ id: string; text: string; author_id?: string; created_at?: string }> }>(
-        fullUrl,
-        {
-          headers: { Authorization: authHeader },
-          timeout: AgentXAutonomousService.WEBHOOK_TIMEOUT_MS,
-          validateStatus: () => true,
-        },
-      );
+      res = await axios.get<{
+        data?: Array<{ id: string; text: string; author_id?: string; created_at?: string }>;
+      }>(fullUrl, {
+        headers: { Authorization: authHeader },
+        timeout: AgentXAutonomousService.WEBHOOK_TIMEOUT_MS,
+        validateStatus: () => true,
+      });
     } catch (err) {
       throw new Error(`X mentions fetch failed: ${(err as Error).message}`);
     }
@@ -298,9 +313,10 @@ export class AgentXAutonomousService {
 
   // ─── Webhook calls to the listing's agent endpoint ────────────────
 
-  private async askAgentToTweet(
-    conn: { listingId: string; screenName: string | null },
-  ): Promise<{ shouldTweet: boolean; text?: string; reason?: string; context?: unknown }> {
+  private async askAgentToTweet(conn: {
+    listingId: string;
+    screenName: string | null;
+  }): Promise<{ shouldTweet: boolean; text?: string; reason?: string; context?: unknown }> {
     const listing = await this.prisma.marketListing.findUnique({
       where: { id: conn.listingId },
       select: { agentEndpoint: true, title: true, agentProtocol: true },
@@ -362,11 +378,15 @@ export class AgentXAutonomousService {
 
     let res;
     try {
-      res = await axios.post<{ shouldTweet?: boolean; text?: string; reason?: string }>(endpoint, raw, {
-        headers,
-        timeout: AgentXAutonomousService.WEBHOOK_TIMEOUT_MS,
-        validateStatus: () => true,
-      });
+      res = await axios.post<{ shouldTweet?: boolean; text?: string; reason?: string }>(
+        endpoint,
+        raw,
+        {
+          headers,
+          timeout: AgentXAutonomousService.WEBHOOK_TIMEOUT_MS,
+          validateStatus: () => true,
+        },
+      );
     } catch (err) {
       this.logger.warn(`agent webhook unreachable: ${(err as Error).message}`);
       return { shouldTweet: false, reason: 'agent webhook unreachable' };

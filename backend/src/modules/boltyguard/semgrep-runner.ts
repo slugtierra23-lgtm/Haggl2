@@ -8,8 +8,7 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import type { Finding, Severity } from './boltyguard.service';
 
-const RULES_DIR =
-  process.env.BOLTYGUARD_RULES_DIR ?? path.join(process.cwd(), 'boltyguard-rules');
+const RULES_DIR = process.env.BOLTYGUARD_RULES_DIR ?? path.join(process.cwd(), 'boltyguard-rules');
 const SEMGREP_TIMEOUT_MS = 30_000;
 
 interface SemgrepResult {
@@ -96,15 +95,7 @@ export class SemgrepRunner {
       // --metrics=off to skip the telemetry call (slow on cold runs).
       const proc = spawn(
         'semgrep',
-        [
-          '--json',
-          '--quiet',
-          '--metrics=off',
-          '--timeout=15',
-          '--config',
-          RULES_DIR,
-          target,
-        ],
+        ['--json', '--quiet', '--metrics=off', '--timeout=15', '--config', RULES_DIR, target],
         { stdio: ['ignore', 'pipe', 'pipe'] },
       );
 
@@ -150,11 +141,7 @@ function inferExtension(fileName: string): string {
   if (!m) return '.txt';
   const ext = m[1].toLowerCase();
   // Whitelist — anything else degrades to .txt and Semgrep's generic rules.
-  if (
-    ['ts', 'tsx', 'js', 'jsx', 'mjs', 'cjs', 'py', 'go', 'rb', 'rs', 'java'].includes(
-      ext,
-    )
-  ) {
+  if (['ts', 'tsx', 'js', 'jsx', 'mjs', 'cjs', 'py', 'go', 'rb', 'rs', 'java'].includes(ext)) {
     return `.${ext}`;
   }
   return '.txt';

@@ -177,8 +177,7 @@ export const APIKeysSection: React.FC<APIKeysSectionProps> = ({
               whileHover={{ y: -2 }}
               className="relative p-4 rounded-xl overflow-hidden transition-all hover:brightness-110"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
               }}
             >
@@ -420,8 +419,7 @@ export const APIKeysSection: React.FC<APIKeysSectionProps> = ({
               onClick={(e) => e.stopPropagation()}
               className="relative rounded-xl p-6 max-w-md w-full overflow-hidden"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow:
                   '0 0 0 1px rgba(20, 241, 149, 0.2), inset 0 1px 0 var(--bg-card2), 0 20px 60px -10px rgba(0,0,0,0.5)',
               }}
@@ -506,8 +504,7 @@ export const APIKeysSection: React.FC<APIKeysSectionProps> = ({
                   style={{
                     background:
                       'linear-gradient(180deg, rgba(40,40,48,0.7) 0%, var(--bg-card) 100%)',
-                    boxShadow:
-                      'inset 0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
+                    boxShadow: 'inset 0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
                   }}
                 >
                   Cancel
@@ -537,8 +534,7 @@ export const APIKeysSection: React.FC<APIKeysSectionProps> = ({
               transition={{ type: 'spring', stiffness: 320, damping: 26 }}
               className="relative rounded-xl p-6 max-w-lg w-full overflow-hidden"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow:
                   '0 0 0 1px rgba(20, 241, 149, 0.25), inset 0 1px 0 var(--bg-card2), 0 20px 60px -10px rgba(0,0,0,0.6)',
               }}
@@ -632,8 +628,7 @@ export const APIKeysSection: React.FC<APIKeysSectionProps> = ({
                 transition={{ type: 'spring', stiffness: 360, damping: 22 }}
                 className="w-full px-4 py-2.5 text-zinc-300 rounded-lg font-light text-[13px] tracking-[0.005em] transition-all hover:brightness-110 hover:text-white"
                 style={{
-                  background:
-                    'linear-gradient(180deg, rgba(40,40,48,0.7) 0%, var(--bg-card) 100%)',
+                  background: 'linear-gradient(180deg, rgba(40,40,48,0.7) 0%, var(--bg-card) 100%)',
                   boxShadow: 'inset 0 0 0 1px var(--bg-card2)',
                 }}
               >

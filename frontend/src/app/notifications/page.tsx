@@ -19,7 +19,6 @@ import Link from 'next/link';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useKeyboardFocus } from '@/lib/hooks/useKeyboardFocus';
-import { cn } from '@/lib/utils';
 import {
   fetchNotifications,
   markAllNotificationsRead,
@@ -27,6 +26,7 @@ import {
   type NotificationItem,
   type NotificationType,
 } from '@/lib/hooks/useNotifications';
+import { cn } from '@/lib/utils';
 
 const TYPE_META: Record<NotificationType, { icon: LucideIcon; color: string; label: string }> = {
   MARKET_NEW_SALE: { icon: DollarSign, color: '#22c55e', label: 'Sale' },
@@ -168,8 +168,7 @@ export default function NotificationsPage() {
                 onClick={handleMarkAll}
                 className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg text-[12px] text-zinc-300 hover:text-white transition"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.03)',
                 }}

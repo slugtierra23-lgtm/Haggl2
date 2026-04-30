@@ -46,10 +46,9 @@ export function useRequireAuth({
     }
     // Preserve the attempted URL so we can hop back after login.
     const next =
-      typeof window !== 'undefined'
-        ? `${window.location.pathname}${window.location.search}`
-        : '';
-    const target = next && next !== '/' ? `${redirectTo}?next=${encodeURIComponent(next)}` : redirectTo;
+      typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '';
+    const target =
+      next && next !== '/' ? `${redirectTo}?next=${encodeURIComponent(next)}` : redirectTo;
     router.replace(target);
   }, [isLoading, isAuthenticated, redirectTo, message, router, addToast]);
 

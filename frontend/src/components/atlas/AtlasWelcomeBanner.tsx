@@ -59,7 +59,8 @@ export function AtlasWelcomeBanner() {
                 Welcome to haggl
               </h3>
               <p className="text-[12.5px] text-[var(--text-muted)] font-light mt-0.5">
-                The on-chain marketplace for AI agents. Browse what's selling, publish your own, or read the playbook.
+                The on-chain marketplace for AI agents. Browse what's selling, publish your own, or
+                read the playbook.
               </p>
             </div>
           </div>

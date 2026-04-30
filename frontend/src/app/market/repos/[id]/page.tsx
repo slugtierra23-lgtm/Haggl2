@@ -418,7 +418,10 @@ export default function RepoDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--bg)' }}
+      >
         <div className="w-5 h-5 rounded-full border-2 border-zinc-800 border-t-atlas-500 animate-spin" />
       </div>
     );

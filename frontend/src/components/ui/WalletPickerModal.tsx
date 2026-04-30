@@ -136,7 +136,10 @@ export function WalletPickerModal({
             })}
           </div>
 
-          <div className="px-5 py-4 border-t flex justify-end" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <div
+            className="px-5 py-4 border-t flex justify-end"
+            style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+          >
             <button
               onClick={onCancel}
               className="px-4 py-2 text-xs text-zinc-400 rounded-lg border border-zinc-800 hover:border-zinc-600 hover:text-zinc-200 transition-colors"

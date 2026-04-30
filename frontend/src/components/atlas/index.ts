@@ -21,17 +21,8 @@ export { AtlasEmpty } from './AtlasEmpty';
 export { AtlasFilterBar } from './AtlasFilterBar';
 export { AtlasBadge } from './AtlasBadge';
 export { AtlasButton } from './AtlasButton';
-export {
-  DotPattern,
-  AmbientGlow,
-  WordReveal,
-  BorderBeam,
-} from './AtlasBackgrounds';
-export {
-  AtlasSkeleton,
-  AtlasListingCardSkeleton,
-  AtlasTableRowSkeleton,
-} from './AtlasSkeleton';
+export { DotPattern, AmbientGlow, WordReveal, BorderBeam } from './AtlasBackgrounds';
+export { AtlasSkeleton, AtlasListingCardSkeleton, AtlasTableRowSkeleton } from './AtlasSkeleton';
 export { AtlasWelcomeBanner } from './AtlasWelcomeBanner';
 export { AtlasFilterChips } from './AtlasFilterChips';
 export type { AtlasChipOption } from './AtlasFilterChips';

@@ -22,7 +22,6 @@ import {
   CheckCircle2,
   Copy,
   Check,
-  Shield,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -31,7 +30,6 @@ import React, { Suspense, useState, useEffect, useCallback, useRef } from 'react
 import { ActionSearchBar, Action } from '@/components/ui/action-search-bar';
 import { Badge } from '@/components/ui/badge';
 import { PaymentConsentModal, type PaymentMethod } from '@/components/ui/payment-consent-modal';
-import { ShimmerButton } from '@/components/ui/ShimmerButton';
 import { api, ApiError, API_URL } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { getCachedWithStatus, setCached } from '@/lib/cache/pageCache';
@@ -1522,7 +1520,8 @@ function ReposMarketPageContent() {
               Repos
             </h1>
             <p className="mt-2 text-[14px] text-[var(--text-secondary)] leading-relaxed max-w-2xl">
-              Open-source code repositories. Vote, download, or publish your own with built-in escrow.
+              Open-source code repositories. Vote, download, or publish your own with built-in
+              escrow.
             </p>
           </div>
           {isAuthenticated && (

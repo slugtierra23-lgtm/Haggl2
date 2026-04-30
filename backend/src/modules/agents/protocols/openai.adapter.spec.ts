@@ -32,7 +32,9 @@ describe('OpenAiAdapter', () => {
       expect(adapter.validateConfig({ endpoint: 'not a url', model: 'x' })).toMatch(/valid URL/);
     });
     it('rejects missing model', () => {
-      expect(adapter.validateConfig({ endpoint: 'https://x.com/v1/chat/completions' })).toMatch(/Model id/);
+      expect(adapter.validateConfig({ endpoint: 'https://x.com/v1/chat/completions' })).toMatch(
+        /Model id/,
+      );
     });
     it('rejects model id over 80 chars', () => {
       expect(

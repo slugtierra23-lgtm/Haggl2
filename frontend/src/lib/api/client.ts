@@ -179,11 +179,7 @@ class ApiClient {
       // Reject without ever hitting the network so retries / refresh-on-401
       // redirects can't fire. Pages with a try/catch get a clean failure;
       // pages that swallow errors get an empty render.
-      throw new ApiError(
-        'Demo mode — backend offline.',
-        0,
-        'DEMO_OFFLINE',
-      );
+      throw new ApiError('Demo mode — backend offline.', 0, 'DEMO_OFFLINE');
     }
     // Drive the shared top-bar progress indicator for anything that looks
     // user-facing. Silent background polls (unread counts, notifications)

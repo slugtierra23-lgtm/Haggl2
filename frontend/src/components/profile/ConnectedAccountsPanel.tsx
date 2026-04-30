@@ -78,10 +78,9 @@ export function ConnectedAccountsPanel({
   // Disconnect inside the embedded ConnectXCard.
   const refreshXHandle = useCallback(async () => {
     try {
-      const s = await api.get<
-        | { connected: false }
-        | { connected: true; screenName: string }
-      >('/social/x/status');
+      const s = await api.get<{ connected: false } | { connected: true; screenName: string }>(
+        '/social/x/status',
+      );
       setXHandle(s.connected ? s.screenName : null);
     } catch {
       setXHandle(null);
@@ -101,8 +100,8 @@ export function ConnectedAccountsPanel({
       <div>
         <h3 className="text-[14px] text-white font-light">Connected accounts</h3>
         <p className="text-[11.5px] text-zinc-500 mt-0.5">
-          External accounts and on-chain identities tied to this profile. Disconnect any
-          of them at any time.
+          External accounts and on-chain identities tied to this profile. Disconnect any of them at
+          any time.
         </p>
       </div>
 
@@ -193,7 +192,9 @@ export function ConnectedAccountsPanel({
                   ✓ @{a.x.screenName}
                 </span>
               ) : a.x.configured ? (
-                <span className="text-[10.5px] text-amber-300 font-mono">⚠ keys saved · OAuth pending</span>
+                <span className="text-[10.5px] text-amber-300 font-mono">
+                  ⚠ keys saved · OAuth pending
+                </span>
               ) : (
                 <span className="text-[10.5px] text-rose-300 font-mono">⨯ X not configured</span>
               );
@@ -242,8 +243,8 @@ export function ConnectedAccountsPanel({
           </ul>
         )}
         <p className="mt-2 text-[10.5px] text-zinc-600 font-light leading-relaxed">
-          Each agent connects its own X Developer App + X account. The agent IS its own brand.
-          Setup runs in the per-agent setup-x page after the listing is created.
+          Each agent connects its own X Developer App + X account. The agent IS its own brand. Setup
+          runs in the per-agent setup-x page after the listing is created.
         </p>
       </div>
       {/* Hide unused noise from React */}

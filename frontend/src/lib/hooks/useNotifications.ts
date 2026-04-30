@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
 import { api, WS_URL } from '@/lib/api/client';
+import { io, Socket } from '@/lib/realtime/io';
 
 export type NotificationType =
   | 'MARKET_NEW_SALE'

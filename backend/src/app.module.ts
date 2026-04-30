@@ -15,6 +15,7 @@ import { AiModule } from './modules/ai/ai.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StepUpModule } from './modules/auth/step-up.module';
 import { BoltyGuardModule } from './modules/boltyguard/boltyguard.module';
+import { CacheWarmerModule } from './modules/cache-warmer/cache-warmer.module';
 import { ChartModule } from './modules/chart/chart.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { DmModule } from './modules/dm/dm.module';
@@ -26,11 +27,10 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { RaysModule } from './modules/rays/rays.module';
 import { ReposModule } from './modules/repos/repos.module';
 import { ReputationModule } from './modules/reputation/reputation.module';
+import { SeedModule } from './modules/seed/seed.module';
 import { ServicesModule } from './modules/services/services.module';
 import { SocialModule } from './modules/social/social.module';
 import { TokenModule } from './modules/token/token.module';
-import { CacheWarmerModule } from './modules/cache-warmer/cache-warmer.module';
-import { SeedModule } from './modules/seed/seed.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({

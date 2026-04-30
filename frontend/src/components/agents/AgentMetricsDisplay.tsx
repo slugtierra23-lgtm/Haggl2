@@ -36,8 +36,7 @@ export const AgentMetricsDisplay: React.FC<AgentMetricsDisplayProps> = ({ metric
             key={i}
             className="relative p-4 rounded-xl overflow-hidden"
             style={{
-              background:
-                'var(--bg-card)',
+              background: 'var(--bg-card)',
               boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
             }}
           >
@@ -146,8 +145,7 @@ export const AgentMetricsDisplay: React.FC<AgentMetricsDisplayProps> = ({ metric
             whileHover={{ y: -2 }}
             className="relative p-4 rounded-xl overflow-hidden transition-colors hover:brightness-110"
             style={{
-              background:
-                'var(--bg-card)',
+              background: 'var(--bg-card)',
               boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
             }}
           >

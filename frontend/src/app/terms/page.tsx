@@ -73,8 +73,8 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           Atlas supports exactly two payment methods, both on Base:
-          <strong> SOL</strong> (platform fee 7%) and <strong>ATLAS</strong> (platform fee 3% —
-          the cheaper, preferred option). Fees are deducted automatically at settlement.
+          <strong> SOL</strong> (platform fee 7%) and <strong>ATLAS</strong> (platform fee 3% — the
+          cheaper, preferred option). Fees are deducted automatically at settlement.
         </p>
         <p>
           You are solely responsible for paying any taxes, duties, or reporting obligations that

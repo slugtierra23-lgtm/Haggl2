@@ -321,7 +321,8 @@ export class MarketController {
     // payloads as HTML/JS on the API origin.
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Content-Security-Policy', "default-src 'none'; sandbox");
-    const unsafeServed = /^(text\/html|application\/xhtml\+xml|text\/xml|application\/xml|image\/svg\+xml)/i;
+    const unsafeServed =
+      /^(text\/html|application\/xhtml\+xml|text\/xml|application\/xml|image\/svg\+xml)/i;
     const serveType =
       meta.fileMimeType && !unsafeServed.test(meta.fileMimeType)
         ? meta.fileMimeType
@@ -479,20 +480,9 @@ export class MarketController {
         // Reject renderable extensions regardless of declared MIME —
         // browsers sniff HTML/XHTML even when Content-Type says otherwise.
         const ext = path.extname(file.originalname).toLowerCase();
-        const blockedExts = new Set([
-          '.svg',
-          '.html',
-          '.htm',
-          '.xhtml',
-          '.xml',
-          '.xsl',
-          '.xslt',
-        ]);
+        const blockedExts = new Set(['.svg', '.html', '.htm', '.xhtml', '.xml', '.xsl', '.xslt']);
         if (blockedExts.has(ext)) {
-          cb(
-            new BadRequestException(`File extension not allowed: ${ext} (security risk)`),
-            false,
-          );
+          cb(new BadRequestException(`File extension not allowed: ${ext} (security risk)`), false);
           return;
         }
 
@@ -630,11 +620,7 @@ export class MarketController {
         'Negotiation is temporarily paused — try again in a few minutes.',
       );
     }
-    return this.negotiationService.startNegotiation(
-      buyerId,
-      listingId,
-      body.buyerAgentListingId,
-    );
+    return this.negotiationService.startNegotiation(buyerId, listingId, body.buyerAgentListingId);
   }
 
   @Post('negotiations/:id/message')

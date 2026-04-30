@@ -1,7 +1,11 @@
-import { io as realIo, type Socket, type ManagerOptions, type SocketOptions } from 'socket.io-client';
+import {
+  io as realIo,
+  type Socket,
+  type ManagerOptions,
+  type SocketOptions,
+} from 'socket.io-client';
 
-const DEMO_MODE =
-  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DEMO_MODE === '1';
+const DEMO_MODE = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DEMO_MODE === '1';
 
 // Stub Socket that satisfies the surface used across the app: on/off/emit/
 // connect/disconnect, plus the boolean `connected` getter. All methods are

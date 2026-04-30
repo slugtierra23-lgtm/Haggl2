@@ -2,12 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import Anthropic from '@anthropic-ai/sdk';
-import {
-  Injectable,
-  Logger,
-  NotFoundException,
-  OnApplicationBootstrap,
-} from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ScanSeverity } from '@prisma/client';
 
@@ -133,7 +128,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
 
     this.logger.log(
       `[backfill] done. scanned=${scanned} failed=${failed}. ` +
-        `Unset BOLTYGUARD_BACKFILL_ON_BOOT in Render so it doesn't re-run.`,
+        "Unset BOLTYGUARD_BACKFILL_ON_BOOT in Render so it doesn't re-run.",
     );
   }
 
@@ -155,9 +150,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
     });
     if (!listing) throw new NotFoundException('listing not found');
 
-    const code = listing.fileKey
-      ? await this.readFile(listing.fileKey)
-      : null;
+    const code = listing.fileKey ? await this.readFile(listing.fileKey) : null;
 
     const report = code
       ? await this.scanCode(code, {
@@ -170,9 +163,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
       data: {
         listingId: listing.id,
         score: report.score,
-        worstSeverity: report.worstSeverity
-          ? PRISMA_SEVERITY[report.worstSeverity]
-          : null,
+        worstSeverity: report.worstSeverity ? PRISMA_SEVERITY[report.worstSeverity] : null,
         findings: report.findings as unknown as object,
         scanner: report.scanner,
         fileKey: listing.fileKey ?? null,
@@ -198,12 +189,10 @@ export class BoltyGuardService implements OnApplicationBootstrap {
     // Each pass is best-effort: a crash on one side doesn't lose the
     // other's findings.
     const [semgrepFindings, claudeFindings] = await Promise.all([
-      this.semgrep
-        .scan(trimmed, opts.fileName ?? 'snippet.txt')
-        .catch((err) => {
-          this.logger.warn(`semgrep failed: ${(err as Error).message}`);
-          return [] as Finding[];
-        }),
+      this.semgrep.scan(trimmed, opts.fileName ?? 'snippet.txt').catch((err) => {
+        this.logger.warn(`semgrep failed: ${(err as Error).message}`);
+        return [] as Finding[];
+      }),
       this.runClaudePass(trimmed, opts).catch((err) => {
         this.logger.error('Claude pass failed', err);
         return [] as Finding[];
@@ -353,8 +342,7 @@ function buildReport(findings: Finding[], scanner: string): ScanReport {
     findings.length === 0
       ? null
       : (findings.reduce<Severity>(
-          (worst, f) =>
-            SEVERITY_RANK[f.severity] > SEVERITY_RANK[worst] ? f.severity : worst,
+          (worst, f) => (SEVERITY_RANK[f.severity] > SEVERITY_RANK[worst] ? f.severity : worst),
           'INFO',
         ) as Severity);
   const summary = summarise(findings);

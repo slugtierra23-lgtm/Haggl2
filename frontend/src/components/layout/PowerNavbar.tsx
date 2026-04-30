@@ -108,7 +108,6 @@ export function PowerNavbar() {
     return () => document.removeEventListener('mousedown', onDocClick);
   }, [profileOpen]);
 
-
   return (
     <div className="sticky top-0 z-50">
       <header
@@ -195,18 +194,13 @@ export function PowerNavbar() {
             transition: 'border-color 140ms ease',
           }}
           onFocusCapture={(e) => {
-            (e.currentTarget as HTMLFormElement).style.borderColor =
-              'rgba(20, 241, 149, 0.55)';
+            (e.currentTarget as HTMLFormElement).style.borderColor = 'rgba(20, 241, 149, 0.55)';
           }}
           onBlurCapture={(e) => {
-            (e.currentTarget as HTMLFormElement).style.borderColor =
-              'var(--border)';
+            (e.currentTarget as HTMLFormElement).style.borderColor = 'var(--border)';
           }}
         >
-          <Search
-            className="w-[14px] h-[14px] shrink-0 text-[var(--text-muted)]"
-            strokeWidth={2}
-          />
+          <Search className="w-[14px] h-[14px] shrink-0 text-[var(--text-muted)]" strokeWidth={2} />
           <input
             name="q"
             type="search"
@@ -304,10 +298,7 @@ export function PowerNavbar() {
               {/* Uniform brand-green ring around the avatar — replaces
                   the previous bottom-right dot + inset shine that looked
                   uneven and noisy. */}
-              <span
-                className="block rounded-full"
-                style={{ boxShadow: '0 0 0 2px var(--brand)' }}
-              >
+              <span className="block rounded-full" style={{ boxShadow: '0 0 0 2px var(--brand)' }}>
                 <UserAvatar
                   src={user?.avatarUrl}
                   name={user?.displayName || user?.username}

@@ -46,11 +46,7 @@ export function DotPattern({
  * heroes; the resulting haze made the top of every page look lower-quality
  * than the rest. Kept as a no-op so existing call sites still typecheck.
  */
-export function AmbientGlow(_props: {
-  className?: string;
-  primary?: string;
-  secondary?: string;
-}) {
+export function AmbientGlow(_props: { className?: string; primary?: string; secondary?: string }) {
   return null;
 }
 

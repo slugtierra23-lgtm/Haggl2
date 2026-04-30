@@ -205,14 +205,8 @@ export function RainbowIcon({ className, size = 24 }: IconProps) {
         </linearGradient>
       </defs>
       <rect width="32" height="32" rx="8" fill="url(#rbBg)" />
-      <path
-        d="M6 26v-4a12 12 0 0 1 12 12h4a16 16 0 0 0-16-16v4Z"
-        fill="url(#rbArc1)"
-      />
-      <path
-        d="M6 20v-4a18 18 0 0 1 18 18h4a22 22 0 0 0-22-22v-4Z"
-        fill="url(#rbArc2)"
-      />
+      <path d="M6 26v-4a12 12 0 0 1 12 12h4a16 16 0 0 0-16-16v4Z" fill="url(#rbArc1)" />
+      <path d="M6 20v-4a18 18 0 0 1 18 18h4a22 22 0 0 0-22-22v-4Z" fill="url(#rbArc2)" />
       <circle cx="8" cy="24" r="2.5" fill="url(#rbArc3)" />
     </svg>
   );

@@ -74,9 +74,7 @@ export class NotificationsService {
     const count = await this.prisma.notification.count({
       where: { userId, readAt: null },
     });
-    await this.redis
-      .set(unreadKey(userId), String(count), UNREAD_CACHE_TTL)
-      .catch(() => void 0);
+    await this.redis.set(unreadKey(userId), String(count), UNREAD_CACHE_TTL).catch(() => void 0);
     return count;
   }
 

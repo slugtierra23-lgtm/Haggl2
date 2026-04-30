@@ -140,9 +140,7 @@ export class TokenService {
     });
 
     const stats: TokenStats = fresh ?? this.fallback();
-    await this.redis
-      .set(CACHE_KEY, JSON.stringify(stats), CACHE_TTL_SEC)
-      .catch(() => void 0);
+    await this.redis.set(CACHE_KEY, JSON.stringify(stats), CACHE_TTL_SEC).catch(() => void 0);
     return stats;
   }
 
@@ -166,9 +164,7 @@ export class TokenService {
     const priceUsd = p.priceUsd != null ? Number(p.priceUsd) : null;
     const priceNative = p.priceNative != null ? Number(p.priceNative) : null;
     const ethPriceUsd =
-      priceUsd != null && priceNative != null && priceNative > 0
-        ? priceUsd / priceNative
-        : null;
+      priceUsd != null && priceNative != null && priceNative > 0 ? priceUsd / priceNative : null;
 
     return {
       contract: BOLTY_CONTRACT,

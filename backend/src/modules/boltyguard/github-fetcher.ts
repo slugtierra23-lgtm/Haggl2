@@ -29,10 +29,7 @@ export class GithubFetcher {
   // the public scanner being usable and being throttled by 11am.
   static readonly CACHE_TTL_MS = 10 * 60 * 1000;
   static readonly MAX_CACHE_ENTRIES = 32;
-  private readonly cache = new Map<
-    string,
-    { buffer: Buffer; cachedAt: number }
-  >();
+  private readonly cache = new Map<string, { buffer: Buffer; cachedAt: number }>();
 
   /** Parse `owner/repo` or a full URL → { owner, repo, ref? }.
    *  Returns null if the input doesn't point at a github.com repo. */
@@ -81,11 +78,7 @@ export class GithubFetcher {
    *  MAX_DOWNLOAD_BYTES. Throws a useful error on every failure
    *  mode so the controller can surface it. Cached for 10min so a
    *  burst of scans on the same repo doesn't burn the API quota. */
-  async fetchZip(spec: {
-    owner: string;
-    repo: string;
-    ref?: string;
-  }): Promise<Buffer> {
+  async fetchZip(spec: { owner: string; repo: string; ref?: string }): Promise<Buffer> {
     const cacheKey = `${spec.owner}/${spec.repo}@${spec.ref ?? 'HEAD'}`;
     const hit = this.cache.get(cacheKey);
     if (hit && Date.now() - hit.cachedAt < GithubFetcher.CACHE_TTL_MS) {
@@ -99,10 +92,7 @@ export class GithubFetcher {
     const url = `https://api.github.com${path}`;
 
     const controller = new AbortController();
-    const timer = setTimeout(
-      () => controller.abort(),
-      GithubFetcher.DOWNLOAD_TIMEOUT_MS,
-    );
+    const timer = setTimeout(() => controller.abort(), GithubFetcher.DOWNLOAD_TIMEOUT_MS);
 
     try {
       const headers: Record<string, string> = {
@@ -143,16 +133,14 @@ export class GithubFetcher {
       if (!reader) throw new Error('GitHub returned an empty body');
       const chunks: Uint8Array[] = [];
       let total = 0;
-      while (true) {
+      for (;;) {
         const { value, done } = await reader.read();
         if (done) break;
         if (!value) continue;
         total += value.byteLength;
         if (total > GithubFetcher.MAX_DOWNLOAD_BYTES) {
           await reader.cancel().catch(() => void 0);
-          throw new Error(
-            `repo zipball exceeds ${GithubFetcher.MAX_DOWNLOAD_BYTES} bytes`,
-          );
+          throw new Error(`repo zipball exceeds ${GithubFetcher.MAX_DOWNLOAD_BYTES} bytes`);
         }
         chunks.push(value);
       }

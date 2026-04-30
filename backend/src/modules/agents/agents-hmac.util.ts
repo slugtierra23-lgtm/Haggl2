@@ -51,10 +51,7 @@ export function signRequest(
     throw new Error('AGENT_HMAC_SECRET is not configured');
   }
   const ts = Math.floor(nowMs / 1000).toString();
-  const sig = crypto
-    .createHmac('sha256', secret)
-    .update(`${ts}.${body}`)
-    .digest('hex');
+  const sig = crypto.createHmac('sha256', secret).update(`${ts}.${body}`).digest('hex');
   return {
     [SIGNATURE_HEADER]: `t=${ts},v1=${sig}`,
     'x-bolty-timestamp': ts,
@@ -91,10 +88,7 @@ export function verifyRequest(
   const skewSec = Math.abs(Math.floor(nowMs / 1000) - ts);
   if (skewSec > MAX_SKEW_SEC) return { valid: false, reason: 'expired' };
 
-  const expected = crypto
-    .createHmac('sha256', secret)
-    .update(`${ts}.${body}`)
-    .digest('hex');
+  const expected = crypto.createHmac('sha256', secret).update(`${ts}.${body}`).digest('hex');
 
   // Constant-time compare avoids leaking byte-by-byte mismatch info to
   // a timing-side-channel attacker.

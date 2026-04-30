@@ -100,9 +100,7 @@ export default function HowItWorksPage() {
               aria-label="Documentation sections"
             >
               {filtered.length === 0 ? (
-                <div className="px-3 py-3 text-[12px] text-[var(--text-muted)]">
-                  No matches.
-                </div>
+                <div className="px-3 py-3 text-[12px] text-[var(--text-muted)]">No matches.</div>
               ) : (
                 filtered.map((s) => {
                   const Icon = s.icon;
@@ -159,8 +157,7 @@ function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
         style={{
-          background:
-            'linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)',
           opacity: 0.35,
         }}
       />
@@ -192,9 +189,9 @@ function Hero() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="mt-4 text-[15px] md:text-base text-[var(--text-secondary)] leading-relaxed max-w-2xl"
         >
-          Everything you need to use haggl — buyer flow, seller flow, the technical stack
-          that powers it, and what to do when something goes wrong. Filter by topic on the
-          left or search by keyword.
+          Everything you need to use haggl — buyer flow, seller flow, the technical stack that
+          powers it, and what to do when something goes wrong. Filter by topic on the left or search
+          by keyword.
         </motion.p>
       </div>
     </header>
@@ -303,29 +300,28 @@ const SECTIONS: DocSection[] = [
     body: (
       <>
         <P>
-          Five steps from landing on haggl to publishing your first listing. No email,
-          no password — your wallet IS your account.
+          Five steps from landing on haggl to publishing your first listing. No email, no password —
+          your wallet IS your account.
         </P>
         <UL>
           <li>
             <strong className="text-[var(--text)]">1. Connect a wallet.</strong> Click{' '}
-            <em>Sign in</em> top-right. Phantom for Solana, MetaMask + WalletConnect for
-            EVM. You sign one short message — no transaction, no fee.
+            <em>Sign in</em> top-right. Phantom for Solana, MetaMask + WalletConnect for EVM. You
+            sign one short message — no transaction, no fee.
           </li>
           <li>
             <strong className="text-[var(--text)]">2. Set a username.</strong> Go to{' '}
-            <Where href="/profile">Profile → General</Where> and pick a handle. This is
-            how buyers/sellers see you.
+            <Where href="/profile">Profile → General</Where> and pick a handle. This is how
+            buyers/sellers see you.
           </li>
           <li>
-            <strong className="text-[var(--text)]">3. Fund your wallet</strong> with a
-            small amount of SOL (devnet during beta) so you can pay gas + the listing
-            price.
+            <strong className="text-[var(--text)]">3. Fund your wallet</strong> with a small amount
+            of SOL (devnet during beta) so you can pay gas + the listing price.
           </li>
           <li>
-            <strong className="text-[var(--text)]">4. Browse</strong> the live screener
-            on <Where href="/market">/market</Where>. Click a row to see details,
-            seller history, and buy.
+            <strong className="text-[var(--text)]">4. Browse</strong> the live screener on{' '}
+            <Where href="/market">/market</Where>. Click a row to see details, seller history, and
+            buy.
           </li>
           <li>
             <strong className="text-[var(--text)]">5. Publish</strong> via{' '}
@@ -346,26 +342,25 @@ const SECTIONS: DocSection[] = [
       <>
         <UL>
           <li>
-            On any listing page, click <Code>Buy now</Code>. A consent modal shows the
-            gross price, the platform fee, and the seller&apos;s wallet address.
+            On any listing page, click <Code>Buy now</Code>. A consent modal shows the gross price,
+            the platform fee, and the seller&apos;s wallet address.
           </li>
           <li>
-            Approve in your wallet. Funds go to the <Code>HagglEscrow</Code> contract,
-            NOT directly to the seller — they can&apos;t walk off with your money.
+            Approve in your wallet. Funds go to the <Code>HagglEscrow</Code> contract, NOT directly
+            to the seller — they can&apos;t walk off with your money.
           </li>
           <li>
-            The order shows up on{' '}
-            <Where href="/orders">/orders</Where> in <Code>PENDING_DELIVERY</Code>{' '}
-            status. The seller is notified and ships the goods (private GitHub access,
-            agent invocation key, file download, etc.).
+            The order shows up on <Where href="/orders">/orders</Where> in{' '}
+            <Code>PENDING_DELIVERY</Code> status. The seller is notified and ships the goods
+            (private GitHub access, agent invocation key, file download, etc.).
           </li>
           <li>
-            When the seller marks delivered, you confirm or dispute. Confirm =
-            funds released to seller. Dispute = funds frozen until admin resolves.
+            When the seller marks delivered, you confirm or dispute. Confirm = funds released to
+            seller. Dispute = funds frozen until admin resolves.
           </li>
           <li>
-            Auto-release: if you neither confirm nor dispute within 14 days of delivery,
-            funds go to the seller automatically.
+            Auto-release: if you neither confirm nor dispute within 14 days of delivery, funds go to
+            the seller automatically.
           </li>
         </UL>
       </>
@@ -382,23 +377,22 @@ const SECTIONS: DocSection[] = [
         <P>Three listing types, one publish flow.</P>
         <UL>
           <li>
-            <strong className="text-[var(--text)]">AI Agent</strong> — provide an
-            HTTPS webhook URL. Buyers invoke it from the listing page. We sandbox the
-            request and rate-limit per buyer.
+            <strong className="text-[var(--text)]">AI Agent</strong> — provide an HTTPS webhook URL.
+            Buyers invoke it from the listing page. We sandbox the request and rate-limit per buyer.
           </li>
           <li>
             <strong className="text-[var(--text)]">Repo</strong> — connect GitHub on{' '}
-            <Where href="/profile">Profile</Where>. Pick a repo, set a price. We grant
-            collaborator access on purchase.
+            <Where href="/profile">Profile</Where>. Pick a repo, set a price. We grant collaborator
+            access on purchase.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Bot / Script</strong> — upload a zip
-            or paste a webhook. Same escrow flow, different delivery channel.
+            <strong className="text-[var(--text)]">Bot / Script</strong> — upload a zip or paste a
+            webhook. Same escrow flow, different delivery channel.
           </li>
         </UL>
         <P>
-          Pricing is in SOL. Set a floor price for negotiable listings, a fixed price
-          for one-click buys.
+          Pricing is in SOL. Set a floor price for negotiable listings, a fixed price for one-click
+          buys.
         </P>
       </>
     ),
@@ -486,13 +480,13 @@ const SECTIONS: DocSection[] = [
           </Def>
           <Term>Backend</Term>
           <Def>
-            NestJS 10, Prisma ORM, PostgreSQL 16, Redis (BullMQ + cache), Helmet, Zod
-            validation, JWT auth, WebSockets.
+            NestJS 10, Prisma ORM, PostgreSQL 16, Redis (BullMQ + cache), Helmet, Zod validation,
+            JWT auth, WebSockets.
           </Def>
           <Term>Blockchain</Term>
           <Def>
-            Solana (mainnet + devnet during beta). HagglEscrow program for trade
-            settlement. Phantom + MetaMask + WalletConnect for sign-in.
+            Solana (mainnet + devnet during beta). HagglEscrow program for trade settlement. Phantom
+            + MetaMask + WalletConnect for sign-in.
           </Def>
           <Term>AI providers</Term>
           <Def>Anthropic Claude (default), OpenAI-compatible adapter for custom agents.</Def>
@@ -515,8 +509,8 @@ const SECTIONS: DocSection[] = [
     body: (
       <>
         <P>
-          Every page in the dashboard is also reachable via REST. Authenticate with an
-          API key from <Where href="/api-keys">/api-keys</Where>.
+          Every page in the dashboard is also reachable via REST. Authenticate with an API key from{' '}
+          <Where href="/api-keys">/api-keys</Where>.
         </P>
         <UL>
           <li>
@@ -528,8 +522,8 @@ const SECTIONS: DocSection[] = [
             <Code>Authorization: Bearer YOUR_API_KEY</Code>
           </li>
           <li>
-            <strong className="text-[var(--text)]">Rate limits:</strong> 120 req/min by
-            default, 30/min on AI endpoints, 60/min on chat.
+            <strong className="text-[var(--text)]">Rate limits:</strong> 120 req/min by default,
+            30/min on AI endpoints, 60/min on chat.
           </li>
           <li>
             <strong className="text-[var(--text)]">WebSocket:</strong>{' '}
@@ -537,10 +531,9 @@ const SECTIONS: DocSection[] = [
           </li>
         </UL>
         <P>
-          Top routes: <Code>/market</Code>, <Code>/market/pulse</Code>,{' '}
-          <Code>/orders</Code>, <Code>/agents/{'{id}'}/invoke</Code>,{' '}
-          <Code>/auth/wallet/nonce</Code>. Full Swagger spec at{' '}
-          <Code>/api-docs</Code>.
+          Top routes: <Code>/market</Code>, <Code>/market/pulse</Code>, <Code>/orders</Code>,{' '}
+          <Code>/agents/{'{id}'}/invoke</Code>, <Code>/auth/wallet/nonce</Code>. Full Swagger spec
+          at <Code>/api-docs</Code>.
         </P>
       </>
     ),
@@ -554,8 +547,8 @@ const SECTIONS: DocSection[] = [
     body: (
       <>
         <P>
-          To list an AI agent, expose an HTTPS endpoint that accepts a POST and returns
-          JSON. We send a signed payload, you respond.
+          To list an AI agent, expose an HTTPS endpoint that accepts a POST and returns JSON. We
+          send a signed payload, you respond.
         </P>
         <UL>
           <li>
@@ -563,8 +556,8 @@ const SECTIONS: DocSection[] = [
             <Code>{'{ task, input, agentKey, signature }'}</Code>.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Verify</strong> the HMAC signature
-            against your <Code>AGENT_HMAC_SECRET</Code> before processing.
+            <strong className="text-[var(--text)]">Verify</strong> the HMAC signature against your{' '}
+            <Code>AGENT_HMAC_SECRET</Code> before processing.
           </li>
           <li>
             <strong className="text-[var(--text)]">Respond</strong> within 30s with{' '}
@@ -589,30 +582,28 @@ const SECTIONS: DocSection[] = [
       <>
         <UL>
           <li>
-            <strong className="text-[var(--text)]">Sign-in:</strong> wallet signature
-            only (SIWE-style nonce). No password stored on our side ever.
+            <strong className="text-[var(--text)]">Sign-in:</strong> wallet signature only
+            (SIWE-style nonce). No password stored on our side ever.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Session:</strong> short-lived JWT
-            access token (15 min) + 30-day refresh token in HttpOnly cookies.
+            <strong className="text-[var(--text)]">Session:</strong> short-lived JWT access token
+            (15 min) + 30-day refresh token in HttpOnly cookies.
           </li>
           <li>
-            <strong className="text-[var(--text)]">2FA:</strong> optional TOTP for
-            high-value actions. Configure in{' '}
-            <Where href="/profile?tab=security">Profile → Security</Where>.
+            <strong className="text-[var(--text)]">2FA:</strong> optional TOTP for high-value
+            actions. Configure in <Where href="/profile?tab=security">Profile → Security</Where>.
           </li>
           <li>
-            <strong className="text-[var(--text)]">CSRF:</strong> double-submit cookie
-            pattern on all mutating routes.
+            <strong className="text-[var(--text)]">CSRF:</strong> double-submit cookie pattern on
+            all mutating routes.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Rate limiting:</strong> Redis-backed,
-            per-IP and per-user.
+            <strong className="text-[var(--text)]">Rate limiting:</strong> Redis-backed, per-IP and
+            per-user.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Audit:</strong> security review
-            report available at{' '}
-            <Code>SECURITY_AUDIT_REPORT.md</Code> in the repo.
+            <strong className="text-[var(--text)]">Audit:</strong> security review report available
+            at <Code>SECURITY_AUDIT_REPORT.md</Code> in the repo.
           </li>
         </UL>
       </>
@@ -629,22 +620,20 @@ const SECTIONS: DocSection[] = [
     body: (
       <>
         <P>
-          A "stuck payment" = funds locked in <Code>HagglEscrow</Code> with the
-          counterparty unresponsive. Two paths to recover:
+          A "stuck payment" = funds locked in <Code>HagglEscrow</Code> with the counterparty
+          unresponsive. Two paths to recover:
         </P>
         <UL>
           <li>
-            <strong className="text-[var(--text)]">Auto-release (no action):</strong>{' '}
-            if the seller marked delivery and you didn&apos;t respond in 14 days, the
-            contract releases the funds to the seller. Conversely, if the seller never
-            ships within 14 days of order, you (the buyer) can claim refund directly
-            from the contract.
+            <strong className="text-[var(--text)]">Auto-release (no action):</strong> if the seller
+            marked delivery and you didn&apos;t respond in 14 days, the contract releases the funds
+            to the seller. Conversely, if the seller never ships within 14 days of order, you (the
+            buyer) can claim refund directly from the contract.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Open a dispute:</strong> on the
-            order page, click <Code>Dispute</Code>. Funds freeze, an admin reviews
-            both sides on <Where href="/admin/disputes">/admin/disputes</Where> and
-            either:
+            <strong className="text-[var(--text)]">Open a dispute:</strong> on the order page, click{' '}
+            <Code>Dispute</Code>. Funds freeze, an admin reviews both sides on{' '}
+            <Where href="/admin/disputes">/admin/disputes</Where> and either:
             <UL>
               <li>Refunds the buyer (if seller didn&apos;t deliver)</li>
               <li>Releases to seller (if delivery is verifiable)</li>
@@ -652,16 +641,14 @@ const SECTIONS: DocSection[] = [
             </UL>
           </li>
           <li>
-            <strong className="text-[var(--text)]">Direct on-chain refund:</strong>{' '}
-            the escrow program exposes a <Code>refundIfExpired</Code> instruction.
-            Anyone can call it after the deadline — no admin needed. Pay the gas, get
-            your money back.
+            <strong className="text-[var(--text)]">Direct on-chain refund:</strong> the escrow
+            program exposes a <Code>refundIfExpired</Code> instruction. Anyone can call it after the
+            deadline — no admin needed. Pay the gas, get your money back.
           </li>
         </UL>
         <P>
-          Email <Code>support@haggl.tech</Code> if none of the above resolves your case
-          within 48 hours. Include your order ID, the tx hash, and a screenshot of the
-          order page.
+          Email <Code>support@haggl.tech</Code> if none of the above resolves your case within 48
+          hours. Include your order ID, the tx hash, and a screenshot of the order page.
         </P>
       </>
     ),
@@ -676,28 +663,28 @@ const SECTIONS: DocSection[] = [
       <>
         <UL>
           <li>
-            <strong className="text-[var(--text)]">"Wallet connection failed"</strong>{' '}
-            — your wallet extension is locked or on the wrong network. Unlock, switch
-            to Solana mainnet (or devnet during beta), refresh.
+            <strong className="text-[var(--text)]">"Wallet connection failed"</strong> — your wallet
+            extension is locked or on the wrong network. Unlock, switch to Solana mainnet (or devnet
+            during beta), refresh.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Order stuck on PENDING_DELIVERY</strong>{' '}
-            — the seller hasn&apos;t marked the order as delivered yet. DM them through
-            the order page, or wait for the 14-day auto-resolve.
+            <strong className="text-[var(--text)]">Order stuck on PENDING_DELIVERY</strong> — the
+            seller hasn&apos;t marked the order as delivered yet. DM them through the order page, or
+            wait for the 14-day auto-resolve.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Agent shows offline</strong> — your
-            health check at <Code>/healthz</Code> is failing. Check your server logs;
-            we send a request every 5 min.
+            <strong className="text-[var(--text)]">Agent shows offline</strong> — your health check
+            at <Code>/healthz</Code> is failing. Check your server logs; we send a request every 5
+            min.
           </li>
           <li>
-            <strong className="text-[var(--text)]">"Insufficient funds" on buy</strong>{' '}
-            — you need the listing price PLUS the platform fee (3% with $HAGGL token,
-            7% with native SOL) PLUS network gas.
+            <strong className="text-[var(--text)]">"Insufficient funds" on buy</strong> — you need
+            the listing price PLUS the platform fee (3% with $HAGGL token, 7% with native SOL) PLUS
+            network gas.
           </li>
           <li>
-            <strong className="text-[var(--text)]">Light/dark mode not switching</strong>{' '}
-            — click the sun/moon icon top-right. Preference persists per-browser.
+            <strong className="text-[var(--text)]">Light/dark mode not switching</strong> — click
+            the sun/moon icon top-right. Preference persists per-browser.
           </li>
         </UL>
       </>
@@ -713,9 +700,8 @@ const SECTIONS: DocSection[] = [
       <>
         <UL>
           <li>
-            <strong className="text-[var(--text)]">Email:</strong>{' '}
-            <Code>support@haggl.tech</Code> — for account, payment, dispute issues.
-            Reply within 24h on weekdays.
+            <strong className="text-[var(--text)]">Email:</strong> <Code>support@haggl.tech</Code> —
+            for account, payment, dispute issues. Reply within 24h on weekdays.
           </li>
           <li>
             <strong className="text-[var(--text)]">X (Twitter):</strong>{' '}
@@ -734,9 +720,8 @@ const SECTIONS: DocSection[] = [
             <Code>status.haggl.tech</Code> — uptime + incident history.
           </li>
           <li>
-            <strong className="text-[var(--text)]">GitHub:</strong> file bugs and
-            feature requests at{' '}
-            <Code>github.com/hagglhq/haggl/issues</Code>.
+            <strong className="text-[var(--text)]">GitHub:</strong> file bugs and feature requests
+            at <Code>github.com/hagglhq/haggl/issues</Code>.
           </li>
         </UL>
       </>

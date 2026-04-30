@@ -53,8 +53,7 @@ export function StatCard({
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-[var(--duration-slow)]"
         style={{
-          background:
-            'radial-gradient(circle at 100% 0%, rgba(20,241,149,0.08), transparent 55%)',
+          background: 'radial-gradient(circle at 100% 0%, rgba(20,241,149,0.08), transparent 55%)',
         }}
       />
 
@@ -80,9 +79,7 @@ export function StatCard({
               {delta}
             </span>
           ) : null}
-          {caption ? (
-            <span className="text-[var(--text-muted)] font-light">{caption}</span>
-          ) : null}
+          {caption ? <span className="text-[var(--text-muted)] font-light">{caption}</span> : null}
         </div>
       ) : null}
     </div>

@@ -34,10 +34,6 @@ export class AgentsTestController {
     const apiKey = body?.apiKey?.trim();
     const samplePrompt = (body?.samplePrompt ?? '').trim() || undefined;
 
-    return this.agents.test(
-      protocol,
-      { endpoint, model, apiKey },
-      samplePrompt,
-    );
+    return this.agents.test(protocol, { endpoint, model, apiKey }, samplePrompt);
   }
 }

@@ -67,7 +67,9 @@ export function BoltyLogoGlow({ size = 40 }: { size?: number }) {
     >
       <div
         className="absolute inset-0 rounded-full opacity-50 blur-lg"
-        style={{ background: 'radial-gradient(circle, rgba(20, 241, 149, 0.7) 0%, transparent 70%)' }}
+        style={{
+          background: 'radial-gradient(circle, rgba(20, 241, 149, 0.7) 0%, transparent 70%)',
+        }}
       />
       <BoltyLogo size={size} style={{ position: 'relative', zIndex: 10 }} />
     </div>

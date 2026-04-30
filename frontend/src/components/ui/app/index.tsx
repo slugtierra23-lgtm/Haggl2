@@ -104,9 +104,7 @@ export function Button(props: ButtonProps) {
         <IconLeft className="w-3.5 h-3.5" strokeWidth={2} aria-hidden />
       ) : null}
       {children != null && <span className="mk-btn__label">{children}</span>}
-      {IconRight && !loading && (
-        <IconRight className="w-3.5 h-3.5" strokeWidth={2} aria-hidden />
-      )}
+      {IconRight && !loading && <IconRight className="w-3.5 h-3.5" strokeWidth={2} aria-hidden />}
     </>
   );
 
@@ -114,12 +112,7 @@ export function Button(props: ButtonProps) {
     const linkProps = rest as { external?: boolean };
     if (linkProps.external) {
       return (
-        <a
-          href={props.href}
-          className={cls}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={props.href} className={cls} target="_blank" rel="noopener noreferrer">
           {inner}
         </a>
       );

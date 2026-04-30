@@ -10,8 +10,7 @@ import { resolveAssetUrl } from '@/lib/utils/asset-url';
 // auth call, seeds a synthetic user, and lets the entire app be navigated
 // offline. Useful while the backend isn't running. All API calls below
 // short-circuit so a missing :3001 doesn't spam the console with errors.
-const DEMO_MODE =
-  typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DEMO_MODE === '1';
+const DEMO_MODE = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_DEMO_MODE === '1';
 
 const DEMO_USER: User = {
   id: 'demo-user',
@@ -205,9 +204,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
     idle(() => {
       void prefetch('market:listings', () =>
-        api
-          .get<{ data: unknown[] }>('/market?page=1&sortBy=recent')
-          .then((r) => r?.data ?? []),
+        api.get<{ data: unknown[] }>('/market?page=1&sortBy=recent').then((r) => r?.data ?? []),
       );
       void prefetch('market:pulse', () => api.get('/market/pulse?limit=20'));
       // Most-clicked sub-routes from the marketplace section. Fired here
@@ -226,9 +223,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       void prefetch('market:repos:sortBy=recent', () =>
         api.get<{ data: unknown[] }>('/repos?sortBy=recent'),
       );
-      void prefetch('market:top-sellers:48', () =>
-        api.get('/market/top-sellers?limit=48'),
-      );
+      void prefetch('market:top-sellers:48', () => api.get('/market/top-sellers?limit=48'));
       void prefetch('orders:buyer', () => api.get('/orders'));
       void prefetch('orders:seller', () => api.get('/orders/selling'));
       // /orders also reads stats and negotiations on mount — warm both
@@ -244,9 +239,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // cost when there's actually data to fetch. Keys must match
       // useFavorites.ts.
       try {
-        const repoIds = JSON.parse(
-          window.localStorage.getItem('bolty.repo.favorites.v1') || '[]',
-        );
+        const repoIds = JSON.parse(window.localStorage.getItem('bolty.repo.favorites.v1') || '[]');
         if (Array.isArray(repoIds) && repoIds.length > 0) {
           void prefetch(`favorites:repos:${repoIds.join(',')}`, () =>
             api.get(`/repos/by-ids?ids=${encodeURIComponent(repoIds.join(','))}`),

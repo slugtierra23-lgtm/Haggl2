@@ -94,10 +94,7 @@ export class WebhookAdapter implements IProtocolAdapter {
     }
   }
 
-  async invoke(
-    config: AgentEndpointConfig,
-    input: AgentInvokeInput,
-  ): Promise<AgentInvokeOutput> {
+  async invoke(config: AgentEndpointConfig, input: AgentInvokeInput): Promise<AgentInvokeOutput> {
     const reason = this.validateConfig(config);
     if (reason) {
       return { reply: '', latencyMs: 0, raw: { error: reason } };

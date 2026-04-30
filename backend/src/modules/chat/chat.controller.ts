@@ -21,9 +21,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Throttle } from '@nestjs/throttler';
+import { IsString, Length } from 'class-validator';
 import { Response } from 'express';
 import { diskStorage } from 'multer';
-import { IsString, Length } from 'class-validator';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Public } from '../../common/decorators/public.decorator';
@@ -84,7 +84,10 @@ export class ChatController {
     if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) {
       throw new ForbiddenException('Invalid token address');
     }
-    const symbol = (body?.symbol || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8);
+    const symbol = (body?.symbol || '')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .slice(0, 8);
     const name = (body?.name || '').slice(0, 40);
     const short = `${addr.slice(0, 6)}…${addr.slice(-4)}`;
     const content =

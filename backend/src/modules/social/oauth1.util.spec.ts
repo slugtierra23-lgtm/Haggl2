@@ -34,19 +34,15 @@ describe('oauth1.util', () => {
 
   describe('signatureBaseString', () => {
     it('produces the canonical base string per RFC 5849 with sorted params + percent encoding', () => {
-      const base = signatureBaseString(
-        'POST',
-        'https://api.twitter.com/1.1/statuses/update.json',
-        {
-          status: FIXTURE.status,
-          oauth_consumer_key: FIXTURE.consumerKey,
-          oauth_nonce: FIXTURE.nonce,
-          oauth_signature_method: 'HMAC-SHA1',
-          oauth_timestamp: FIXTURE.timestamp,
-          oauth_token: FIXTURE.accessToken,
-          oauth_version: '1.0',
-        },
-      );
+      const base = signatureBaseString('POST', 'https://api.twitter.com/1.1/statuses/update.json', {
+        status: FIXTURE.status,
+        oauth_consumer_key: FIXTURE.consumerKey,
+        oauth_nonce: FIXTURE.nonce,
+        oauth_signature_method: 'HMAC-SHA1',
+        oauth_timestamp: FIXTURE.timestamp,
+        oauth_token: FIXTURE.accessToken,
+        oauth_version: '1.0',
+      });
       // Locked-in vector. Any change in encoding / sort order breaks
       // this assertion, which is the whole point.
       expect(base).toBe(
@@ -62,11 +58,9 @@ describe('oauth1.util', () => {
     });
 
     it('strips query strings + fragments from the canonical URL', () => {
-      const sig = signatureBaseString(
-        'POST',
-        'https://api.twitter.com/2/tweets?ignored=1#frag',
-        { foo: 'bar' },
-      );
+      const sig = signatureBaseString('POST', 'https://api.twitter.com/2/tweets?ignored=1#frag', {
+        foo: 'bar',
+      });
       expect(sig).toBe('POST&https%3A%2F%2Fapi.twitter.com%2F2%2Ftweets&foo%3Dbar');
     });
   });

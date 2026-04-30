@@ -148,9 +148,7 @@ export class BundleScanner {
       score: aggregate,
       findings: allFindings,
       files,
-      summary: `Scanned ${fileResults.length} file${
-        fileResults.length === 1 ? '' : 's'
-      }. ${
+      summary: `Scanned ${fileResults.length} file${fileResults.length === 1 ? '' : 's'}. ${
         allFindings.length === 0
           ? 'No issues found.'
           : `${allFindings.length} finding${allFindings.length === 1 ? '' : 's'} across the bundle.`
@@ -163,111 +161,102 @@ export class BundleScanner {
    * Anything we don't like (bad path, oversized, banned extension,
    * symlink) is dropped silently and never makes it to the scanner.
    */
-  private extractAllowed(buffer: Buffer): Promise<
-    Array<{ path: string; content: string }>
-  > {
+  private extractAllowed(buffer: Buffer): Promise<Array<{ path: string; content: string }>> {
     return new Promise((resolve, reject) => {
       // lazyEntries=true so we control the read pace and can stop
       // early if a guard trips. autoClose handles cleanup on error.
-      yauzl.fromBuffer(
-        buffer,
-        { lazyEntries: true, autoClose: true },
-        (err, zip) => {
-          if (err || !zip) {
-            reject(err ?? new Error('failed to open zip'));
+      yauzl.fromBuffer(buffer, { lazyEntries: true, autoClose: true }, (err, zip) => {
+        if (err || !zip) {
+          reject(err ?? new Error('failed to open zip'));
+          return;
+        }
+        if (zip.entryCount > BundleScanner.MAX_ENTRIES) {
+          zip.close();
+          reject(new Error(`too many entries (max ${BundleScanner.MAX_ENTRIES})`));
+          return;
+        }
+
+        const out: Array<{ path: string; content: string }> = [];
+        let totalUncompressed = 0;
+
+        zip.on('error', (e) => {
+          zip.close();
+          reject(e);
+        });
+        zip.on('end', () => resolve(out));
+        zip.on('entry', (entry: yauzl.Entry) => {
+          // Directory entries — skip.
+          if (/\/$/.test(entry.fileName)) {
+            zip.readEntry();
             return;
           }
-          if (zip.entryCount > BundleScanner.MAX_ENTRIES) {
-            zip.close();
-            reject(new Error(`too many entries (max ${BundleScanner.MAX_ENTRIES})`));
+          // Path traversal / absolute / null byte / weird chars.
+          if (!isSafePath(entry.fileName)) {
+            this.logger.warn(`skipped unsafe path: ${entry.fileName}`);
+            zip.readEntry();
             return;
           }
-
-          const out: Array<{ path: string; content: string }> = [];
-          let totalUncompressed = 0;
-
-          zip.on('error', (e) => {
+          // Only files we actually scan. Binaries get dropped.
+          const ext = (entry.fileName.split('.').pop() ?? '').toLowerCase();
+          if (!BundleScanner.SCANNABLE_EXTS.has(ext)) {
+            zip.readEntry();
+            return;
+          }
+          // Per-file size cap. Yauzl reports both compressed +
+          // uncompressed sizes; refuse anything claiming to expand
+          // beyond MAX_FILE_BYTES OR with an absurd ratio.
+          if (entry.uncompressedSize > BundleScanner.MAX_FILE_BYTES) {
+            this.logger.warn(`skipped oversize file: ${entry.fileName}`);
+            zip.readEntry();
+            return;
+          }
+          if (
+            entry.compressedSize > 0 &&
+            entry.uncompressedSize / entry.compressedSize > BundleScanner.MAX_RATIO
+          ) {
+            this.logger.warn(`skipped suspicious ratio: ${entry.fileName}`);
+            zip.readEntry();
+            return;
+          }
+          if (totalUncompressed + entry.uncompressedSize > BundleScanner.MAX_TOTAL_BYTES) {
             zip.close();
-            reject(e);
-          });
-          zip.on('end', () => resolve(out));
-          zip.on('entry', (entry: yauzl.Entry) => {
-            // Directory entries — skip.
-            if (/\/$/.test(entry.fileName)) {
-              zip.readEntry();
-              return;
-            }
-            // Path traversal / absolute / null byte / weird chars.
-            if (!isSafePath(entry.fileName)) {
-              this.logger.warn(`skipped unsafe path: ${entry.fileName}`);
-              zip.readEntry();
-              return;
-            }
-            // Only files we actually scan. Binaries get dropped.
-            const ext = (entry.fileName.split('.').pop() ?? '').toLowerCase();
-            if (!BundleScanner.SCANNABLE_EXTS.has(ext)) {
-              zip.readEntry();
-              return;
-            }
-            // Per-file size cap. Yauzl reports both compressed +
-            // uncompressed sizes; refuse anything claiming to expand
-            // beyond MAX_FILE_BYTES OR with an absurd ratio.
-            if (entry.uncompressedSize > BundleScanner.MAX_FILE_BYTES) {
-              this.logger.warn(`skipped oversize file: ${entry.fileName}`);
-              zip.readEntry();
-              return;
-            }
-            if (
-              entry.compressedSize > 0 &&
-              entry.uncompressedSize / entry.compressedSize > BundleScanner.MAX_RATIO
-            ) {
-              this.logger.warn(`skipped suspicious ratio: ${entry.fileName}`);
-              zip.readEntry();
-              return;
-            }
-            if (
-              totalUncompressed + entry.uncompressedSize >
-              BundleScanner.MAX_TOTAL_BYTES
-            ) {
-              zip.close();
-              reject(new Error('aggregate uncompressed size exceeds limit'));
-              return;
-            }
-            totalUncompressed += entry.uncompressedSize;
+            reject(new Error('aggregate uncompressed size exceeds limit'));
+            return;
+          }
+          totalUncompressed += entry.uncompressedSize;
 
-            zip.openReadStream(entry, (e2, stream) => {
-              if (e2 || !stream) {
-                this.logger.warn(`failed to open entry: ${entry.fileName}`);
-                zip.readEntry();
+          zip.openReadStream(entry, (e2, stream) => {
+            if (e2 || !stream) {
+              this.logger.warn(`failed to open entry: ${entry.fileName}`);
+              zip.readEntry();
+              return;
+            }
+            const chunks: Buffer[] = [];
+            let read = 0;
+            let aborted = false;
+            stream.on('data', (chunk: Buffer) => {
+              read += chunk.length;
+              if (read > BundleScanner.MAX_FILE_BYTES) {
+                aborted = true;
+                stream.destroy();
                 return;
               }
-              const chunks: Buffer[] = [];
-              let read = 0;
-              let aborted = false;
-              stream.on('data', (chunk: Buffer) => {
-                read += chunk.length;
-                if (read > BundleScanner.MAX_FILE_BYTES) {
-                  aborted = true;
-                  stream.destroy();
-                  return;
-                }
-                chunks.push(chunk);
-              });
-              stream.on('error', () => {
-                zip.readEntry();
-              });
-              stream.on('end', () => {
-                if (!aborted) {
-                  const content = Buffer.concat(chunks).toString('utf-8');
-                  out.push({ path: entry.fileName, content });
-                }
-                zip.readEntry();
-              });
+              chunks.push(chunk);
+            });
+            stream.on('error', () => {
+              zip.readEntry();
+            });
+            stream.on('end', () => {
+              if (!aborted) {
+                const content = Buffer.concat(chunks).toString('utf-8');
+                out.push({ path: entry.fileName, content });
+              }
+              zip.readEntry();
             });
           });
-          zip.readEntry();
-        },
-      );
+        });
+        zip.readEntry();
+      });
     });
   }
 }

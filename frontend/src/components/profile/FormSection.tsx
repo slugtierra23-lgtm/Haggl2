@@ -34,7 +34,9 @@ export function FormSection({
         transition={{ delay: 0.04, duration: 0.24, ease: [0.22, 0.61, 0.36, 1] }}
       >
         <h2 className="text-2xl font-light text-[var(--text)] mb-2 tracking-[-0.01em]">{title}</h2>
-        {description && <p className="text-sm text-[var(--text-secondary)] tracking-[0.005em]">{description}</p>}
+        {description && (
+          <p className="text-sm text-[var(--text-secondary)] tracking-[0.005em]">{description}</p>
+        )}
       </motion.div>
 
       <motion.div

@@ -86,7 +86,8 @@ export default function FlipCard({
             self[1],
           )}
           style={{
-            background: 'linear-gradient(135deg, rgba(20, 241, 149, 0.12) 0%, rgba(8,6,18,0.98) 60%)',
+            background:
+              'linear-gradient(135deg, rgba(20, 241, 149, 0.12) 0%, rgba(8,6,18,0.98) 60%)',
             border: '1px solid rgba(20, 241, 149, 0.25)',
           }}
         >

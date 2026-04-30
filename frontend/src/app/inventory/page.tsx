@@ -22,14 +22,10 @@ import { Badge, Hero, Stat, StatStrip } from '@/components/ui/app';
 import { UserAvatar } from '@/components/ui/UserAvatar';
 import { api, ApiError } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { getCached, getCachedWithStatus, setCached } from '@/lib/cache/pageCache';
 import { useRequireAuth } from '@/lib/auth/useRequireAuth';
+import { getCached, getCachedWithStatus, setCached } from '@/lib/cache/pageCache';
 import { useFavorites } from '@/lib/hooks/useFavorites';
-import {
-  LISTING_TYPE_ACCENT as TYPE_ACCENT,
-  LISTING_TYPE_LABEL as TYPE_LABEL,
-  type ListingType,
-} from '@/lib/listing/types';
+import { LISTING_TYPE_LABEL as TYPE_LABEL, type ListingType } from '@/lib/listing/types';
 
 interface PublishedRepo {
   id: string;
@@ -448,7 +444,10 @@ function PublishedTab({ published }: { published: InventoryData['published'] }) 
             <div className="truncate text-[13px] text-white">{r.name}</div>
             <div className="truncate text-[11px] text-zinc-500">{r.meta}</div>
           </span>
-          <span className="text-[11px] text-[var(--text-muted)] tabular-nums" style={{ textAlign: 'right' }}>
+          <span
+            className="text-[11px] text-[var(--text-muted)] tabular-nums"
+            style={{ textAlign: 'right' }}
+          >
             {formatDate(r.createdAt)}
           </span>
         </Link>

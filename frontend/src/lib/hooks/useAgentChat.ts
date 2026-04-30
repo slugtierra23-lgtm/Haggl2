@@ -4,9 +4,9 @@
  * `newMessage`, `userCount`, `error`).
  */
 import { useEffect, useRef, useCallback, useState } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
 import { WS_URL } from '@/lib/api/client';
+import { io, Socket } from '@/lib/realtime/io';
 
 export interface ChatMessage {
   id: string;

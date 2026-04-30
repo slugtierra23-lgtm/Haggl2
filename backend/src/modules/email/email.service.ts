@@ -727,8 +727,8 @@ export class EmailService {
       : `Your agent is back online — ${data.listingTitle}`;
     const headline = offline ? 'Your agent stopped responding' : 'Your agent is live again';
     const intro = offline
-      ? 'Our health-checker can no longer reach your agent\'s webhook. We\'ve paused the listing so nobody tries to buy an offline agent.'
-      : 'Your agent\'s webhook is responding again. The listing is back on the marketplace.';
+      ? "Our health-checker can no longer reach your agent's webhook. We've paused the listing so nobody tries to buy an offline agent."
+      : "Your agent's webhook is responding again. The listing is back on the marketplace.";
     const manageUrl = `${this.appUrl}/market/agents/${data.listingId}`;
 
     const html = this.shell(

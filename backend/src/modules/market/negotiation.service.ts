@@ -85,11 +85,7 @@ export class NegotiationService {
 
   // ── Start or resume a negotiation ─────────────────────────────────────────
 
-  async startNegotiation(
-    buyerId: string,
-    listingId: string,
-    buyerAgentListingId?: string,
-  ) {
+  async startNegotiation(buyerId: string, listingId: string, buyerAgentListingId?: string) {
     const listing = await this.prisma.marketListing.findUnique({
       where: { id: listingId },
       select: {
@@ -256,8 +252,7 @@ export class NegotiationService {
       if (!neg) return;
       const url = `/market/agents?negotiate=${neg.listingId}&negId=${neg.id}`;
       const currency = neg.listing.currency || 'ETH';
-      const priceLabel =
-        kind === 'agreed' && agreedPrice ? `${agreedPrice} ${currency}` : null;
+      const priceLabel = kind === 'agreed' && agreedPrice ? `${agreedPrice} ${currency}` : null;
 
       const titleFor = (role: 'buyer' | 'seller') => {
         const t = neg.listing.title;
@@ -314,11 +309,9 @@ export class NegotiationService {
       ]);
 
       const sellerEmail = neg.listing.seller?.email;
-      const sellerOptIn =
-        neg.listing.seller?.notificationPreference?.emailOrderUpdates !== false;
+      const sellerOptIn = neg.listing.seller?.notificationPreference?.emailOrderUpdates !== false;
       const buyerEmail = neg.buyer?.email;
-      const buyerOptIn =
-        neg.buyer?.notificationPreference?.emailOrderUpdates !== false;
+      const buyerOptIn = neg.buyer?.notificationPreference?.emailOrderUpdates !== false;
 
       if (sellerEmail && sellerOptIn) {
         this.emailService
@@ -448,8 +441,7 @@ export class NegotiationService {
     }
 
     // Emergent pop-toast for the counterparty.
-    const counterpartyId =
-      isBuyer ? neg.listing.sellerId : neg.buyerId;
+    const counterpartyId = isBuyer ? neg.listing.sellerId : neg.buyerId;
     const senderUser = await this.prisma.user
       .findUnique({ where: { id: senderId }, select: { username: true } })
       .catch(() => null);
@@ -545,19 +537,13 @@ export class NegotiationService {
    * the message as the user's role, and restarts the AI loop so the
    * counterparty's agent responds.
    */
-  async counterOffer(
-    id: string,
-    userId: string,
-    content: string,
-    proposedPrice?: number,
-  ) {
+  async counterOffer(id: string, userId: string, content: string, proposedPrice?: number) {
     const neg = await this.prisma.agentNegotiation.findUnique({
       where: { id },
       include: { listing: { select: { sellerId: true, price: true, currency: true } } },
     });
     if (!neg) throw new NotFoundException();
-    if (neg.buyerId !== userId && neg.listing.sellerId !== userId)
-      throw new ForbiddenException();
+    if (neg.buyerId !== userId && neg.listing.sellerId !== userId) throw new ForbiddenException();
     if (neg.status !== 'AGREED' && neg.status !== 'ACTIVE') {
       throw new BadRequestException('Can only counter while negotiating or at an agreed price');
     }
@@ -680,8 +666,7 @@ export class NegotiationService {
       // Always produce a seller greeting. If webhook / sandbox / LLM all
       // fail we drop in a canned listing-aware reply so the chat is
       // never empty — previously the modal showed a blank body.
-      const greeting =
-        (await this.sellerAgentGreet(neg)) ?? this.fallbackSellerGreeting(neg);
+      const greeting = (await this.sellerAgentGreet(neg)) ?? this.fallbackSellerGreeting(neg);
 
       const greetMsg = await this.prisma.negotiationMessage.create({
         data: {
@@ -991,14 +976,16 @@ export class NegotiationService {
     // overlaid buyerAgent field (set by fetchNegForAi) holds that
     // listing's endpoint/sandbox — prefer it over the profile-level
     // fallback so users get the agent they actually picked.
-    const delegated = (neg as unknown as {
-      buyerAgent?: {
-        agentEndpoint?: string | null;
-        fileKey?: string | null;
-        fileName?: string | null;
-        fileMimeType?: string | null;
-      };
-    }).buyerAgent;
+    const delegated = (
+      neg as unknown as {
+        buyerAgent?: {
+          agentEndpoint?: string | null;
+          fileKey?: string | null;
+          fileName?: string | null;
+          fileMimeType?: string | null;
+        };
+      }
+    ).buyerAgent;
     const ctx = this.buildSandboxContext(
       neg,
       'negotiation.message',

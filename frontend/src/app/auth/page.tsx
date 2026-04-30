@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import React, { Suspense, useCallback, useEffect, useState } from 'react';
 
 import { AmbientGlow, AtlasCard, DotPattern, WordReveal } from '@/components/atlas';
+import { MetaMaskIcon, PhantomIcon, WalletConnectIcon } from '@/components/ui/WalletIcons';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import {
   connectMetaMask,
@@ -17,7 +18,6 @@ import {
   getPhantomProvider,
 } from '@/lib/wallet/ethereum';
 import { isWalletConnectConfigured, linkWalletConnect } from '@/lib/wallet/walletconnect';
-import { MetaMaskIcon, PhantomIcon, WalletConnectIcon } from '@/components/ui/WalletIcons';
 
 /**
  * Atlas auth page — wallet-only.

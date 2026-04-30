@@ -13,13 +13,7 @@ const SPAM_PATTERNS = [
 ];
 
 /** Allowed channels. Keep this flat — no per-channel permissions yet. */
-export const FEED_CHANNELS = [
-  'general',
-  'marketplace',
-  'agents',
-  'dev',
-  'random',
-] as const;
+export const FEED_CHANNELS = ['general', 'marketplace', 'agents', 'dev', 'random'] as const;
 export type FeedChannel = (typeof FEED_CHANNELS)[number];
 
 export function normalizeChannel(raw: unknown): FeedChannel {

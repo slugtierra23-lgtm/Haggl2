@@ -80,8 +80,7 @@ export function EnhancedTooltip({
             <div
               className={`absolute w-2 h-2 transform rotate-45 ${arrowPos}`}
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(20, 241, 149, 0.25)',
                 left: side === 'left' || side === 'right' ? 'auto' : '50%',
                 right: side === 'left' ? '-6px' : 'auto',

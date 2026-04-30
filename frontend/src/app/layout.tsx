@@ -140,7 +140,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap';l.media='print';l.onload=function(){this.media='all';};document.head.appendChild(l);})();`,
+            __html:
+              "(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap';l.media='print';l.onload=function(){this.media='all';};document.head.appendChild(l);})();",
           }}
         />
         <noscript>

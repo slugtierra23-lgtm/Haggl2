@@ -173,7 +173,7 @@ function useMemoRgba(color: string) {
       const b = parseInt(m[1].slice(4, 6), 16);
       setRgba(`rgba(${r},${g},${b},`);
     } else {
-      setRgba(`rgba(0,0,0,`);
+      setRgba('rgba(0,0,0,');
     }
   }, [color]);
   return rgba;

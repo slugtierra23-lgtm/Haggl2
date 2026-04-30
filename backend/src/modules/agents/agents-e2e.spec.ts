@@ -2,8 +2,8 @@
 import * as http from 'http';
 import { AddressInfo } from 'net';
 
-import { AgentsTestService } from './agents-test.service';
 import { verifyRequest, SIGNATURE_HEADER } from './agents-hmac.util';
+import { AgentsTestService } from './agents-test.service';
 import { McpAdapter } from './protocols/mcp.adapter';
 import { OpenAiAdapter } from './protocols/openai.adapter';
 import { WebhookAdapter } from './protocols/webhook.adapter';
@@ -20,7 +20,9 @@ interface MockHandler {
   (req: http.IncomingMessage, body: string): { status: number; body: unknown };
 }
 
-function startMockServer(handler: MockHandler): Promise<{ url: string; close: () => Promise<void> }> {
+function startMockServer(
+  handler: MockHandler,
+): Promise<{ url: string; close: () => Promise<void> }> {
   return new Promise((resolve) => {
     const server = http.createServer((req, res) => {
       const chunks: Buffer[] = [];
@@ -70,11 +72,7 @@ describe('agents-e2e (real HTTP)', () => {
     });
 
     try {
-      const result = await makeService().test(
-        'webhook',
-        { endpoint: server.url },
-        'hello e2e',
-      );
+      const result = await makeService().test('webhook', { endpoint: server.url }, 'hello e2e');
       expect(result.health.healthy).toBe(true);
       expect(result.invoke?.ok).toBe(true);
       expect(result.invoke?.reply).toBe('you said: hello e2e');
@@ -136,7 +134,9 @@ describe('agents-e2e (real HTTP)', () => {
           body: {
             jsonrpc: '2.0',
             id: rpc.id,
-            result: { content: [{ type: 'text', text: `mcp got: ${rpc.params.arguments.prompt}` }] },
+            result: {
+              content: [{ type: 'text', text: `mcp got: ${rpc.params.arguments.prompt}` }],
+            },
           },
         };
       }
@@ -171,7 +171,11 @@ describe('agents-e2e (real HTTP)', () => {
     try {
       const result = await makeService().test(
         'openai',
-        { endpoint: `${server.url}/v1/chat/completions`, model: 'gpt-4o-mini', apiKey: 'sk-test-e2e' },
+        {
+          endpoint: `${server.url}/v1/chat/completions`,
+          model: 'gpt-4o-mini',
+          apiKey: 'sk-test-e2e',
+        },
         'hello openai',
       );
       expect(result.health.healthy).toBe(true);
@@ -189,10 +193,11 @@ describe('agents-e2e (real HTTP)', () => {
       return { status: 401, body: { error: { message: 'invalid api key' } } };
     });
     try {
-      const result = await makeService().test(
-        'openai',
-        { endpoint: `${server.url}/v1/chat/completions`, model: 'gpt-4o-mini', apiKey: 'wrong' },
-      );
+      const result = await makeService().test('openai', {
+        endpoint: `${server.url}/v1/chat/completions`,
+        model: 'gpt-4o-mini',
+        apiKey: 'wrong',
+      });
       expect(result.health.healthy).toBe(false);
       expect(result.health.reason).toBe('auth_failed');
       // No invoke after failed health → invokeCalls stays 0.

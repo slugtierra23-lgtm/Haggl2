@@ -89,7 +89,6 @@ export function AtlasStatTile({
         className,
       )}
     >
-
       <div className="flex items-center justify-between gap-2 mb-1.5">
         <div className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[var(--text-muted)]">
           {icon && (

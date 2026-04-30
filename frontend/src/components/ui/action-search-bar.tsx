@@ -143,8 +143,7 @@ function ActionSearchBar({
               <motion.div
                 className="w-full rounded-xl overflow-hidden mt-1.5"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(20, 241, 149, 0.2), inset 0 1px 0 rgba(255,255,255,0.04), 0 16px 40px -10px rgba(0,0,0,0.5)',
                   backdropFilter: 'blur(8px)',

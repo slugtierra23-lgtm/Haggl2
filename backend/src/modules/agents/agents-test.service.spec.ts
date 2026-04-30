@@ -64,9 +64,10 @@ describe('AgentsTestService', () => {
 
   describe('test (full network probe)', () => {
     it('runs health + invoke when both succeed', async () => {
-      const s = svc(
-        { health: { healthy: true, latencyMs: 50 }, invoke: { reply: 'pong', latencyMs: 75 } },
-      );
+      const s = svc({
+        health: { healthy: true, latencyMs: 50 },
+        invoke: { reply: 'pong', latencyMs: 75 },
+      });
       const result = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(result.protocol).toBe('webhook');
       expect(result.health.healthy).toBe(true);
@@ -76,18 +77,17 @@ describe('AgentsTestService', () => {
     });
 
     it('skips invoke when health fails', async () => {
-      const s = svc(
-        { health: { healthy: false, latencyMs: 50, reason: 'http_503' } },
-      );
+      const s = svc({ health: { healthy: false, latencyMs: 50, reason: 'http_503' } });
       const result = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(result.health.healthy).toBe(false);
       expect(result.invoke).toBeUndefined();
     });
 
     it('reports schema-invalid when invoke returns empty reply', async () => {
-      const s = svc(
-        { health: { healthy: true, latencyMs: 5 }, invoke: { reply: '', latencyMs: 10, raw: { error: 'empty' } } },
-      );
+      const s = svc({
+        health: { healthy: true, latencyMs: 5 },
+        invoke: { reply: '', latencyMs: 10, raw: { error: 'empty' } },
+      });
       const result = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(result.invoke?.ok).toBe(false);
       expect(result.invoke?.schemaValid).toBe(false);
@@ -95,12 +95,10 @@ describe('AgentsTestService', () => {
     });
 
     it('truncates very long replies to 500 chars', async () => {
-      const s = svc(
-        {
-          health: { healthy: true, latencyMs: 5 },
-          invoke: { reply: 'a'.repeat(2000), latencyMs: 10 },
-        },
-      );
+      const s = svc({
+        health: { healthy: true, latencyMs: 5 },
+        invoke: { reply: 'a'.repeat(2000), latencyMs: 10 },
+      });
       const result = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(result.invoke?.reply?.length).toBe(500);
     });
@@ -114,9 +112,7 @@ describe('AgentsTestService', () => {
     });
 
     it('catches adapter throws on invoke and reports them', async () => {
-      const s = svc(
-        { health: { healthy: true, latencyMs: 5 }, throwOnInvoke: true },
-      );
+      const s = svc({ health: { healthy: true, latencyMs: 5 }, throwOnInvoke: true });
       const result = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(result.invoke?.ok).toBe(false);
       expect(result.invoke?.error).toBe('boom');
@@ -145,46 +141,41 @@ describe('AgentsTestService', () => {
 
   describe('describeInvokeFailure (via invoke result)', () => {
     it('extracts string error from raw', async () => {
-      const s = svc(
-        {
-          health: { healthy: true, latencyMs: 1 },
-          invoke: { reply: '', latencyMs: 1, raw: { error: 'rate limited' } },
-        },
-      );
+      const s = svc({
+        health: { healthy: true, latencyMs: 1 },
+        invoke: { reply: '', latencyMs: 1, raw: { error: 'rate limited' } },
+      });
       const r = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(r.invoke?.error).toBe('rate limited');
     });
 
     it('extracts object error message', async () => {
-      const s = svc(
-        {
-          health: { healthy: true, latencyMs: 1 },
-          invoke: {
-            reply: '',
-            latencyMs: 1,
-            raw: { error: { message: 'context too long', code: -32000 } },
-          },
+      const s = svc({
+        health: { healthy: true, latencyMs: 1 },
+        invoke: {
+          reply: '',
+          latencyMs: 1,
+          raw: { error: { message: 'context too long', code: -32000 } },
         },
-      );
+      });
       const r = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(r.invoke?.error).toBe('context too long');
     });
 
     it('falls back to http_<status> when only status is in raw', async () => {
-      const s = svc(
-        {
-          health: { healthy: true, latencyMs: 1 },
-          invoke: { reply: '', latencyMs: 1, raw: { status: 502 } },
-        },
-      );
+      const s = svc({
+        health: { healthy: true, latencyMs: 1 },
+        invoke: { reply: '', latencyMs: 1, raw: { status: 502 } },
+      });
       const r = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(r.invoke?.error).toBe('http_502');
     });
 
     it('falls back to no_reply_field when raw is empty', async () => {
-      const s = svc(
-        { health: { healthy: true, latencyMs: 1 }, invoke: { reply: '', latencyMs: 1 } },
-      );
+      const s = svc({
+        health: { healthy: true, latencyMs: 1 },
+        invoke: { reply: '', latencyMs: 1 },
+      });
       const r = await s.test('webhook', { endpoint: 'https://x.y' });
       expect(r.invoke?.error).toBe('no_reply_field');
     });

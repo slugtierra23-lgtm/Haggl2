@@ -79,10 +79,7 @@ export class WalletsService {
     // person could hijack another's proof-of-ownership.
     const owningUser = await this.prisma.user.findFirst({
       where: {
-        OR: [
-          { walletAddress: address },
-          { linkedWallets: { some: { address } } },
-        ],
+        OR: [{ walletAddress: address }, { linkedWallets: { some: { address } } }],
         NOT: { id: userId },
       },
       select: { id: true },

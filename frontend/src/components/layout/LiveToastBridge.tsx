@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
 import { WS_URL } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { useToast, type ToastType } from '@/lib/hooks/useToast';
 import type { NotificationItem, NotificationType } from '@/lib/hooks/useNotifications';
+import { useToast, type ToastType } from '@/lib/hooks/useToast';
+import { io, Socket } from '@/lib/realtime/io';
 
 const TYPE_TOAST: Record<NotificationType, ToastType> = {
   MARKET_NEW_SALE: 'success',

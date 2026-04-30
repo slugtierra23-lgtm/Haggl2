@@ -8,7 +8,6 @@ import {
   FileText,
   Flame,
   GitBranch,
-  Heart,
   LayoutGrid,
   Package,
   Search,

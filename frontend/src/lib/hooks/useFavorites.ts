@@ -54,7 +54,10 @@ function useStoredIds(key: string) {
 
   const remove = useCallback(
     (id: string) => {
-      writeStore(key, readStore(key).filter((x) => x !== id));
+      writeStore(
+        key,
+        readStore(key).filter((x) => x !== id),
+      );
     },
     [key],
   );
@@ -63,7 +66,10 @@ function useStoredIds(key: string) {
     (id: string) => {
       const current = readStore(key);
       if (current.includes(id)) {
-        writeStore(key, current.filter((x) => x !== id));
+        writeStore(
+          key,
+          current.filter((x) => x !== id),
+        );
       } else {
         writeStore(key, [id, ...current]);
       }

@@ -179,7 +179,10 @@ export default function AiPage() {
 
   if (authLoading || !isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--bg)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ background: 'var(--bg)' }}
+      >
         <div className="w-5 h-5 rounded-full border-2 border-zinc-800 border-t-atlas-500 animate-spin" />
       </div>
     );
@@ -232,8 +235,7 @@ export default function AiPage() {
             <div
               className="rounded-xl overflow-hidden"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             >
@@ -289,8 +291,7 @@ export default function AiPage() {
               ref={scrollRef}
               className="flex-1 overflow-y-auto rounded-xl p-4 sm:p-6 space-y-5 min-h-[50vh] max-h-[65vh]"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             >
@@ -322,8 +323,7 @@ export default function AiPage() {
                         disabled={sending}
                         className="text-left text-xs text-zinc-300 hover:text-white px-3 py-2.5 rounded-lg transition-all hover:brightness-110 disabled:opacity-40"
                         style={{
-                          background:
-                            'var(--bg-card)',
+                          background: 'var(--bg-card)',
                           boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06)',
                         }}
                       >
@@ -368,8 +368,7 @@ export default function AiPage() {
             <div
               className="mt-4 rounded-xl p-3"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             >

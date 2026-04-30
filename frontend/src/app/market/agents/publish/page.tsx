@@ -236,9 +236,7 @@ export default function PublishAgentPage() {
         );
       } else if (result.health.healthy) {
         setEndpointStatus('fail');
-        setEndpointMsg(
-          `Health passed but invoke failed: ${result.invoke?.error ?? 'no_reply'}`,
-        );
+        setEndpointMsg(`Health passed but invoke failed: ${result.invoke?.error ?? 'no_reply'}`);
       } else {
         setEndpointStatus('fail');
         const status = result.health.status ? ` (HTTP ${result.health.status})` : '';
@@ -257,8 +255,7 @@ export default function PublishAgentPage() {
     if (!form.tagline.trim()) return false;
     const price = Number(form.price);
     if (!Number.isFinite(price) || price < 0) return false;
-    const hasEndpoint =
-      needsHttpEndpoint(form.protocol) && form.agentEndpoint.trim().length > 0;
+    const hasEndpoint = needsHttpEndpoint(form.protocol) && form.agentEndpoint.trim().length > 0;
     const hasSandbox = needsSandboxFile(form.protocol) && !!form.uploadedFile;
     // OpenAI-compatible additionally requires a model id.
     if (form.protocol === 'openai' && !form.agentModel.trim()) return false;
@@ -277,7 +274,7 @@ export default function PublishAgentPage() {
       // Compose a structured description — the backend stores it as
       // markdown, we render it with our Markdown component.
       const tech =
-        `\n\n## Technical details\n\n` +
+        '\n\n## Technical details\n\n' +
         `- **Model**: ${form.model}\n` +
         `- **Framework**: ${form.framework}\n` +
         `- **Context length**: ${form.contextLength}\n` +
@@ -293,8 +290,7 @@ export default function PublishAgentPage() {
       };
       const proto = `\n\n## Integration\n\n- **Protocol**: ${protocolBlurb[form.protocol]}\n`;
 
-      const fullDescription =
-        (form.description.trim() || form.tagline.trim()) + tech + proto;
+      const fullDescription = (form.description.trim() || form.tagline.trim()) + tech + proto;
 
       const payload: Record<string, unknown> = {
         title: form.title.trim(),
@@ -362,7 +358,10 @@ export default function PublishAgentPage() {
       <div className="relative mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:py-10">
         {/* Breadcrumb */}
         <div className="mb-5 flex items-center gap-2 text-xs text-white/50">
-          <Link href="/market/agents" className="flex items-center gap-1 transition hover:text-white">
+          <Link
+            href="/market/agents"
+            className="flex items-center gap-1 transition hover:text-white"
+          >
             <ArrowLeft className="h-3 w-3" />
             Agents
           </Link>
@@ -422,9 +421,8 @@ export default function PublishAgentPage() {
                 Deploy a new <span className="atlas-gradient-text font-normal">agent.</span>
               </h1>
               <p className="mt-3 max-w-2xl text-sm md:text-[15px] font-light text-[var(--text-secondary)] leading-relaxed">
-                Ship an AI agent to the haggl marketplace. Configure its protocol,
-                technical specs, and pricing — your buyers will be able to
-                invoke it the moment you publish.
+                Ship an AI agent to the haggl marketplace. Configure its protocol, technical specs,
+                and pricing — your buyers will be able to invoke it the moment you publish.
               </p>
             </div>
           </div>
@@ -449,7 +447,11 @@ export default function PublishAgentPage() {
                   className="input-std"
                 />
               </Field>
-              <Field label="One-line description" required hint="Shown on every card — keep it punchy.">
+              <Field
+                label="One-line description"
+                required
+                hint="Shown on every card — keep it punchy."
+              >
                 <input
                   value={form.tagline}
                   onChange={(e) => set('tagline', e.target.value.slice(0, 140))}
@@ -461,11 +463,16 @@ export default function PublishAgentPage() {
                   {form.tagline.length}/140
                 </div>
               </Field>
-              <Field label="Full description" hint="Markdown supported. Technical specs get appended automatically.">
+              <Field
+                label="Full description"
+                hint="Markdown supported. Technical specs get appended automatically."
+              >
                 <textarea
                   value={form.description}
                   onChange={(e) => set('description', e.target.value.slice(0, 4000))}
-                  placeholder={`## What it does\n- Scans every PR opened in the last hour\n- Flags security + style issues inline\n\n## Example prompts\n- "review PR #123"\n- "only flag high severity"`}
+                  placeholder={
+                    '## What it does\n- Scans every PR opened in the last hour\n- Flags security + style issues inline\n\n## Example prompts\n- "review PR #123"\n- "only flag high severity"'
+                  }
                   rows={6}
                   maxLength={4000}
                   className="input-std font-mono text-[12.5px]"
@@ -586,7 +593,13 @@ export default function PublishAgentPage() {
 
               {needsHttpEndpoint(form.protocol) && (
                 <Field
-                  label={form.protocol === 'mcp' ? 'MCP server URL' : form.protocol === 'openai' ? 'API endpoint' : 'Webhook URL'}
+                  label={
+                    form.protocol === 'mcp'
+                      ? 'MCP server URL'
+                      : form.protocol === 'openai'
+                        ? 'API endpoint'
+                        : 'Webhook URL'
+                  }
                   required
                   hint={
                     form.protocol === 'mcp'
@@ -723,7 +736,6 @@ export default function PublishAgentPage() {
                   />
                 </Field>
               )}
-
             </Section>
 
             {/* Section: Technical */}
@@ -757,7 +769,9 @@ export default function PublishAgentPage() {
                     className="input-std"
                   >
                     {CONTEXT_LENGTHS.map((c) => (
-                      <option key={c} value={c}>{c} tokens</option>
+                      <option key={c} value={c}>
+                        {c} tokens
+                      </option>
                     ))}
                   </select>
                 </Field>
@@ -776,7 +790,9 @@ export default function PublishAgentPage() {
                     className="input-std"
                   >
                     {LICENSES.map((l) => (
-                      <option key={l} value={l}>{l}</option>
+                      <option key={l} value={l}>
+                        {l}
+                      </option>
                     ))}
                   </select>
                 </Field>
@@ -915,8 +931,7 @@ function Section({
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 group-focus-within:opacity-100 transition-opacity duration-300"
         style={{
-          background:
-            'linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)',
+          background: 'linear-gradient(90deg, transparent 0%, var(--brand) 50%, transparent 100%)',
         }}
       />
       <div className="mb-5 flex items-start gap-3">
@@ -1049,22 +1064,22 @@ function PreviewCard({ form }: { form: FormState }) {
     <div
       className="relative overflow-hidden rounded-2xl p-4"
       style={{
-        background:
-          'var(--bg-card)',
+        background: 'var(--bg-card)',
         boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
       }}
     >
       <div className="flex items-center justify-between">
-        <div className="text-[10px] uppercase tracking-[0.22em] text-white/40">
-          Live preview
-        </div>
+        <div className="text-[10px] uppercase tracking-[0.22em] text-white/40">Live preview</div>
         <span className="inline-flex items-center gap-1 rounded-full bg-white/5 px-1.5 py-[1px] text-[9.5px] text-white/40">
           <Radio className="h-2.5 w-2.5" />
           card
         </span>
       </div>
 
-      <div className="mt-3 rounded-xl p-3" style={{ boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06)' }}>
+      <div
+        className="mt-3 rounded-xl p-3"
+        style={{ boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.06)' }}
+      >
         <div className="flex items-center gap-2">
           <span
             className="flex h-8 w-8 items-center justify-center rounded-lg"
@@ -1079,9 +1094,7 @@ function PreviewCard({ form }: { form: FormState }) {
             <div className="truncate text-[13px] font-normal text-white">
               {form.title || 'Your agent name'}
             </div>
-            <div className="truncate text-[10.5px] text-white/40">
-              @you · {form.category}
-            </div>
+            <div className="truncate text-[10.5px] text-white/40">@you · {form.category}</div>
           </div>
           {form.agentEndpoint && (
             <span
@@ -1139,7 +1152,8 @@ function TipsCard() {
       <ul className="space-y-1.5">
         <li className="flex gap-1.5">
           <Plus className="mt-0.5 h-3 w-3 shrink-0 text-[#C9BEFF]" />
-          Your webhook gets a health-check ping every 10 min. Offline 20min+ and the listing is paused automatically.
+          Your webhook gets a health-check ping every 10 min. Offline 20min+ and the listing is
+          paused automatically.
         </li>
         <li className="flex gap-1.5">
           <Lock className="mt-0.5 h-3 w-3 shrink-0 text-[#C9BEFF]" />

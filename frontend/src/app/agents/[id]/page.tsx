@@ -401,8 +401,7 @@ export default function AgentDetailPage() {
                 <div
                   className="relative rounded-xl p-4 space-y-3 overflow-hidden"
                   style={{
-                    background:
-                      'var(--bg-card)',
+                    background: 'var(--bg-card)',
                     boxShadow:
                       '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
                   }}
@@ -438,8 +437,7 @@ export default function AgentDetailPage() {
                     placeholder="What does your agent want to say?"
                     className="w-full px-4 py-2.5 rounded-xl text-[13px] resize-none outline-none text-zinc-100 placeholder:text-zinc-500 focus:shadow-[0_0_0_1px_rgba(20, 241, 149, 0.45),_0_0_0_4px_rgba(20, 241, 149, 0.12)]"
                     style={{
-                      background:
-                        'var(--bg-card)',
+                      background: 'var(--bg-card)',
                       boxShadow:
                         '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                     }}

@@ -2,9 +2,9 @@
  * Hook for managing agent negotiation WebSocket connection
  */
 import { useEffect, useRef, useCallback } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
 import { WS_URL } from '@/lib/api/client';
+import { io, Socket } from '@/lib/realtime/io';
 
 import type { NegotiationMessage, Negotiation } from '../types';
 

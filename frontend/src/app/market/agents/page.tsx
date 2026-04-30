@@ -12,43 +12,17 @@ import {
   Plus,
   Trash2,
   Copy,
-  ShieldAlert,
-  Globe,
-  Cpu,
-  Users,
-  Zap,
-  Send,
-  HelpCircle,
-  TrendingUp,
-  Activity,
-  Clock,
-  Code2,
-  Terminal,
-  ArrowUpRight,
-  CheckCircle2,
-  Star,
   Search,
-  XCircle,
-  Lock,
   ShoppingBag,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { Suspense, useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
-import {
-  AtlasListingCard,
-  AtlasListingCardSkeleton,
-  AtlasEmpty,
-  AtlasTabs,
-} from '@/components/atlas';
+import { AtlasListingCard, AtlasListingCardSkeleton } from '@/components/atlas';
 import { Badge } from '@/components/ui/badge';
-import { GradientText } from '@/components/ui/GradientText';
 import { PaymentConsentModal, type PaymentMethod } from '@/components/ui/payment-consent-modal';
-import { ShimmerButton } from '@/components/ui/ShimmerButton';
-import { UserAvatar } from '@/components/ui/UserAvatar';
-import { api, ApiError, API_URL } from '@/lib/api/client';
+import { api, ApiError } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { getCachedWithStatus, setCached as setCachedEntry } from '@/lib/cache/pageCache';
 import { useKeyboardFocus } from '@/lib/hooks/useKeyboardFocus';

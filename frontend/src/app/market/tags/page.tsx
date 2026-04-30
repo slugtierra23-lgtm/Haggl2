@@ -117,8 +117,7 @@ export default function MarketTagsPage() {
               placeholder="Filter tags…"
               className="w-full rounded-lg pl-3.5 pr-16 py-2.5 text-[13px] text-white placeholder-zinc-600 outline-none transition-all focus:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)]"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             />
@@ -151,8 +150,7 @@ export default function MarketTagsPage() {
             <div
               className="inline-flex items-center p-0.5 rounded-lg"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             >
@@ -207,8 +205,7 @@ export default function MarketTagsPage() {
           <div
             className="relative rounded-2xl overflow-hidden p-12 text-center"
             style={{
-              background:
-                'var(--bg-card)',
+              background: 'var(--bg-card)',
               boxShadow:
                 '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 36px -20px rgba(0,0,0,0.55)',
             }}

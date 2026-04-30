@@ -231,8 +231,7 @@ export const IntegrationsSection: React.FC<IntegrationsSectionProps> = ({
               onClick={(e) => e.stopPropagation()}
               className="relative rounded-xl p-8 max-w-md w-full overflow-hidden"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow:
                   '0 0 0 1px rgba(20, 241, 149, 0.25), inset 0 1px 0 var(--bg-card2), 0 20px 60px -10px rgba(0,0,0,0.5)',
               }}

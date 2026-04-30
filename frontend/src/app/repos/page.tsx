@@ -19,17 +19,14 @@ import {
   Search,
   Trash2,
 } from 'lucide-react';
-import Link from 'next/link';
 import dynamicImport from 'next/dynamic';
+import Link from 'next/link';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { ActionSearchBar, Action } from '@/components/ui/action-search-bar';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import {
-  PaymentConsentModal,
-  type PaymentMethod,
-} from '@/components/ui/payment-consent-modal';
+import { PaymentConsentModal, type PaymentMethod } from '@/components/ui/payment-consent-modal';
 
 // three.js is ~150 kB minified. Defer it off the critical path so the first
 // render of /repos doesn't wait on the background decoration.
@@ -469,11 +466,7 @@ export default function ReposPage() {
     });
   };
 
-  const executeRepoPurchase = async (
-    signature: string,
-    message: string,
-    method: PaymentMethod,
-  ) => {
+  const executeRepoPurchase = async (signature: string, message: string, method: PaymentMethod) => {
     if (!consentModal) return;
     const { repo, sellerWallet, buyerAddress, baseUsd } = consentModal;
     setConsentModal(null);
@@ -836,459 +829,486 @@ export default function ReposPage() {
             </div>
 
             {/* ── STEP 1: Access ───────────────────────────────────────────── */}
-            {publishStep === 1 && <>
-            <label className="mk-wizard__section-title">Visibility</label>
-            <div className="space-y-2 mb-5">
-              <button
-                onClick={() => setLockType('public')}
-                className={`mk-wizard__tile w-full flex items-center gap-3 ${lockType === 'public' ? 'mk-wizard__tile--active' : ''}`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${lockType === 'public' ? 'bg-atlas-500/20' : 'bg-white/05'}`}
-                >
-                  <Globe
-                    className={`w-4 h-4 ${lockType === 'public' ? 'text-atlas-400' : 'text-zinc-500'}`}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <div className="text-left">
-                  <div
-                    className={`text-sm font-light ${lockType === 'public' ? 'text-atlas-300' : 'text-zinc-400'}`}
+            {publishStep === 1 && (
+              <>
+                <label className="mk-wizard__section-title">Visibility</label>
+                <div className="space-y-2 mb-5">
+                  <button
+                    onClick={() => setLockType('public')}
+                    className={`mk-wizard__tile w-full flex items-center gap-3 ${lockType === 'public' ? 'mk-wizard__tile--active' : ''}`}
                   >
-                    Public — Free
-                  </div>
-                  <div className="text-xs text-zinc-600">Anyone can see and download</div>
-                </div>
-              </button>
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${lockType === 'public' ? 'bg-atlas-500/20' : 'bg-white/05'}`}
+                    >
+                      <Globe
+                        className={`w-4 h-4 ${lockType === 'public' ? 'text-atlas-400' : 'text-zinc-500'}`}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                    <div className="text-left">
+                      <div
+                        className={`text-sm font-light ${lockType === 'public' ? 'text-atlas-300' : 'text-zinc-400'}`}
+                      >
+                        Public — Free
+                      </div>
+                      <div className="text-xs text-zinc-600">Anyone can see and download</div>
+                    </div>
+                  </button>
 
-              <button
-                onClick={() => setLockType('locked')}
-                className={`mk-wizard__tile w-full flex items-center gap-3 ${lockType === 'locked' ? 'mk-wizard__tile--active' : ''}`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${lockType === 'locked' ? 'bg-atlas-500/20' : 'bg-white/05'}`}
-                >
-                  <Lock
-                    className={`w-4 h-4 ${lockType === 'locked' ? 'text-atlas-400' : 'text-zinc-500'}`}
-                    strokeWidth={1.5}
-                  />
-                </div>
-                <div className="text-left">
-                  <div
-                    className={`text-sm font-light ${lockType === 'locked' ? 'text-atlas-300' : 'text-zinc-400'}`}
+                  <button
+                    onClick={() => setLockType('locked')}
+                    className={`mk-wizard__tile w-full flex items-center gap-3 ${lockType === 'locked' ? 'mk-wizard__tile--active' : ''}`}
                   >
-                    Locked — Paid Access
-                  </div>
-                  <div className="text-xs text-zinc-600">Users pay to unlock download</div>
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${lockType === 'locked' ? 'bg-atlas-500/20' : 'bg-white/05'}`}
+                    >
+                      <Lock
+                        className={`w-4 h-4 ${lockType === 'locked' ? 'text-atlas-400' : 'text-zinc-500'}`}
+                        strokeWidth={1.5}
+                      />
+                    </div>
+                    <div className="text-left">
+                      <div
+                        className={`text-sm font-light ${lockType === 'locked' ? 'text-atlas-300' : 'text-zinc-400'}`}
+                      >
+                        Locked — Paid Access
+                      </div>
+                      <div className="text-xs text-zinc-600">Users pay to unlock download</div>
+                    </div>
+                  </button>
                 </div>
-              </button>
-            </div>
 
-            {lockType === 'locked' && (
-              <div className="mb-5">
-                <label className="text-xs text-zinc-500 font-mono block mb-1.5">Price (USD)</label>
-                <div className="flex items-center gap-2 rounded-xl px-3 py-2.5 border border-zinc-800 bg-zinc-900/70 focus-within:border-atlas-500/50 transition-colors">
-                  <span className="text-zinc-600 font-mono text-sm">$</span>
-                  <input
-                    type="number"
-                    min="0.01"
-                    step="0.01"
-                    placeholder="9.99"
-                    value={lockPrice}
-                    onChange={(e) => setLockPrice(e.target.value)}
-                    className="flex-1 bg-transparent text-white text-sm outline-none placeholder:text-zinc-700"
-                  />
-                </div>
-              </div>
+                {lockType === 'locked' && (
+                  <div className="mb-5">
+                    <label className="text-xs text-zinc-500 font-mono block mb-1.5">
+                      Price (USD)
+                    </label>
+                    <div className="flex items-center gap-2 rounded-xl px-3 py-2.5 border border-zinc-800 bg-zinc-900/70 focus-within:border-atlas-500/50 transition-colors">
+                      <span className="text-zinc-600 font-mono text-sm">$</span>
+                      <input
+                        type="number"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="9.99"
+                        value={lockPrice}
+                        onChange={(e) => setLockPrice(e.target.value)}
+                        className="flex-1 bg-transparent text-white text-sm outline-none placeholder:text-zinc-700"
+                      />
+                    </div>
+                  </div>
+                )}
+              </>
             )}
-            </>}
 
             {/* ── STEP 2: Branding ─────────────────────────────────────────── */}
             {publishStep === 2 && (
-            <div className="mb-5">
-              <p className="text-xs font-mono text-zinc-500 mb-3">Branding (optional)</p>
-              <div className="space-y-3">
-                {/* Logo drag-and-drop upload */}
-                <div>
-                  <label className="text-xs text-zinc-600 block mb-1.5">Project Logo</label>
-                  <input
-                    ref={logoInputRef}
-                    type="file"
-                    accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleLogoUpload(file);
-                    }}
-                  />
-                  {pubLogoUrl ? (
-                    <div
-                      className="flex items-center gap-3 p-3 rounded-xl border border-white/08"
-                      style={{ background: 'rgba(255,255,255,0.02)' }}
-                    >
-                      <img
-                        src={
-                          pubLogoUrl.startsWith('/api')
-                            ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}${pubLogoUrl}`
-                            : pubLogoUrl
-                        }
-                        alt="logo preview"
-                        className="w-10 h-10 rounded-xl object-cover border border-white/10 flex-shrink-0"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-zinc-400 truncate">Logo uploaded</p>
-                        <p className="text-xs text-zinc-600">PNG, JPG, WebP or SVG</p>
-                      </div>
-                      <button
-                        onClick={() => setPubLogoUrl('')}
-                        className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ) : (
-                    <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setLogoDragOver(true);
-                      }}
-                      onDragLeave={() => setLogoDragOver(false)}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setLogoDragOver(false);
-                        const file = e.dataTransfer.files?.[0];
+              <div className="mb-5">
+                <p className="text-xs font-mono text-zinc-500 mb-3">Branding (optional)</p>
+                <div className="space-y-3">
+                  {/* Logo drag-and-drop upload */}
+                  <div>
+                    <label className="text-xs text-zinc-600 block mb-1.5">Project Logo</label>
+                    <input
+                      ref={logoInputRef}
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
                         if (file) handleLogoUpload(file);
                       }}
-                      onClick={() => logoInputRef.current?.click()}
-                      className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-dashed cursor-pointer transition-all"
-                      style={{
-                        borderColor: logoDragOver
-                          ? 'rgba(20, 241, 149, 0.6)'
-                          : 'rgba(255,255,255,0.12)',
-                        background: logoDragOver
-                          ? 'rgba(20, 241, 149, 0.08)'
-                          : 'rgba(255,255,255,0.015)',
-                      }}
-                    >
-                      {logoUploading ? (
-                        <div className="w-4 h-4 rounded-full border-2 border-zinc-700 border-t-atlas-400 animate-spin" />
-                      ) : (
-                        <Upload className="w-4 h-4 text-zinc-600" strokeWidth={1.5} />
-                      )}
-                      <span className="text-xs text-zinc-600">
-                        {logoUploading ? 'Uploading...' : 'Drag & drop or click to upload'}
-                      </span>
-                      <span className="text-xs text-zinc-700">
-                        PNG, JPG, WebP, SVG · Max 5 MB · No GIFs
-                      </span>
-                    </div>
-                  )}
-                </div>
+                    />
+                    {pubLogoUrl ? (
+                      <div
+                        className="flex items-center gap-3 p-3 rounded-xl border border-white/08"
+                        style={{ background: 'rgba(255,255,255,0.02)' }}
+                      >
+                        <img
+                          src={
+                            pubLogoUrl.startsWith('/api')
+                              ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}${pubLogoUrl}`
+                              : pubLogoUrl
+                          }
+                          alt="logo preview"
+                          className="w-10 h-10 rounded-xl object-cover border border-white/10 flex-shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-zinc-400 truncate">Logo uploaded</p>
+                          <p className="text-xs text-zinc-600">PNG, JPG, WebP or SVG</p>
+                        </div>
+                        <button
+                          onClick={() => setPubLogoUrl('')}
+                          className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setLogoDragOver(true);
+                        }}
+                        onDragLeave={() => setLogoDragOver(false)}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          setLogoDragOver(false);
+                          const file = e.dataTransfer.files?.[0];
+                          if (file) handleLogoUpload(file);
+                        }}
+                        onClick={() => logoInputRef.current?.click()}
+                        className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-dashed cursor-pointer transition-all"
+                        style={{
+                          borderColor: logoDragOver
+                            ? 'rgba(20, 241, 149, 0.6)'
+                            : 'rgba(255,255,255,0.12)',
+                          background: logoDragOver
+                            ? 'rgba(20, 241, 149, 0.08)'
+                            : 'rgba(255,255,255,0.015)',
+                        }}
+                      >
+                        {logoUploading ? (
+                          <div className="w-4 h-4 rounded-full border-2 border-zinc-700 border-t-atlas-400 animate-spin" />
+                        ) : (
+                          <Upload className="w-4 h-4 text-zinc-600" strokeWidth={1.5} />
+                        )}
+                        <span className="text-xs text-zinc-600">
+                          {logoUploading ? 'Uploading...' : 'Drag & drop or click to upload'}
+                        </span>
+                        <span className="text-xs text-zinc-700">
+                          PNG, JPG, WebP, SVG · Max 5 MB · No GIFs
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
-                {/* Website */}
-                <div>
-                  <label className="text-xs text-zinc-600 block mb-1">Website</label>
-                  <input
-                    type="url"
-                    placeholder="https://your-project.com"
-                    value={pubWebsiteUrl}
-                    onChange={(e) => setPubWebsiteUrl(e.target.value)}
-                    className="w-full rounded-xl px-3 py-2 text-sm bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
-                  />
-                </div>
+                  {/* Website */}
+                  <div>
+                    <label className="text-xs text-zinc-600 block mb-1">Website</label>
+                    <input
+                      type="url"
+                      placeholder="https://your-project.com"
+                      value={pubWebsiteUrl}
+                      onChange={(e) => setPubWebsiteUrl(e.target.value)}
+                      className="w-full rounded-xl px-3 py-2 text-sm bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
+                    />
+                  </div>
 
-                {/* Twitter / X */}
-                <div>
-                  <label className="text-xs text-zinc-600 block mb-1">X / Twitter</label>
-                  <input
-                    type="url"
-                    placeholder="https://x.com/yourproject"
-                    value={pubTwitterUrl}
-                    onChange={(e) => setPubTwitterUrl(e.target.value)}
-                    className="w-full rounded-xl px-3 py-2 text-sm bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
-                  />
+                  {/* Twitter / X */}
+                  <div>
+                    <label className="text-xs text-zinc-600 block mb-1">X / Twitter</label>
+                    <input
+                      type="url"
+                      placeholder="https://x.com/yourproject"
+                      value={pubTwitterUrl}
+                      onChange={(e) => setPubTwitterUrl(e.target.value)}
+                      className="w-full rounded-xl px-3 py-2 text-sm bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
             )}
 
             {/* ── STEP 3: Collaborators + Review ──────────────────────────── */}
-            {publishStep === 3 && <>
-            <div className="mb-5 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-xs font-mono text-zinc-500 mb-2">Summary</p>
-              <div className="space-y-1 text-xs text-zinc-300 font-light">
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Repository</span>
-                  <span className="text-white truncate ml-2 font-mono">{lockModal.repo.full_name}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Access</span>
-                  <span className="text-white">
-                    {lockType === 'locked' ? `Locked · $${lockPrice || '0.00'}` : 'Public · free'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Logo</span>
-                  <span className="text-white">{pubLogoUrl ? 'uploaded' : '—'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Website</span>
-                  <span className="text-white truncate ml-2">{pubWebsiteUrl || '—'}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-500">Twitter / X</span>
-                  <span className="text-white truncate ml-2">{pubTwitterUrl || '—'}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mb-5">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-xs font-mono text-zinc-500">Collaborators (optional)</p>
-                <button
-                  onClick={() => setShowCollabForm((v) => !v)}
-                  className="flex items-center gap-1 text-xs text-atlas-400 hover:text-atlas-300 transition-colors"
-                >
-                  <Plus className="w-3 h-3" />
-                  Add
-                </button>
-              </div>
-
-              {collaborators.length > 0 && (
-                <div className="space-y-1.5 mb-3">
-                  {collaborators.map((c, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 p-2.5 rounded-lg"
-                      style={{
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.06)',
-                      }}
-                    >
-                      {c.avatarUrl ? (
-                        <img
-                          src={c.avatarUrl}
-                          alt=""
-                          className="w-6 h-6 rounded-full object-cover flex-shrink-0"
-                        />
-                      ) : (
-                        <div
-                          className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-light"
-                          style={{ background: 'rgba(20, 241, 149, 0.2)', color: '#14F195' }}
-                        >
-                          {c.name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <div className="text-xs text-zinc-300 truncate">{c.name}</div>
-                        {c.role && <div className="text-xs text-zinc-600 truncate">{c.role}</div>}
-                      </div>
-                      <span
-                        className="text-xs font-mono px-1.5 py-0.5 rounded"
-                        style={{
-                          background: 'rgba(20, 241, 149, 0.1)',
-                          color: '#14F195',
-                          fontSize: '0.6rem',
-                        }}
-                      >
-                        {c.type === 'AI_AGENT' ? 'AI' : c.type === 'PROGRAM' ? 'PROG' : 'USER'}
-                      </span>
-                      <button
-                        onClick={() => setCollaborators((prev) => prev.filter((_, i) => i !== idx))}
-                        className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {showCollabForm && (
+            {publishStep === 3 && (
+              <>
                 <div
-                  className="rounded-xl p-3 space-y-2.5"
+                  className="mb-5 p-3 rounded-xl"
                   style={{
                     background: 'rgba(255,255,255,0.02)',
                     border: '1px solid rgba(255,255,255,0.06)',
                   }}
                 >
-                  {/* Type selector */}
-                  <div className="flex gap-1">
-                    {(['USER', 'AI_AGENT', 'PROGRAM'] as const).map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => {
-                          setCollabType(t);
-                          setCollabSearch('');
-                          setCollabSearchResults([]);
-                          setCollabName('');
-                        }}
-                        className="flex-1 py-1.5 text-xs font-mono rounded-lg transition-all"
-                        style={{
-                          background:
-                            collabType === t ? 'rgba(20, 241, 149, 0.15)' : 'rgba(255,255,255,0.03)',
-                          color: collabType === t ? '#14F195' : 'rgba(161,161,170,0.5)',
-                          border:
-                            collabType === t
-                              ? '1px solid rgba(20, 241, 149, 0.3)'
-                              : '1px solid rgba(255,255,255,0.06)',
-                        }}
-                      >
-                        {t === 'AI_AGENT' ? 'AI Agent' : t === 'PROGRAM' ? 'Program' : 'User'}
-                      </button>
-                    ))}
+                  <p className="text-xs font-mono text-zinc-500 mb-2">Summary</p>
+                  <div className="space-y-1 text-xs text-zinc-300 font-light">
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Repository</span>
+                      <span className="text-white truncate ml-2 font-mono">
+                        {lockModal.repo.full_name}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Access</span>
+                      <span className="text-white">
+                        {lockType === 'locked'
+                          ? `Locked · $${lockPrice || '0.00'}`
+                          : 'Public · free'}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Logo</span>
+                      <span className="text-white">{pubLogoUrl ? 'uploaded' : '—'}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Website</span>
+                      <span className="text-white truncate ml-2">{pubWebsiteUrl || '—'}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-zinc-500">Twitter / X</span>
+                      <span className="text-white truncate ml-2">{pubTwitterUrl || '—'}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-5">
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-xs font-mono text-zinc-500">Collaborators (optional)</p>
+                    <button
+                      onClick={() => setShowCollabForm((v) => !v)}
+                      className="flex items-center gap-1 text-xs text-atlas-400 hover:text-atlas-300 transition-colors"
+                    >
+                      <Plus className="w-3 h-3" />
+                      Add
+                    </button>
                   </div>
 
-                  {collabType === 'USER' ? (
-                    <div className="relative">
-                      <div className="flex items-center gap-2 rounded-xl px-3 py-2 border border-zinc-800 bg-zinc-900/70 focus-within:border-atlas-500/50 transition-colors">
-                        <Search
-                          className="w-3.5 h-3.5 text-zinc-600 flex-shrink-0"
-                          strokeWidth={1.5}
-                        />
-                        <input
-                          type="text"
-                          placeholder="Search users by username..."
-                          value={collabSearch}
-                          onChange={(e) => {
-                            setCollabSearch(e.target.value);
-                            searchUsers(e.target.value);
-                          }}
-                          className="flex-1 bg-transparent text-white text-xs outline-none placeholder:text-zinc-700"
-                        />
-                      </div>
-                      {collabSearchResults.length > 0 && (
+                  {collaborators.length > 0 && (
+                    <div className="space-y-1.5 mb-3">
+                      {collaborators.map((c, idx) => (
                         <div
-                          className="absolute top-full mt-1 left-0 right-0 z-20 rounded-xl overflow-hidden shadow-xl"
+                          key={idx}
+                          className="flex items-center gap-2 p-2.5 rounded-lg"
                           style={{
-                            background: 'var(--bg-card)',
-                            border: '1px solid rgba(20, 241, 149, 0.2)',
+                            background: 'rgba(255,255,255,0.03)',
+                            border: '1px solid rgba(255,255,255,0.06)',
                           }}
                         >
-                          {collabSearchResults.map((u) => {
-                            const rank = getReputationRank(u.reputationPoints);
-                            return (
-                              <button
-                                key={u.id}
-                                onClick={() => {
-                                  if (collaborators.find((c) => c.userId === u.id)) return;
-                                  setCollaborators((prev) => [
-                                    ...prev,
-                                    {
-                                      type: 'USER',
-                                      name: u.displayName || u.username,
-                                      role: collabRole,
-                                      url: '',
-                                      userId: u.id,
-                                      avatarUrl: u.avatarUrl || undefined,
-                                      reputationPoints: u.reputationPoints,
-                                    },
-                                  ]);
-                                  setCollabSearch('');
-                                  setCollabSearchResults([]);
-                                  setShowCollabForm(false);
-                                }}
-                                className="w-full flex items-center gap-2.5 px-3 py-2.5 hover:bg-atlas-500/10 transition-colors text-left"
-                              >
-                                {u.avatarUrl ? (
-                                  <img
-                                    src={u.avatarUrl}
-                                    alt=""
-                                    className="w-7 h-7 rounded-full object-cover flex-shrink-0"
-                                  />
-                                ) : (
-                                  <div
-                                    className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-light"
-                                    style={{
-                                      background: 'rgba(20, 241, 149, 0.2)',
-                                      color: '#14F195',
-                                    }}
-                                  >
-                                    {(u.username || 'U')[0].toUpperCase()}
-                                  </div>
-                                )}
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-xs text-white truncate">
-                                    {u.displayName || u.username}
-                                  </div>
-                                  <div className="text-xs text-zinc-600">@{u.username}</div>
-                                </div>
-                                <span className="text-xs" title={rank.label}>
-                                  {rank.badge}
-                                </span>
-                              </button>
-                            );
-                          })}
+                          {c.avatarUrl ? (
+                            <img
+                              src={c.avatarUrl}
+                              alt=""
+                              className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+                            />
+                          ) : (
+                            <div
+                              className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-light"
+                              style={{ background: 'rgba(20, 241, 149, 0.2)', color: '#14F195' }}
+                            >
+                              {c.name.charAt(0).toUpperCase()}
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs text-zinc-300 truncate">{c.name}</div>
+                            {c.role && (
+                              <div className="text-xs text-zinc-600 truncate">{c.role}</div>
+                            )}
+                          </div>
+                          <span
+                            className="text-xs font-mono px-1.5 py-0.5 rounded"
+                            style={{
+                              background: 'rgba(20, 241, 149, 0.1)',
+                              color: '#14F195',
+                              fontSize: '0.6rem',
+                            }}
+                          >
+                            {c.type === 'AI_AGENT' ? 'AI' : c.type === 'PROGRAM' ? 'PROG' : 'USER'}
+                          </span>
+                          <button
+                            onClick={() =>
+                              setCollaborators((prev) => prev.filter((_, i) => i !== idx))
+                            }
+                            className="text-zinc-600 hover:text-red-400 transition-colors flex-shrink-0"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
                         </div>
-                      )}
+                      ))}
                     </div>
-                  ) : (
-                    <>
-                      <input
-                        type="text"
-                        placeholder={
-                          collabType === 'AI_AGENT'
-                            ? 'AI Agent name (e.g. GPT-4, Claude)'
-                            : 'Program name (e.g. Webpack, Docker)'
-                        }
-                        value={collabName}
-                        onChange={(e) => setCollabName(e.target.value)}
-                        className="w-full rounded-xl px-3 py-2 text-xs bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
-                      />
-                      <input
-                        type="url"
-                        placeholder="Link (optional)"
-                        value={collabUrl}
-                        onChange={(e) => setCollabUrl(e.target.value)}
-                        className="w-full rounded-xl px-3 py-2 text-xs bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
-                      />
-                    </>
                   )}
 
-                  <input
-                    type="text"
-                    placeholder="Role / contribution (optional)"
-                    value={collabRole}
-                    onChange={(e) => setCollabRole(e.target.value)}
-                    className="w-full rounded-xl px-3 py-2 text-xs bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
-                  />
-
-                  {collabType !== 'USER' && (
-                    <button
-                      onClick={() => {
-                        if (!collabName.trim()) return;
-                        setCollaborators((prev) => [
-                          ...prev,
-                          { type: collabType, name: collabName, role: collabRole, url: collabUrl },
-                        ]);
-                        setCollabName('');
-                        setCollabRole('');
-                        setCollabUrl('');
-                        setShowCollabForm(false);
-                      }}
-                      className="w-full py-2 rounded-xl text-xs font-mono transition-colors"
+                  {showCollabForm && (
+                    <div
+                      className="rounded-xl p-3 space-y-2.5"
                       style={{
-                        background: 'rgba(20, 241, 149, 0.15)',
-                        color: '#14F195',
-                        border: '1px solid rgba(20, 241, 149, 0.25)',
+                        background: 'rgba(255,255,255,0.02)',
+                        border: '1px solid rgba(255,255,255,0.06)',
                       }}
                     >
-                      Add Collaborator
-                    </button>
+                      {/* Type selector */}
+                      <div className="flex gap-1">
+                        {(['USER', 'AI_AGENT', 'PROGRAM'] as const).map((t) => (
+                          <button
+                            key={t}
+                            onClick={() => {
+                              setCollabType(t);
+                              setCollabSearch('');
+                              setCollabSearchResults([]);
+                              setCollabName('');
+                            }}
+                            className="flex-1 py-1.5 text-xs font-mono rounded-lg transition-all"
+                            style={{
+                              background:
+                                collabType === t
+                                  ? 'rgba(20, 241, 149, 0.15)'
+                                  : 'rgba(255,255,255,0.03)',
+                              color: collabType === t ? '#14F195' : 'rgba(161,161,170,0.5)',
+                              border:
+                                collabType === t
+                                  ? '1px solid rgba(20, 241, 149, 0.3)'
+                                  : '1px solid rgba(255,255,255,0.06)',
+                            }}
+                          >
+                            {t === 'AI_AGENT' ? 'AI Agent' : t === 'PROGRAM' ? 'Program' : 'User'}
+                          </button>
+                        ))}
+                      </div>
+
+                      {collabType === 'USER' ? (
+                        <div className="relative">
+                          <div className="flex items-center gap-2 rounded-xl px-3 py-2 border border-zinc-800 bg-zinc-900/70 focus-within:border-atlas-500/50 transition-colors">
+                            <Search
+                              className="w-3.5 h-3.5 text-zinc-600 flex-shrink-0"
+                              strokeWidth={1.5}
+                            />
+                            <input
+                              type="text"
+                              placeholder="Search users by username..."
+                              value={collabSearch}
+                              onChange={(e) => {
+                                setCollabSearch(e.target.value);
+                                searchUsers(e.target.value);
+                              }}
+                              className="flex-1 bg-transparent text-white text-xs outline-none placeholder:text-zinc-700"
+                            />
+                          </div>
+                          {collabSearchResults.length > 0 && (
+                            <div
+                              className="absolute top-full mt-1 left-0 right-0 z-20 rounded-xl overflow-hidden shadow-xl"
+                              style={{
+                                background: 'var(--bg-card)',
+                                border: '1px solid rgba(20, 241, 149, 0.2)',
+                              }}
+                            >
+                              {collabSearchResults.map((u) => {
+                                const rank = getReputationRank(u.reputationPoints);
+                                return (
+                                  <button
+                                    key={u.id}
+                                    onClick={() => {
+                                      if (collaborators.find((c) => c.userId === u.id)) return;
+                                      setCollaborators((prev) => [
+                                        ...prev,
+                                        {
+                                          type: 'USER',
+                                          name: u.displayName || u.username,
+                                          role: collabRole,
+                                          url: '',
+                                          userId: u.id,
+                                          avatarUrl: u.avatarUrl || undefined,
+                                          reputationPoints: u.reputationPoints,
+                                        },
+                                      ]);
+                                      setCollabSearch('');
+                                      setCollabSearchResults([]);
+                                      setShowCollabForm(false);
+                                    }}
+                                    className="w-full flex items-center gap-2.5 px-3 py-2.5 hover:bg-atlas-500/10 transition-colors text-left"
+                                  >
+                                    {u.avatarUrl ? (
+                                      <img
+                                        src={u.avatarUrl}
+                                        alt=""
+                                        className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                                      />
+                                    ) : (
+                                      <div
+                                        className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-light"
+                                        style={{
+                                          background: 'rgba(20, 241, 149, 0.2)',
+                                          color: '#14F195',
+                                        }}
+                                      >
+                                        {(u.username || 'U')[0].toUpperCase()}
+                                      </div>
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                      <div className="text-xs text-white truncate">
+                                        {u.displayName || u.username}
+                                      </div>
+                                      <div className="text-xs text-zinc-600">@{u.username}</div>
+                                    </div>
+                                    <span className="text-xs" title={rank.label}>
+                                      {rank.badge}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          <input
+                            type="text"
+                            placeholder={
+                              collabType === 'AI_AGENT'
+                                ? 'AI Agent name (e.g. GPT-4, Claude)'
+                                : 'Program name (e.g. Webpack, Docker)'
+                            }
+                            value={collabName}
+                            onChange={(e) => setCollabName(e.target.value)}
+                            className="w-full rounded-xl px-3 py-2 text-xs bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
+                          />
+                          <input
+                            type="url"
+                            placeholder="Link (optional)"
+                            value={collabUrl}
+                            onChange={(e) => setCollabUrl(e.target.value)}
+                            className="w-full rounded-xl px-3 py-2 text-xs bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
+                          />
+                        </>
+                      )}
+
+                      <input
+                        type="text"
+                        placeholder="Role / contribution (optional)"
+                        value={collabRole}
+                        onChange={(e) => setCollabRole(e.target.value)}
+                        className="w-full rounded-xl px-3 py-2 text-xs bg-zinc-900/70 border border-zinc-800 text-white placeholder:text-zinc-700 outline-none focus:border-atlas-500/50 transition-colors"
+                      />
+
+                      {collabType !== 'USER' && (
+                        <button
+                          onClick={() => {
+                            if (!collabName.trim()) return;
+                            setCollaborators((prev) => [
+                              ...prev,
+                              {
+                                type: collabType,
+                                name: collabName,
+                                role: collabRole,
+                                url: collabUrl,
+                              },
+                            ]);
+                            setCollabName('');
+                            setCollabRole('');
+                            setCollabUrl('');
+                            setShowCollabForm(false);
+                          }}
+                          className="w-full py-2 rounded-xl text-xs font-mono transition-colors"
+                          style={{
+                            background: 'rgba(20, 241, 149, 0.15)',
+                            color: '#14F195',
+                            border: '1px solid rgba(20, 241, 149, 0.25)',
+                          }}
+                        >
+                          Add Collaborator
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
-              )}
-            </div>
-            </>}
+              </>
+            )}
 
             <div className="flex gap-3 pt-2">
               <button
                 type="button"
                 onClick={() => {
-                  if (publishStep > 1) setPublishStep(((publishStep - 1) as 1 | 2 | 3));
+                  if (publishStep > 1) setPublishStep((publishStep - 1) as 1 | 2 | 3);
                   else setLockModal(null);
                 }}
                 className="mk-wizard__secondary"
@@ -1307,7 +1327,7 @@ export default function ReposPage() {
                       }
                       setError('');
                     }
-                    setPublishStep(((publishStep + 1) as 1 | 2 | 3));
+                    setPublishStep((publishStep + 1) as 1 | 2 | 3);
                   }}
                   className="mk-wizard__primary"
                 >

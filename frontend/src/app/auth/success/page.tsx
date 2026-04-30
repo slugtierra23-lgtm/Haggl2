@@ -56,7 +56,8 @@ export default function AuthSuccessPage() {
             background:
               'linear-gradient(135deg, rgba(20, 241, 149, 0.25) 0%, rgba(20, 241, 149, 0.06) 100%)',
             border: '1px solid rgba(20, 241, 149, 0.4)',
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 0 32px -6px rgba(20, 241, 149, 0.55)',
+            boxShadow:
+              'inset 0 1px 0 rgba(255,255,255,0.1), 0 0 32px -6px rgba(20, 241, 149, 0.55)',
           }}
         >
           <CheckCircle2 className="w-8 h-8 text-[#b4a7ff]" strokeWidth={1.5} />

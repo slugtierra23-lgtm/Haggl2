@@ -107,7 +107,8 @@ export function StatsShowcase() {
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(20, 241, 149, 0.1), rgba(6,182,212,0.1))',
+                  background:
+                    'linear-gradient(135deg, rgba(20, 241, 149, 0.1), rgba(6,182,212,0.1))',
                 }}
               />
 

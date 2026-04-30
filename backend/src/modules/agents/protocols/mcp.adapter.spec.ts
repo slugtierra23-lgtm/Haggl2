@@ -112,10 +112,7 @@ describe('McpAdapter', () => {
           },
         },
       });
-      const res = await adapter.invoke(
-        { endpoint: 'https://mcp.example.com' },
-        { prompt: 'hi' },
-      );
+      const res = await adapter.invoke({ endpoint: 'https://mcp.example.com' }, { prompt: 'hi' });
       expect(res.reply).toBe('hello from mcp');
       expect(res.latencyMs).toBeGreaterThanOrEqual(0);
     });
@@ -125,10 +122,7 @@ describe('McpAdapter', () => {
         status: 200,
         data: { jsonrpc: '2.0', id: 2, result: { content: [] } },
       });
-      const res = await adapter.invoke(
-        { endpoint: 'https://mcp.example.com' },
-        { prompt: 'hi' },
-      );
+      const res = await adapter.invoke({ endpoint: 'https://mcp.example.com' }, { prompt: 'hi' });
       expect(res.reply).toBe('');
     });
 
@@ -141,10 +135,7 @@ describe('McpAdapter', () => {
           error: { code: -32602, message: 'invalid arguments' },
         },
       });
-      const res = await adapter.invoke(
-        { endpoint: 'https://mcp.example.com' },
-        { prompt: 'hi' },
-      );
+      const res = await adapter.invoke({ endpoint: 'https://mcp.example.com' }, { prompt: 'hi' });
       expect(res.reply).toBe('');
       expect((res.raw as any).error).toMatch(/invalid arguments/);
       expect((res.raw as any).code).toBe(-32602);
@@ -177,10 +168,7 @@ describe('McpAdapter', () => {
 
     it('handles network errors without throwing', async () => {
       mockedAxios.post.mockRejectedValueOnce(new Error('ETIMEDOUT'));
-      const res = await adapter.invoke(
-        { endpoint: 'https://mcp.example.com' },
-        { prompt: 'hi' },
-      );
+      const res = await adapter.invoke({ endpoint: 'https://mcp.example.com' }, { prompt: 'hi' });
       expect(res.reply).toBe('');
       expect((res.raw as any).error).toBeDefined();
     });
@@ -190,10 +178,7 @@ describe('McpAdapter', () => {
         status: 200,
         data: { jsonrpc: '2.0', id: 2, result: { content: [{ type: 'text', text: 'ok' }] } },
       });
-      await adapter.invoke(
-        { endpoint: 'https://mcp.example.com' },
-        { prompt: 'hi' },
-      );
+      await adapter.invoke({ endpoint: 'https://mcp.example.com' }, { prompt: 'hi' });
       const headers = mockedAxios.post.mock.calls[0][2]?.headers as Record<string, string>;
       expect(headers['X-Bolty-Event']).toBe('invoke');
       expect(headers['x-bolty-signature']).toMatch(/^t=\d+,v1=[a-f0-9]{64}$/);

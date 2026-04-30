@@ -68,7 +68,7 @@ export class ReposService {
     let delay = 1500;
     const candidates = this.baseRpcCandidates();
     let idx = 0;
-    while (true) {
+    for (;;) {
       const rpcUrl = candidates[idx % candidates.length];
       try {
         const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -88,9 +88,7 @@ export class ReposService {
 
   /** Fetch a Base tx across the RPC candidate list until one returns it.
    *  Returns null when every candidate times out or errors. */
-  private async fetchBaseTx(
-    txHash: string,
-  ): Promise<ethers.TransactionResponse | null> {
+  private async fetchBaseTx(txHash: string): Promise<ethers.TransactionResponse | null> {
     for (const rpcUrl of this.baseRpcCandidates()) {
       try {
         const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -594,12 +592,14 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     const take = Math.min(limit, 50);
 
     // 30s Redis cache keyed on all params (skip for search — too many combos).
-    const repoCacheKey = !search
-      ? `repos:list:${language ?? ''}:${sortBy}:${page}:${take}`
-      : null;
+    const repoCacheKey = !search ? `repos:list:${language ?? ''}:${sortBy}:${page}:${take}` : null;
     if (repoCacheKey) {
       const hit = await this.redis.get(repoCacheKey).catch(() => null);
-      if (hit) return JSON.parse(hit) as { data: object[]; meta: { total: number; page: number; limit: number; pages: number } };
+      if (hit)
+        return JSON.parse(hit) as {
+          data: object[];
+          meta: { total: number; page: number; limit: number; pages: number };
+        };
     }
 
     const where: Record<string, unknown> = {
@@ -821,11 +821,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
    * repos to handle the case where a seller has several locked repos at
    * similar prices.
    */
-  async recoverPurchaseByTxHash(
-    buyerId: string,
-    txHash: string,
-    sellerUsername?: string,
-  ) {
+  async recoverPurchaseByTxHash(buyerId: string, txHash: string, sellerUsername?: string) {
     if (!/^0x[0-9a-fA-F]{64}$/.test(txHash)) {
       throw new BadRequestException('Invalid transaction hash');
     }
@@ -1183,8 +1179,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
 
       // Detect path: ETH if tx.value > 0 and routed to the seller; else BOLTY.
       const sentEth = tx && tx.value && BigInt(tx.value) > 0n;
-      const sentToSeller =
-        tx && tx.to && tx.to.toLowerCase() === sellerWallet.toLowerCase();
+      const sentToSeller = tx && tx.to && tx.to.toLowerCase() === sellerWallet.toLowerCase();
 
       if (sentEth && sentToSeller) {
         const payer = tx?.from?.toLowerCase();
@@ -1244,9 +1239,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         amountWei = paid.toString();
         detectedCurrency = 'BOLTY';
       } else {
-        throw new BadRequestException(
-          'Transaction did not transfer funds to the seller wallet',
-        );
+        throw new BadRequestException('Transaction did not transfer funds to the seller wallet');
       }
     } catch (err) {
       if (err instanceof BadRequestException) throw err;
@@ -1335,12 +1328,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     // FIRST_PURCHASE. FIRST_* bonuses fire once per user across all
     // surfaces (market listings + repo purchases counted together).
     try {
-      const [
-        priorMarketSales,
-        priorRepoSales,
-        priorMarketBuys,
-        priorRepoBuys,
-      ] = await Promise.all([
+      const [priorMarketSales, priorRepoSales, priorMarketBuys, priorRepoBuys] = await Promise.all([
         this.prisma.marketPurchase.count({
           where: { sellerId: repo.userId, verified: true },
         }),
@@ -1355,8 +1343,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         }),
       ]);
 
-      const sellerReason =
-        priorMarketSales + priorRepoSales === 0 ? 'FIRST_SALE' : 'REPO_SOLD';
+      const sellerReason = priorMarketSales + priorRepoSales === 0 ? 'FIRST_SALE' : 'REPO_SOLD';
       this.reputation
         .awardPoints(repo.userId, sellerReason, purchase.id, repo.name)
         .catch((err) =>
@@ -1396,9 +1383,10 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         const sellerRec = parties.find((p) => p.id === repo.userId);
         const currency = isBoltyPath ? 'BOLTY' : 'ETH';
         const amount = amountWei ? Number(amountWei) / 1e18 : 0;
-        const amountLabel = Number.isFinite(amount) && amount > 0
-          ? `${amount.toFixed(6).replace(/0+$/, '').replace(/\.$/, '')} ${currency}`
-          : `$${repo.lockedPriceUsd ?? 0}`;
+        const amountLabel =
+          Number.isFinite(amount) && amount > 0
+            ? `${amount.toFixed(6).replace(/0+$/, '').replace(/\.$/, '')} ${currency}`
+            : `$${repo.lockedPriceUsd ?? 0}`;
         const payload = {
           buyerUsername: buyerRec?.username || 'buyer',
           sellerUsername: sellerRec?.username || 'seller',

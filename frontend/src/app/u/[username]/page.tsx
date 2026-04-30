@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { getReputationRank } from '@/components/ui/reputation-badge';
 import { api, ApiError } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { resolveAssetUrl } from '@/lib/utils/asset-url';
@@ -436,8 +435,7 @@ export default function PublicProfilePage() {
             <div
               className="relative rounded-2xl overflow-hidden p-12 text-center"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
               }}
             >
@@ -538,8 +536,7 @@ export default function PublicProfilePage() {
                 );
 
                 const cardStyle = {
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 36px -20px rgba(0,0,0,0.55)',
                 } as const;
@@ -617,8 +614,7 @@ export default function PublicProfilePage() {
                     href={`/market/agents/${l.id}`}
                     className="group relative rounded-xl overflow-hidden p-4 transition-all block"
                     style={{
-                      background:
-                        'var(--bg-card)',
+                      background: 'var(--bg-card)',
                       boxShadow:
                         '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04), 0 12px 36px -20px rgba(0,0,0,0.55)',
                     }}

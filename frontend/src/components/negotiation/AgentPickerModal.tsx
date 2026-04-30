@@ -47,7 +47,19 @@ export function AgentPickerModal({
     let cancelled = false;
     (async () => {
       try {
-        const res = await api.get<{ data: Array<{ id: string; title: string; description?: string; type: string; price: number; currency: string; agentEndpoint?: string | null; fileKey?: string | null; tags?: string[] }> }>('/market/my-listings');
+        const res = await api.get<{
+          data: Array<{
+            id: string;
+            title: string;
+            description?: string;
+            type: string;
+            price: number;
+            currency: string;
+            agentEndpoint?: string | null;
+            fileKey?: string | null;
+            tags?: string[];
+          }>;
+        }>('/market/my-listings');
         if (cancelled) return;
         setAgents(
           (res.data || [])
@@ -100,8 +112,7 @@ export function AgentPickerModal({
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
             style={{
-              background:
-                'linear-gradient(135deg, rgba(20, 241, 149, 0.3), rgba(6,182,212,0.25))',
+              background: 'linear-gradient(135deg, rgba(20, 241, 149, 0.3), rgba(6,182,212,0.25))',
               boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.08)',
             }}
           >
@@ -112,8 +123,7 @@ export function AgentPickerModal({
               Pick your negotiator
             </h3>
             <p className="text-[12px] text-zinc-500 font-light mt-0.5">
-              Buying <span className="text-zinc-300">{listingTitle}</span> ·{' '}
-              listed at{' '}
+              Buying <span className="text-zinc-300">{listingTitle}</span> · listed at{' '}
               <span className="text-zinc-300">
                 {listingPrice} {listingCurrency}
               </span>
@@ -158,9 +168,7 @@ export function AgentPickerModal({
                 <Zap className="w-4 h-4 text-[#b4a7ff]" strokeWidth={1.8} />
               </div>
               <div className="min-w-0">
-                <div className="text-[13px] font-light text-white">
-                  Atlas auto-negotiator
-                </div>
+                <div className="text-[13px] font-light text-white">Atlas auto-negotiator</div>
                 <p className="text-[11px] text-zinc-500 font-light line-clamp-1">
                   Default · tries for ~25% discount, quick
                 </p>
@@ -216,16 +224,9 @@ export function AgentPickerModal({
               }}
             >
               <div className="flex items-center gap-3">
-                <UserAvatar
-                  src={undefined}
-                  name={a.title}
-                  userId={a.id}
-                  size={36}
-                />
+                <UserAvatar src={undefined} name={a.title} userId={a.id} size={36} />
                 <div className="min-w-0 flex-1">
-                  <div className="text-[13px] font-light text-white truncate">
-                    {a.title}
-                  </div>
+                  <div className="text-[13px] font-light text-white truncate">{a.title}</div>
                   <p className="text-[11px] text-zinc-500 font-light line-clamp-1">
                     {a.description || 'Your agent'}
                   </p>

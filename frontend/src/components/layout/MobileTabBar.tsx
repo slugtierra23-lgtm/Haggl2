@@ -45,11 +45,7 @@ const TABS: Array<{
 export function MobileTabBar() {
   const pathname = usePathname();
   return (
-    <nav
-      className="mk-mobile-tabbar lg:hidden"
-      role="navigation"
-      aria-label="Primary"
-    >
+    <nav className="mk-mobile-tabbar lg:hidden" role="navigation" aria-label="Primary">
       {TABS.map((t) => {
         const active = t.matches(pathname);
         const Icon = t.icon;
@@ -60,11 +56,7 @@ export function MobileTabBar() {
             className={`mk-mobile-tab ${active ? 'mk-mobile-tab--active' : ''}`}
             aria-current={active ? 'page' : undefined}
           >
-            <Icon
-              className="mk-mobile-tab__icon"
-              strokeWidth={active ? 2.2 : 1.8}
-              aria-hidden
-            />
+            <Icon className="mk-mobile-tab__icon" strokeWidth={active ? 2.2 : 1.8} aria-hidden />
             <span className="mk-mobile-tab__label">{t.label}</span>
           </Link>
         );

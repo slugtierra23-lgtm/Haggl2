@@ -5,21 +5,18 @@ export const dynamic = 'force-dynamic';
 import { motion } from 'framer-motion';
 import {
   ArrowUpRight,
-  BadgeCheck,
   Coins,
   Flame,
   LineChart,
   Package,
   Plus,
-  Search,
   ShoppingCart,
   Sparkles,
   TrendingUp,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { io, type Socket } from '@/lib/realtime/io';
+import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   AtlasFilterBar,
@@ -27,7 +24,6 @@ import {
   AtlasStatTile,
   AtlasTabs,
   AtlasButton,
-  AtlasBadge,
   AtlasTableRowSkeleton,
   AtlasWelcomeBanner,
 } from '@/components/atlas';
@@ -42,6 +38,7 @@ import {
   LISTING_TYPE_LABEL as TYPE_LABEL,
   type ListingType,
 } from '@/lib/listing/types';
+import { io, type Socket } from '@/lib/realtime/io';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -164,9 +161,7 @@ function MarketScreener() {
   // Client-side price band filter — drops listings outside the chosen
   // bucket after the fetch. Cheap because the backend already paginates
   // to a manageable page size; switching feels instant.
-  const [priceBand, setPriceBand] = useState<
-    'free' | 'lt1' | '1to10' | 'gt10' | null
-  >(null);
+  const [priceBand, setPriceBand] = useState<'free' | 'lt1' | '1to10' | 'gt10' | null>(null);
   // Default to 'recent' instead of 'trending'. Trending uses a 7-day
   // activity score path on the backend (purchases + negotiations) and
   // can return surprising results in low-volume windows; 'recent' is
@@ -654,9 +649,7 @@ function MarketScreener() {
               <AtlasFilterChips
                 label="Price"
                 value={priceBand}
-                onChange={(v) =>
-                  setPriceBand(v as 'free' | 'lt1' | '1to10' | 'gt10' | null)
-                }
+                onChange={(v) => setPriceBand(v as 'free' | 'lt1' | '1to10' | 'gt10' | null)}
                 clearable
                 options={[
                   { value: 'free', label: 'Free' },
@@ -848,9 +841,7 @@ function NewLaunchesTicker({
           New launches
           <span className="h-px flex-1 bg-white/[0.06]" />
         </div>
-        <div
-          className="relative overflow-hidden rounded-lg py-3 bg-[var(--bg-card)] border border-[var(--border)]"
-        >
+        <div className="relative overflow-hidden rounded-lg py-3 bg-[var(--bg-card)] border border-[var(--border)]">
           <div
             className="absolute inset-y-0 left-0 w-10 z-10 pointer-events-none"
             style={{
@@ -1267,9 +1258,7 @@ function TradeRow({ trade }: { trade: Pulse['recentTrades'][number] }) {
           <div className="text-[10px] text-[var(--text-muted)] font-light truncate">
             <span className="text-[var(--brand)]">@{trade.buyer.username || 'anon'}</span>
             <span className="text-[var(--text-muted)]"> bought from </span>
-            <span className="text-[var(--text-secondary)]">
-              @{trade.seller.username || 'anon'}
-            </span>
+            <span className="text-[var(--text-secondary)]">@{trade.seller.username || 'anon'}</span>
           </div>
         </div>
         <div className="text-right flex-shrink-0">

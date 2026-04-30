@@ -121,7 +121,10 @@ export default function SellerProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen" style={{ background: 'var(--bg)' }}>
+      <div
+        className="flex items-center justify-center min-h-screen"
+        style={{ background: 'var(--bg)' }}
+      >
         <motion.div
           className="w-5 h-5 rounded-full border-2 border-zinc-800 border-t-atlas-500"
           animate={{ rotate: 360 }}
@@ -291,8 +294,7 @@ export default function SellerProfilePage() {
             <div
               className="relative rounded-2xl p-10 text-center overflow-hidden"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.04)',
               }}
             >
@@ -354,8 +356,7 @@ export default function SellerProfilePage() {
                   key={r.id}
                   className="relative rounded-xl p-4 flex gap-3 overflow-hidden"
                   style={{
-                    background:
-                      'var(--bg-card)',
+                    background: 'var(--bg-card)',
                     boxShadow:
                       '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                   }}
@@ -531,8 +532,7 @@ function ListingsGrid({
               href={`/market/agents/${l.id}`}
               className="group relative rounded-xl p-4 overflow-hidden transition-all block"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
               onMouseEnter={(e) => {

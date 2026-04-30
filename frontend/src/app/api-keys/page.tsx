@@ -13,8 +13,6 @@ import {
   Activity,
   Clock,
   Code2,
-  Terminal,
-  ArrowUpRight,
   Edit2,
   Save,
   X as XIcon,

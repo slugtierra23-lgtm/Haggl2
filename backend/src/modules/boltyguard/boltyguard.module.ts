@@ -13,13 +13,7 @@ import { SemgrepRunner } from './semgrep-runner';
 @Module({
   imports: [PrismaModule, RedisModule],
   controllers: [BoltyGuardController],
-  providers: [
-    BoltyGuardService,
-    SemgrepRunner,
-    HolderGateService,
-    BundleScanner,
-    GithubFetcher,
-  ],
+  providers: [BoltyGuardService, SemgrepRunner, HolderGateService, BundleScanner, GithubFetcher],
   exports: [BoltyGuardService],
 })
 export class BoltyGuardModule {}

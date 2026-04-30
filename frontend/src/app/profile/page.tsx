@@ -21,8 +21,7 @@ const APIKeysSection = dynamicImport(
   { ssr: false },
 );
 const ConnectedAccountsPanel = dynamicImport(
-  () =>
-    import('@/components/profile/ConnectedAccountsPanel').then((m) => m.ConnectedAccountsPanel),
+  () => import('@/components/profile/ConnectedAccountsPanel').then((m) => m.ConnectedAccountsPanel),
   { ssr: false },
 );
 const RanksPanel = dynamicImport(
@@ -38,19 +37,15 @@ const AvatarCropperModal = dynamicImport(
   { ssr: false },
 );
 import { AtlasFilterBar, AtlasTabs } from '@/components/atlas';
-import { GradientText } from '@/components/ui/GradientText';
 import { getReputationRank, RANK_TIERS } from '@/components/ui/reputation-badge';
 import { UserAvatar as UserAvatarComponent } from '@/components/ui/UserAvatar';
 import { VerificationCodeModal } from '@/components/ui/VerificationCodeModal';
 import { WalletProviderIcon, walletProviderLabel } from '@/components/ui/WalletIcons';
-import { useStepUp } from '@/lib/auth/useStepUp';
 import { api, ApiError, API_URL } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { useStepUp } from '@/lib/auth/useStepUp';
 import { getMetaMaskProvider } from '@/lib/wallet/ethereum';
-import {
-  isWalletConnectConfigured,
-  linkWalletConnect,
-} from '@/lib/wallet/walletconnect';
+import { isWalletConnectConfigured, linkWalletConnect } from '@/lib/wallet/walletconnect';
 
 // Tabs after the April 2026 redesign:
 //   • Removed: 'usage', 'activity', 'integrations', 'notifications', 'agent', 'social'
@@ -647,9 +642,7 @@ export default function ProfilePage() {
       const [f, r, s] = await Promise.all([
         api.get<Friend[]>('/social/friends'),
         api.get<FriendRequest[]>('/social/friends/requests'),
-        api
-          .get<SentFriendRequest[]>('/social/friends/sent')
-          .catch(() => [] as SentFriendRequest[]),
+        api.get<SentFriendRequest[]>('/social/friends/sent').catch(() => [] as SentFriendRequest[]),
       ]);
       setFriends(f);
       setFriendRequests(r);
@@ -1142,9 +1135,7 @@ export default function ProfilePage() {
       setTimeout(() => setFriendsMsg(''), 2500);
       await loadFriends();
     } catch (err) {
-      setFriendsErr(
-        err instanceof ApiError ? err.message : 'Could not respond to this request.',
-      );
+      setFriendsErr(err instanceof ApiError ? err.message : 'Could not respond to this request.');
     } finally {
       setFriendActionId(null);
     }
@@ -1475,1298 +1466,1329 @@ export default function ProfilePage() {
       <main className="px-6 md:px-10">
         <div className="mx-auto max-w-[1400px]">
           <div className="profile-content">
-          {/* ════════════════════════════════════════════
+            {/* ════════════════════════════════════════════
           GENERAL
       ════════════════════════════════════════════ */}
-          {tab === 'general' && (
-            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-4 items-start">
-            <div className="space-y-4 min-w-0">
-            <div className="profile-content-card">
-              <SectionHeader
-                title="Identity"
-                subtitle="Your public information on Atlas."
-              />
-              <Alert type="success" msg={genMsg} />
-              <Alert type="error" msg={genErr} />
+            {tab === 'general' && (
+              <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-4 items-start">
+                <div className="space-y-4 min-w-0">
+                  <div className="profile-content-card">
+                    <SectionHeader title="Identity" subtitle="Your public information on Atlas." />
+                    <Alert type="success" msg={genMsg} />
+                    <Alert type="error" msg={genErr} />
 
-              {/* Avatar upload */}
-              <div className="flex items-center gap-6 p-6 rounded-xl border border-[rgba(20, 241, 149, 0.15)] bg-gradient-to-r from-[rgba(20, 241, 149, 0.05)] to-transparent mb-6">
-                <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
-                  <div
-                    className="relative group cursor-pointer"
-                    onClick={() => avatarInputRef.current?.click()}
-                  >
-                    <Avatar
-                      src={user?.avatarUrl}
-                      name={user?.displayName || user?.username}
-                      userId={user?.id}
-                      size="lg"
-                    />
-                    {(() => {
-                      const pts =
-                        (user as { reputationPoints?: number } | null)?.reputationPoints ?? 0;
-                      const rank = getReputationRank(pts);
-                      const RankIcon = rank.icon;
-                      return (
-                        <span
-                          className="absolute"
-                          style={{
-                            right: -2,
-                            bottom: -2,
-                            width: 18,
-                            height: 18,
-                            borderRadius: '9999px',
-                            background: 'var(--bg-card)',
-                            border: `1.5px solid ${rank.color}`,
-                            boxShadow: `0 0 0 1.5px #0a0a0e, 0 0 8px -1px ${rank.color}88`,
-                            display: 'grid',
-                            placeItems: 'center',
-                          }}
-                          title={`${rank.label} · ${pts.toLocaleString()} rays`}
-                          aria-hidden
+                    {/* Avatar upload */}
+                    <div className="flex items-center gap-6 p-6 rounded-xl border border-[rgba(20, 241, 149, 0.15)] bg-gradient-to-r from-[rgba(20, 241, 149, 0.05)] to-transparent mb-6">
+                      <div className="flex flex-col items-center gap-1.5 flex-shrink-0">
+                        <div
+                          className="relative group cursor-pointer"
+                          onClick={() => avatarInputRef.current?.click()}
                         >
-                          <RankIcon
-                            style={{ color: rank.color, width: 10, height: 10 }}
-                            strokeWidth={2}
+                          <Avatar
+                            src={user?.avatarUrl}
+                            name={user?.displayName || user?.username}
+                            userId={user?.id}
+                            size="lg"
                           />
-                        </span>
-                      );
-                    })()}
-                    <div className="absolute inset-0 rounded-full bg-gray-950/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      {avatarUploading ? (
-                        <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                      ) : (
-                        <svg
-                          className="w-5 h-5 text-white"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
+                          {(() => {
+                            const pts =
+                              (user as { reputationPoints?: number } | null)?.reputationPoints ?? 0;
+                            const rank = getReputationRank(pts);
+                            const RankIcon = rank.icon;
+                            return (
+                              <span
+                                className="absolute"
+                                style={{
+                                  right: -2,
+                                  bottom: -2,
+                                  width: 18,
+                                  height: 18,
+                                  borderRadius: '9999px',
+                                  background: 'var(--bg-card)',
+                                  border: `1.5px solid ${rank.color}`,
+                                  boxShadow: `0 0 0 1.5px #0a0a0e, 0 0 8px -1px ${rank.color}88`,
+                                  display: 'grid',
+                                  placeItems: 'center',
+                                }}
+                                title={`${rank.label} · ${pts.toLocaleString()} rays`}
+                                aria-hidden
+                              >
+                                <RankIcon
+                                  style={{ color: rank.color, width: 10, height: 10 }}
+                                  strokeWidth={2}
+                                />
+                              </span>
+                            );
+                          })()}
+                          <div className="absolute inset-0 rounded-full bg-gray-950/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            {avatarUploading ? (
+                              <div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                            ) : (
+                              <svg
+                                className="w-5 h-5 text-white"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+                                />
+                              </svg>
+                            )}
+                          </div>
+                        </div>
+                        {(() => {
+                          const pts =
+                            (user as { reputationPoints?: number } | null)?.reputationPoints ?? 0;
+                          const rank = getReputationRank(pts);
+                          return (
+                            <span
+                              className="px-2 py-[2px] rounded-full font-mono whitespace-nowrap"
+                              style={{
+                                fontSize: 10,
+                                background: `${rank.color}12`,
+                                color: rank.color,
+                                border: `1px solid ${rank.color}38`,
+                                letterSpacing: '0.06em',
+                              }}
+                              title={`${pts.toLocaleString()} rays`}
+                            >
+                              {rank.label.toUpperCase()}
+                            </span>
+                          );
+                        })()}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-light text-[var(--text)] mb-0.5">
+                          Profile photo
+                        </div>
+                        <div className="text-xs text-[var(--text-muted)] mb-2">
+                          PNG, JPG or WebP · max 3 MB
+                        </div>
+                        {avatarMsg && typeof avatarMsg === 'string' && (
+                          <div className="text-xs text-emerald-400">{avatarMsg}</div>
+                        )}
+                        {avatarErr && typeof avatarErr === 'string' && (
+                          <div className="text-xs text-red-400">{avatarErr}</div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => avatarInputRef.current?.click()}
+                          disabled={avatarUploading}
+                          className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-atlas-500/30 text-[var(--text-muted)] hover:text-atlas-400 transition-all disabled:opacity-50"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
-                          />
-                        </svg>
-                      )}
-                    </div>
-                  </div>
-                  {(() => {
-                    const pts =
-                      (user as { reputationPoints?: number } | null)?.reputationPoints ?? 0;
-                    const rank = getReputationRank(pts);
-                    return (
-                      <span
-                        className="px-2 py-[2px] rounded-full font-mono whitespace-nowrap"
-                        style={{
-                          fontSize: 10,
-                          background: `${rank.color}12`,
-                          color: rank.color,
-                          border: `1px solid ${rank.color}38`,
-                          letterSpacing: '0.06em',
-                        }}
-                        title={`${pts.toLocaleString()} rays`}
-                      >
-                        {rank.label.toUpperCase()}
-                      </span>
-                    );
-                  })()}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-light text-[var(--text)] mb-0.5">Profile photo</div>
-                  <div className="text-xs text-[var(--text-muted)] mb-2">
-                    PNG, JPG or WebP · max 3 MB
-                  </div>
-                  {avatarMsg && typeof avatarMsg === 'string' && (
-                    <div className="text-xs text-emerald-400">{avatarMsg}</div>
-                  )}
-                  {avatarErr && typeof avatarErr === 'string' && (
-                    <div className="text-xs text-red-400">{avatarErr}</div>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => avatarInputRef.current?.click()}
-                    disabled={avatarUploading}
-                    className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-atlas-500/30 text-[var(--text-muted)] hover:text-atlas-400 transition-all disabled:opacity-50"
-                  >
-                    {avatarUploading ? 'Uploading...' : 'Change photo'}
-                  </button>
-                </div>
-                <input
-                  ref={avatarInputRef}
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  className="hidden"
-                  onChange={handleAvatarUpload}
-                />
-                <AvatarCropperModal
-                  open={!!pendingAvatarFile}
-                  file={pendingAvatarFile}
-                  onClose={() => setPendingAvatarFile(null)}
-                  onSave={handleAvatarSave}
-                />
-              </div>
-
-              <form onSubmit={handleSaveGeneral} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Field label="Username">
-                    <div className="flex items-center gap-0 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl overflow-hidden focus-within:border-atlas-500/50 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.08)] transition-all duration-200">
-                      <span className="px-3 text-atlas-400 font-mono text-sm select-none">@</span>
+                          {avatarUploading ? 'Uploading...' : 'Change photo'}
+                        </button>
+                      </div>
                       <input
-                        type="text"
-                        value={username}
-                        onChange={(e) =>
-                          setUsername(e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ''))
-                        }
-                        className="flex-1 bg-transparent py-2.5 pr-4 text-sm text-[var(--text)] font-mono outline-none placeholder:text-[var(--text-muted)]"
-                        maxLength={30}
-                        required
-                        placeholder="yourhandle"
+                        ref={avatarInputRef}
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        className="hidden"
+                        onChange={handleAvatarUpload}
+                      />
+                      <AvatarCropperModal
+                        open={!!pendingAvatarFile}
+                        file={pendingAvatarFile}
+                        onClose={() => setPendingAvatarFile(null)}
+                        onSave={handleAvatarSave}
                       />
                     </div>
-                  </Field>
-                  <Field label="Display Name">
-                    <Input
-                      type="text"
-                      value={displayName}
-                      onChange={(e) => setDisplayName(e.target.value)}
-                      maxLength={50}
-                      placeholder="Your full name"
-                    />
-                  </Field>
-                </div>
 
-                <Field label="Bio">
-                  <Textarea
-                    value={bio}
-                    onChange={(e) => setBio(e.target.value)}
-                    rows={3}
-                    maxLength={300}
-                    placeholder="A short description about yourself..."
-                  />
-                  <div className="text-right text-xs text-[var(--text-muted)] mt-1">
-                    {bio.length} / 300
-                  </div>
-                </Field>
-
-                {userTag && (
-                  <div className="flex items-center justify-between bg-atlas-500/5 border border-atlas-500/15 rounded-xl px-4 py-3">
-                    <div>
-                      <div className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-0.5">
-                        User ID
+                    <form onSubmit={handleSaveGeneral} className="space-y-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <Field label="Username">
+                          <div className="flex items-center gap-0 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl overflow-hidden focus-within:border-atlas-500/50 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.08)] transition-all duration-200">
+                            <span className="px-3 text-atlas-400 font-mono text-sm select-none">
+                              @
+                            </span>
+                            <input
+                              type="text"
+                              value={username}
+                              onChange={(e) =>
+                                setUsername(
+                                  e.target.value.toLowerCase().replace(/[^a-z0-9_-]/g, ''),
+                                )
+                              }
+                              className="flex-1 bg-transparent py-2.5 pr-4 text-sm text-[var(--text)] font-mono outline-none placeholder:text-[var(--text-muted)]"
+                              maxLength={30}
+                              required
+                              placeholder="yourhandle"
+                            />
+                          </div>
+                        </Field>
+                        <Field label="Display Name">
+                          <Input
+                            type="text"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                            maxLength={50}
+                            placeholder="Your full name"
+                          />
+                        </Field>
                       </div>
-                      <div className="font-mono text-atlas-400 font-light">#{userTag}</div>
-                    </div>
-                    <div className="text-xs text-[var(--text-muted)] text-right leading-relaxed">
-                      Others can find you
-                      <br />
-                      by searching #{userTag}
-                    </div>
-                  </div>
-                )}
 
-                <SaveButton loading={genSaving} />
-              </form>
+                      <Field label="Bio">
+                        <Textarea
+                          value={bio}
+                          onChange={(e) => setBio(e.target.value)}
+                          rows={3}
+                          maxLength={300}
+                          placeholder="A short description about yourself..."
+                        />
+                        <div className="text-right text-xs text-[var(--text-muted)] mt-1">
+                          {bio.length} / 300
+                        </div>
+                      </Field>
 
-              {/* Social links live INSIDE the Identity card now (was a
+                      {userTag && (
+                        <div className="flex items-center justify-between bg-atlas-500/5 border border-atlas-500/15 rounded-xl px-4 py-3">
+                          <div>
+                            <div className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-0.5">
+                              User ID
+                            </div>
+                            <div className="font-mono text-atlas-400 font-light">#{userTag}</div>
+                          </div>
+                          <div className="text-xs text-[var(--text-muted)] text-right leading-relaxed">
+                            Others can find you
+                            <br />
+                            by searching #{userTag}
+                          </div>
+                        </div>
+                      )}
+
+                      <SaveButton loading={genSaving} />
+                    </form>
+
+                    {/* Social links live INSIDE the Identity card now (was a
                   separate card below — too much scroll to reach). Same
                   three URL fields + their own Save button, but rendered
                   as a sibling subsection so the user sees both at once. */}
-              <div className="mt-6 pt-5 border-t border-white/[0.06]">
-                <div className="mb-4">
-                  <h3 className="text-[14px] text-white font-light">Social links</h3>
-                  <p className="text-[11.5px] text-zinc-500 mt-0.5">
-                    Where else people can find you.
-                  </p>
-                </div>
-                <Alert type="success" msg={socMsg} />
-                <Alert type="error" msg={socErr} />
-                <form onSubmit={handleSaveSocial} className="space-y-3">
-                  {(
-                    [
-                      {
-                        key: 'twitter',
-                        label: 'X / Twitter',
-                        icon: (
-                          <svg
-                            className="w-4 h-4 text-[var(--text-muted)]"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                          </svg>
-                        ),
-                        value: twitterUrl,
-                        setter: setTwitterUrl,
-                        placeholder: 'https://x.com/yourhandle',
-                      },
-                      {
-                        key: 'linkedin',
-                        label: 'LinkedIn',
-                        icon: (
-                          <svg
-                            className="w-4 h-4 text-blue-400"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                          </svg>
-                        ),
-                        value: linkedinUrl,
-                        setter: setLinkedinUrl,
-                        placeholder: 'https://linkedin.com/in/yourprofile',
-                      },
-                      {
-                        key: 'website',
-                        label: 'Website',
-                        icon: <IconGlobe className="w-4 h-4 text-[var(--text-muted)]" />,
-                        value: websiteUrl,
-                        setter: setWebsiteUrl,
-                        placeholder: 'https://yourwebsite.com',
-                      },
-                    ] as Array<{
-                      key: string;
-                      label: string;
-                      icon: React.ReactNode;
-                      value: string;
-                      setter: (v: string) => void;
-                      placeholder: string;
-                    }>
-                  ).map((item) => (
-                    <Field key={item.key} label={item.label}>
-                      <div className="flex items-center gap-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-[10px] px-4 py-3 focus-within:border-atlas-500/60 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.1)] transition-all duration-200">
-                        {item.icon}
-                        <input
-                          type="url"
-                          value={item.value}
-                          onChange={(e) => item.setter(e.target.value)}
-                          placeholder={item.placeholder}
-                          className="flex-1 bg-transparent text-sm text-[var(--text)] outline-none placeholder:text-[var(--text-muted)] font-light"
-                        />
-                        {item.value && (
-                          <button
-                            type="button"
-                            onClick={() => item.setter('')}
-                            className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-                          >
-                            <IconX className="w-3.5 h-3.5" />
-                          </button>
-                        )}
+                    <div className="mt-6 pt-5 border-t border-white/[0.06]">
+                      <div className="mb-4">
+                        <h3 className="text-[14px] text-white font-light">Social links</h3>
+                        <p className="text-[11.5px] text-zinc-500 mt-0.5">
+                          Where else people can find you.
+                        </p>
                       </div>
-                    </Field>
-                  ))}
-                  <SaveButton loading={socSaving} label="Save social links" />
-                </form>
-              </div>
-            </div>
-
-            {/* ConnectedAccountsPanel + RankProgressPanel removed —
-                rays/reputation surfaces stripped per user request. */}
-            </div>
-            </div>
-          )}
-
-          {/* Ranks tab removed — reputation system gone. */}
-
-          {/* ════════════════════════════════════════════
-          WALLET
-      ════════════════════════════════════════════ */}
-          {tab === 'wallet' && (
-            <div className="profile-content-card">
-              <SectionHeader
-                title="Wallets"
-                subtitle="Connect and manage the wallets you use to pay, receive earnings, and sign transactions on Atlas."
-              />
-              <Alert type="success" msg={walletMsg} />
-              <Alert type="error" msg={walletErr} />
-
-              {/* Linked wallets list */}
-              {linkedWallets.length > 0 ? (
-                <div className="space-y-3 mb-6">
-                  {linkedWallets.map((w) => {
-                    const short = `${w.address.slice(0, 6)}…${w.address.slice(-4)}`;
-                    const copied = copiedAddress === w.address;
-                    const isEditing = walletLabelEditingId === w.id;
-                    return (
-                      <div
-                        key={w.id}
-                        className={`rounded-xl border ${
-                          w.isPrimary
-                            ? 'border-emerald-500/30 bg-emerald-500/5'
-                            : 'border-[var(--border)] bg-[var(--bg-elevated)]'
-                        } p-4 sm:p-5`}
-                      >
-                        <div className="flex items-start gap-3 sm:gap-4">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                            <WalletProviderIcon provider={w.provider} size={28} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-wrap items-center gap-2 mb-1">
-                              <span className="text-sm font-light text-white/90">
-                                {walletProviderLabel(w.provider)}
-                              </span>
-                              {w.isPrimary && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] uppercase tracking-widest border border-emerald-500/30 bg-emerald-500/10 text-emerald-300">
-                                  Primary
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <code className="font-mono text-xs sm:text-sm text-white/80 truncate">
-                                <span className="hidden sm:inline">{w.address}</span>
-                                <span className="sm:hidden">{short}</span>
-                              </code>
-                              <button
-                                type="button"
-                                onClick={() => handleCopyAddress(w.address)}
-                                className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors flex-shrink-0"
-                                aria-label="Copy address"
-                                title={copied ? 'Copied!' : 'Copy address'}
-                              >
-                                {copied ? (
-                                  <svg
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  >
-                                    <polyline points="20 6 9 17 4 12" />
-                                  </svg>
-                                ) : (
-                                  <svg
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                  >
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                                  </svg>
-                                )}
-                              </button>
-                            </div>
-                            {/* Label row */}
-                            <div className="mt-2">
-                              {isEditing ? (
-                                <div className="flex items-center gap-2">
-                                  <input
-                                    type="text"
-                                    value={walletLabelDraft}
-                                    onChange={(e) => setWalletLabelDraft(e.target.value)}
-                                    placeholder="Label (e.g. Trading, Cold storage)"
-                                    maxLength={60}
-                                    className="flex-1 min-w-0 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white/90 placeholder-white/40 focus:outline-none focus:border-[#14F195]/50"
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => handleSaveWalletLabel(w.id)}
-                                    disabled={walletActionId === w.id}
-                                    className="text-xs px-3 py-1.5 rounded-lg bg-[#14F195]/80 hover:bg-[#14F195] text-white disabled:opacity-50"
-                                  >
-                                    Save
-                                  </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      setWalletLabelEditingId(null);
-                                      setWalletLabelDraft('');
-                                    }}
-                                    className="text-xs px-2 py-1.5 rounded-lg border border-white/15 text-white/70 hover:bg-white/5"
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              ) : (
+                      <Alert type="success" msg={socMsg} />
+                      <Alert type="error" msg={socErr} />
+                      <form onSubmit={handleSaveSocial} className="space-y-3">
+                        {(
+                          [
+                            {
+                              key: 'twitter',
+                              label: 'X / Twitter',
+                              icon: (
+                                <svg
+                                  className="w-4 h-4 text-[var(--text-muted)]"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                </svg>
+                              ),
+                              value: twitterUrl,
+                              setter: setTwitterUrl,
+                              placeholder: 'https://x.com/yourhandle',
+                            },
+                            {
+                              key: 'linkedin',
+                              label: 'LinkedIn',
+                              icon: (
+                                <svg
+                                  className="w-4 h-4 text-blue-400"
+                                  fill="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                </svg>
+                              ),
+                              value: linkedinUrl,
+                              setter: setLinkedinUrl,
+                              placeholder: 'https://linkedin.com/in/yourprofile',
+                            },
+                            {
+                              key: 'website',
+                              label: 'Website',
+                              icon: <IconGlobe className="w-4 h-4 text-[var(--text-muted)]" />,
+                              value: websiteUrl,
+                              setter: setWebsiteUrl,
+                              placeholder: 'https://yourwebsite.com',
+                            },
+                          ] as Array<{
+                            key: string;
+                            label: string;
+                            icon: React.ReactNode;
+                            value: string;
+                            setter: (v: string) => void;
+                            placeholder: string;
+                          }>
+                        ).map((item) => (
+                          <Field key={item.key} label={item.label}>
+                            <div className="flex items-center gap-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-[10px] px-4 py-3 focus-within:border-atlas-500/60 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.1)] transition-all duration-200">
+                              {item.icon}
+                              <input
+                                type="url"
+                                value={item.value}
+                                onChange={(e) => item.setter(e.target.value)}
+                                placeholder={item.placeholder}
+                                className="flex-1 bg-transparent text-sm text-[var(--text)] outline-none placeholder:text-[var(--text-muted)] font-light"
+                              />
+                              {item.value && (
                                 <button
                                   type="button"
-                                  onClick={() => {
-                                    setWalletLabelEditingId(w.id);
-                                    setWalletLabelDraft(w.label || '');
-                                  }}
-                                  className="text-xs text-white/50 hover:text-white/80 transition-colors"
+                                  onClick={() => item.setter('')}
+                                  className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                                 >
-                                  {w.label ? `“${w.label}”` : '+ Add label'}
+                                  <IconX className="w-3.5 h-3.5" />
                                 </button>
                               )}
                             </div>
+                          </Field>
+                        ))}
+                        <SaveButton loading={socSaving} label="Save social links" />
+                      </form>
+                    </div>
+                  </div>
+
+                  {/* ConnectedAccountsPanel + RankProgressPanel removed —
+                rays/reputation surfaces stripped per user request. */}
+                </div>
+              </div>
+            )}
+
+            {/* Ranks tab removed — reputation system gone. */}
+
+            {/* ════════════════════════════════════════════
+          WALLET
+      ════════════════════════════════════════════ */}
+            {tab === 'wallet' && (
+              <div className="profile-content-card">
+                <SectionHeader
+                  title="Wallets"
+                  subtitle="Connect and manage the wallets you use to pay, receive earnings, and sign transactions on Atlas."
+                />
+                <Alert type="success" msg={walletMsg} />
+                <Alert type="error" msg={walletErr} />
+
+                {/* Linked wallets list */}
+                {linkedWallets.length > 0 ? (
+                  <div className="space-y-3 mb-6">
+                    {linkedWallets.map((w) => {
+                      const short = `${w.address.slice(0, 6)}…${w.address.slice(-4)}`;
+                      const copied = copiedAddress === w.address;
+                      const isEditing = walletLabelEditingId === w.id;
+                      return (
+                        <div
+                          key={w.id}
+                          className={`rounded-xl border ${
+                            w.isPrimary
+                              ? 'border-emerald-500/30 bg-emerald-500/5'
+                              : 'border-[var(--border)] bg-[var(--bg-elevated)]'
+                          } p-4 sm:p-5`}
+                        >
+                          <div className="flex items-start gap-3 sm:gap-4">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                              <WalletProviderIcon provider={w.provider} size={28} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <span className="text-sm font-light text-white/90">
+                                  {walletProviderLabel(w.provider)}
+                                </span>
+                                {w.isPrimary && (
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] uppercase tracking-widest border border-emerald-500/30 bg-emerald-500/10 text-emerald-300">
+                                    Primary
+                                  </span>
+                                )}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <code className="font-mono text-xs sm:text-sm text-white/80 truncate">
+                                  <span className="hidden sm:inline">{w.address}</span>
+                                  <span className="sm:hidden">{short}</span>
+                                </code>
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopyAddress(w.address)}
+                                  className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors flex-shrink-0"
+                                  aria-label="Copy address"
+                                  title={copied ? 'Copied!' : 'Copy address'}
+                                >
+                                  {copied ? (
+                                    <svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    >
+                                      <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                  ) : (
+                                    <svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    >
+                                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                    </svg>
+                                  )}
+                                </button>
+                              </div>
+                              {/* Label row */}
+                              <div className="mt-2">
+                                {isEditing ? (
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="text"
+                                      value={walletLabelDraft}
+                                      onChange={(e) => setWalletLabelDraft(e.target.value)}
+                                      placeholder="Label (e.g. Trading, Cold storage)"
+                                      maxLength={60}
+                                      className="flex-1 min-w-0 bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white/90 placeholder-white/40 focus:outline-none focus:border-[#14F195]/50"
+                                    />
+                                    <button
+                                      type="button"
+                                      onClick={() => handleSaveWalletLabel(w.id)}
+                                      disabled={walletActionId === w.id}
+                                      className="text-xs px-3 py-1.5 rounded-lg bg-[#14F195]/80 hover:bg-[#14F195] text-white disabled:opacity-50"
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setWalletLabelEditingId(null);
+                                        setWalletLabelDraft('');
+                                      }}
+                                      className="text-xs px-2 py-1.5 rounded-lg border border-white/15 text-white/70 hover:bg-white/5"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setWalletLabelEditingId(w.id);
+                                      setWalletLabelDraft(w.label || '');
+                                    }}
+                                    className="text-xs text-white/50 hover:text-white/80 transition-colors"
+                                  >
+                                    {w.label ? `“${w.label}”` : '+ Add label'}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        {/* Actions */}
-                        <div className="mt-3 flex flex-col sm:flex-row gap-2">
-                          {!w.isPrimary && (
+                          {/* Actions */}
+                          <div className="mt-3 flex flex-col sm:flex-row gap-2">
+                            {!w.isPrimary && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetPrimaryWallet(w.id)}
+                                disabled={walletActionId === w.id}
+                                className="flex-1 text-xs px-3 py-2 rounded-lg border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-300 disabled:opacity-50"
+                              >
+                                {walletActionId === w.id ? 'Updating…' : 'Make primary'}
+                              </button>
+                            )}
                             <button
                               type="button"
-                              onClick={() => handleSetPrimaryWallet(w.id)}
-                              disabled={walletActionId === w.id}
-                              className="flex-1 text-xs px-3 py-2 rounded-lg border border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-300 disabled:opacity-50"
+                              onClick={() => handleRemoveLinkedWallet(w.id)}
+                              disabled={
+                                walletActionId === w.id ||
+                                (w.isPrimary && linkedWallets.length === 1 && !!walletAddress)
+                              }
+                              title={
+                                w.isPrimary && linkedWallets.length === 1
+                                  ? 'Use the card above to disconnect your only wallet'
+                                  : 'Remove this wallet'
+                              }
+                              className="flex-1 text-xs px-3 py-2 rounded-lg border border-red-500/25 bg-red-500/5 hover:bg-red-500/10 text-red-400 disabled:opacity-40"
                             >
-                              {walletActionId === w.id ? 'Updating…' : 'Make primary'}
+                              {walletActionId === w.id ? 'Removing…' : 'Remove'}
                             </button>
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveLinkedWallet(w.id)}
-                            disabled={walletActionId === w.id || (w.isPrimary && linkedWallets.length === 1 && !!walletAddress)}
-                            title={
-                              w.isPrimary && linkedWallets.length === 1
-                                ? 'Use the card above to disconnect your only wallet'
-                                : 'Remove this wallet'
-                            }
-                            className="flex-1 text-xs px-3 py-2 rounded-lg border border-red-500/25 bg-red-500/5 hover:bg-red-500/10 text-red-400 disabled:opacity-40"
-                          >
-                            {walletActionId === w.id ? 'Removing…' : 'Remove'}
-                          </button>
+                          </div>
                         </div>
+                      );
+                    })}
+                  </div>
+                ) : walletAddress ? (
+                  // Primary exists but sidecar hasn't returned yet — keep a clean card
+                  <div className="mb-6 flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                      <WalletProviderIcon provider="METAMASK" size={28} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs text-emerald-400 uppercase tracking-widest mb-1">
+                        Connected
                       </div>
-                    );
-                  })}
-                </div>
-              ) : walletAddress ? (
-                // Primary exists but sidecar hasn't returned yet — keep a clean card
-                <div className="mb-6 flex items-center gap-4 p-4 sm:p-5 rounded-xl border border-emerald-500/20 bg-emerald-500/5">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                    <WalletProviderIcon provider="METAMASK" size={28} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs text-emerald-400 uppercase tracking-widest mb-1">
-                      Connected
+                      <div className="font-mono text-xs sm:text-sm text-white/90 truncate">
+                        {walletAddress}
+                      </div>
                     </div>
-                    <div className="font-mono text-xs sm:text-sm text-white/90 truncate">
-                      {walletAddress}
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyAddress(walletAddress)}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 flex-shrink-0"
+                      aria-label="Copy address"
+                    >
+                      {copiedAddress === walletAddress ? (
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      ) : (
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                        </svg>
+                      )}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => handleCopyAddress(walletAddress)}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 flex-shrink-0"
-                    aria-label="Copy address"
-                  >
-                    {copiedAddress === walletAddress ? (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
-                    ) : (
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
-                    )}
-                  </button>
-                </div>
-              ) : null}
+                ) : null}
 
-              {/* Single connect surface — the supported-wallets grid below.
+                {/* Single connect surface — the supported-wallets grid below.
                   We used to render a duplicate big "Connect MetaMask" / "Link
                   another" button on top of the grid that already had MetaMask
                   + WalletConnect tiles, which confused users into thinking
                   the two paths did different things. Disconnect for the
                   primary wallet is now a small inline link instead of its
                   own large CTA. */}
-              {walletAddress && (
-                <div className="mb-5 flex items-center justify-end">
-                  <button
-                    type="button"
-                    onClick={handleDisconnectWallet}
-                    disabled={walletLoading}
-                    className="text-[11.5px] text-red-400 hover:text-red-300 underline decoration-red-500/30 underline-offset-2 hover:decoration-red-300 transition disabled:opacity-50"
-                  >
-                    {walletLoading ? 'Disconnecting…' : 'Disconnect primary wallet'}
-                  </button>
-                </div>
-              )}
+                {walletAddress && (
+                  <div className="mb-5 flex items-center justify-end">
+                    <button
+                      type="button"
+                      onClick={handleDisconnectWallet}
+                      disabled={walletLoading}
+                      className="text-[11.5px] text-red-400 hover:text-red-300 underline decoration-red-500/30 underline-offset-2 hover:decoration-red-300 transition disabled:opacity-50"
+                    >
+                      {walletLoading ? 'Disconnecting…' : 'Disconnect primary wallet'}
+                    </button>
+                  </div>
+                )}
 
-              {/* Supported wallets — single source of truth for adding wallets.
+                {/* Supported wallets — single source of truth for adding wallets.
                   Each tile branches between "first connect" and "link
                   another" based on whether a primary already exists. */}
-              <div className="border-t border-white/8 pt-5">
-                <div className="text-xs uppercase tracking-widest text-white/50 mb-3">
-                  {walletAddress ? 'Link another wallet' : 'Connect a wallet'}
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {/* MetaMask — browser extension */}
-                  <button
-                    type="button"
-                    onClick={walletAddress ? handleAddAdditionalWallet : handleConnectWallet}
-                    disabled={walletLoading}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg border border-white/8 bg-white/[0.02] hover:bg-white/5 hover:border-white/15 transition-all group disabled:opacity-50 text-left"
-                  >
-                    <WalletProviderIcon provider="METAMASK" size={22} />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs sm:text-sm text-white/80 group-hover:text-white truncate">
-                        MetaMask
+                <div className="border-t border-white/8 pt-5">
+                  <div className="text-xs uppercase tracking-widest text-white/50 mb-3">
+                    {walletAddress ? 'Link another wallet' : 'Connect a wallet'}
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {/* MetaMask — browser extension */}
+                    <button
+                      type="button"
+                      onClick={walletAddress ? handleAddAdditionalWallet : handleConnectWallet}
+                      disabled={walletLoading}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg border border-white/8 bg-white/[0.02] hover:bg-white/5 hover:border-white/15 transition-all group disabled:opacity-50 text-left"
+                    >
+                      <WalletProviderIcon provider="METAMASK" size={22} />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs sm:text-sm text-white/80 group-hover:text-white truncate">
+                          MetaMask
+                        </div>
+                        <div className="text-[10px] text-white/40">Browser extension</div>
                       </div>
-                      <div className="text-[10px] text-white/40">Browser extension</div>
-                    </div>
-                  </button>
+                    </button>
 
-                  {/* WalletConnect — real SDK flow */}
-                  <button
-                    type="button"
-                    onClick={handleConnectWalletConnect}
-                    disabled={walletLoading}
-                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg border border-white/8 bg-white/[0.02] hover:bg-white/5 hover:border-white/15 transition-all group disabled:opacity-50 text-left"
-                  >
-                    <WalletProviderIcon provider="WALLETCONNECT" size={22} />
-                    <div className="flex-1 min-w-0">
-                      <div className="text-xs sm:text-sm text-white/80 group-hover:text-white truncate">
-                        WalletConnect
+                    {/* WalletConnect — real SDK flow */}
+                    <button
+                      type="button"
+                      onClick={handleConnectWalletConnect}
+                      disabled={walletLoading}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg border border-white/8 bg-white/[0.02] hover:bg-white/5 hover:border-white/15 transition-all group disabled:opacity-50 text-left"
+                    >
+                      <WalletProviderIcon provider="WALLETCONNECT" size={22} />
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs sm:text-sm text-white/80 group-hover:text-white truncate">
+                          WalletConnect
+                        </div>
+                        <div className="text-[10px] text-white/40">Scan QR · mobile wallets</div>
                       </div>
-                      <div className="text-[10px] text-white/40">Scan QR · mobile wallets</div>
-                    </div>
-                  </button>
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-white/40 mt-3 leading-relaxed">
+                    Click a wallet to link it. MetaMask opens its browser extension. WalletConnect
+                    shows a QR you can scan from any compatible mobile wallet.
+                  </p>
                 </div>
-                <p className="text-[11px] text-white/40 mt-3 leading-relaxed">
-                  Click a wallet to link it. MetaMask opens its browser extension.
-                  WalletConnect shows a QR you can scan from any compatible mobile wallet.
-                </p>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* ════════════════════════════════════════════
+            {/* ════════════════════════════════════════════
           API KEYS
       ════════════════════════════════════════════ */}
-          {tab === 'api-keys' && (
-            <div className="space-y-4">
-              {/* Help banner — surfaces what API keys are, where they're used,
+            {tab === 'api-keys' && (
+              <div className="space-y-4">
+                {/* Help banner — surfaces what API keys are, where they're used,
                   and the security rules at all times. The user kept asking
                   the team what each key is for; pin it on screen. */}
-              <div
-                className="rounded-xl p-4 space-y-3"
-                style={{
-                  background: 'rgba(20, 241, 149, 0.06)',
-                  border: '1px solid rgba(20, 241, 149, 0.18)',
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-[10.5px] uppercase tracking-[0.16em] text-[var(--brand)] font-medium">
-                    What are API keys
-                  </span>
+                <div
+                  className="rounded-xl p-4 space-y-3"
+                  style={{
+                    background: 'rgba(20, 241, 149, 0.06)',
+                    border: '1px solid rgba(20, 241, 149, 0.18)',
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10.5px] uppercase tracking-[0.16em] text-[var(--brand)] font-medium">
+                      What are API keys
+                    </span>
+                  </div>
+                  <p className="text-[12px] text-zinc-300 font-light leading-relaxed">
+                    API keys let your code, agents, or third-party tools call the Atlas API on your
+                    behalf. Anyone who holds one of your keys can read your data and publish on your
+                    account, so treat them like passwords.
+                  </p>
+                  <ul className="text-[11.5px] text-zinc-400 font-light leading-relaxed space-y-1 list-disc pl-4">
+                    <li>
+                      <span className="text-zinc-200">Use in:</span> agent webhooks, marketplace
+                      automations, internal scripts, CI/CD that pings Atlas.
+                    </li>
+                    <li>
+                      <span className="text-zinc-200">Header:</span>{' '}
+                      <code className="text-[var(--brand)] bg-black/30 px-1 rounded">
+                        Authorization: Bearer YOUR_KEY
+                      </code>
+                    </li>
+                    <li>
+                      <span className="text-zinc-200">Rotate</span> any key you ever paste into a
+                      document, screenshot, or shared chat — including this one.
+                    </li>
+                    <li>
+                      <span className="text-zinc-200">Never</span> embed a key in client-side code
+                      shipped to a browser or mobile app. Use a server proxy.
+                    </li>
+                  </ul>
                 </div>
-                <p className="text-[12px] text-zinc-300 font-light leading-relaxed">
-                  API keys let your code, agents, or third-party tools call the Atlas API on
-                  your behalf. Anyone who holds one of your keys can read your data and
-                  publish on your account, so treat them like passwords.
-                </p>
-                <ul className="text-[11.5px] text-zinc-400 font-light leading-relaxed space-y-1 list-disc pl-4">
-                  <li>
-                    <span className="text-zinc-200">Use in:</span> agent webhooks, marketplace
-                    automations, internal scripts, CI/CD that pings Atlas.
-                  </li>
-                  <li>
-                    <span className="text-zinc-200">Header:</span>{' '}
-                    <code className="text-[var(--brand)] bg-black/30 px-1 rounded">Authorization: Bearer YOUR_KEY</code>
-                  </li>
-                  <li>
-                    <span className="text-zinc-200">Rotate</span> any key you ever paste into a
-                    document, screenshot, or shared chat — including this one.
-                  </li>
-                  <li>
-                    <span className="text-zinc-200">Never</span> embed a key in client-side
-                    code shipped to a browser or mobile app. Use a server proxy.
-                  </li>
-                </ul>
+
+                <APIKeysSection
+                  apiKeys={apiKeys}
+                  onDelete={handleDeleteAPIKey}
+                  onGenerate={handleGenerateAPIKey}
+                  onCopy={handleCopyAPIKey}
+                />
               </div>
+            )}
 
-              <APIKeysSection
-                apiKeys={apiKeys}
-                onDelete={handleDeleteAPIKey}
-                onGenerate={handleGenerateAPIKey}
-                onCopy={handleCopyAPIKey}
-              />
-            </div>
-          )}
-
-          {/* ════════════════════════════════════════════
+            {/* ════════════════════════════════════════════
           FRIENDS
       ════════════════════════════════════════════ */}
-          {tab === 'friends' && (
-            <div className="space-y-4">
-              {/* Privacy + Suggested users — added in PR4. Sits above the
+            {tab === 'friends' && (
+              <div className="space-y-4">
+                {/* Privacy + Suggested users — added in PR4. Sits above the
                   existing search/list/requests panel so the user lands on
                   the active surfaces first. */}
-              <FriendsExtras
-                onFriendRequestSent={() => {
-                  // Tickle the existing requests-out list so a freshly-sent
-                  // request shows up in the parent panel without a reload.
-                  void loadFriends();
-                }}
-              />
-
-              {/* Search */}
-              <div className="profile-content-card">
-                <SectionHeader
-                  title="Search"
-                  subtitle="Find someone by username, display name, or tag."
+                <FriendsExtras
+                  onFriendRequestSent={() => {
+                    // Tickle the existing requests-out list so a freshly-sent
+                    // request shows up in the parent panel without a reload.
+                    void loadFriends();
+                  }}
                 />
-                <Alert type="success" msg={friendsMsg} />
-                <Alert type="error" msg={friendsErr} />
-                <div className="flex items-center gap-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 focus-within:border-atlas-500/50 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.08)] transition-all duration-200">
-                  <IconSearch className="w-4 h-4 text-[var(--text-muted)] flex-shrink-0" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by @username or user ID..."
-                    className="flex-1 bg-transparent text-sm text-[var(--text)] outline-none placeholder:text-[var(--text-muted)]"
+
+                {/* Search */}
+                <div className="profile-content-card">
+                  <SectionHeader
+                    title="Search"
+                    subtitle="Find someone by username, display name, or tag."
                   />
-                  {searching ? (
-                    <div className="w-4 h-4 rounded-full border-2 border-[var(--border)] border-t-atlas-400 animate-spin flex-shrink-0" />
-                  ) : (
-                    searchQuery && (
-                      <button
-                        onClick={() => {
-                          setSearchQuery('');
-                          setSearchResults([]);
-                        }}
-                        className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
-                      >
-                        <IconX className="w-4 h-4" />
-                      </button>
-                    )
-                  )}
-                </div>
-
-                {searchResults.length > 0 && (
-                  <div className="mt-3 rounded-xl border border-[var(--border)] overflow-hidden">
-                    {searchResults.map((u, i) => (
-                      <div
-                        key={u.id}
-                        className={`flex items-center gap-3 px-4 py-3 hover:bg-white/3 transition-colors ${i > 0 ? 'border-t border-[var(--border)]' : ''}`}
-                      >
-                        <Avatar
-                          src={u.avatarUrl}
-                          name={u.displayName || u.username}
-                          userId={u.id}
-                          size="sm"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-sm font-light text-[var(--text)] truncate">
-                            {u.displayName || u.username}
-                          </div>
-                          <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
-                            {u.username && <span>@{u.username}</span>}
-                            {u.userTag && <span className="text-atlas-400/70">#{u.userTag}</span>}
-                          </div>
-                        </div>
+                  <Alert type="success" msg={friendsMsg} />
+                  <Alert type="error" msg={friendsErr} />
+                  <div className="flex items-center gap-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 focus-within:border-atlas-500/50 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.08)] transition-all duration-200">
+                    <IconSearch className="w-4 h-4 text-[var(--text-muted)] flex-shrink-0" />
+                    <input
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search by @username or user ID..."
+                      className="flex-1 bg-transparent text-sm text-[var(--text)] outline-none placeholder:text-[var(--text-muted)]"
+                    />
+                    {searching ? (
+                      <div className="w-4 h-4 rounded-full border-2 border-[var(--border)] border-t-atlas-400 animate-spin flex-shrink-0" />
+                    ) : (
+                      searchQuery && (
                         <button
-                          onClick={() => handleSendFriendRequest(u.id)}
-                          disabled={sendingTo === u.id}
-                          className="text-xs text-atlas-400 border border-atlas-500/30 hover:border-atlas-400/60 hover:bg-atlas-500/8 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50 shrink-0"
+                          onClick={() => {
+                            setSearchQuery('');
+                            setSearchResults([]);
+                          }}
+                          className="text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"
                         >
-                          {sendingTo === u.id ? '...' : '+ Add'}
+                          <IconX className="w-4 h-4" />
                         </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {searchQuery.trim() && !searching && searchResults.length === 0 && (
-                  <div className="mt-3 text-center py-6 text-xs text-[var(--text-muted)] font-mono border border-[var(--border)] rounded-xl">
-                    No users found for &quot;{searchQuery}&quot;
-                  </div>
-                )}
-              </div>
-
-              {/* Requests + list */}
-              <div className="profile-content-card">
-                {friendsLoading ? (
-                  <div className="flex items-center gap-2 py-6 justify-center text-xs text-[var(--text-muted)]">
-                    <div className="w-4 h-4 rounded-full border-2 border-[var(--border)] border-t-atlas-400 animate-spin" />
-                    Loading...
-                  </div>
-                ) : (
-                  <div className="space-y-5">
-                    {/* Pending requests */}
-                    {friendRequests.length > 0 && (
-                      <div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                          <span className="text-xs font-mono text-amber-400 uppercase tracking-widest">
-                            {friendRequests.length} pending request
-                            {friendRequests.length !== 1 ? 's' : ''}
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          {friendRequests.map((req) => (
-                            <div
-                              key={req.id}
-                              className="flex items-center gap-3 bg-amber-500/5 border border-amber-500/15 rounded-xl px-4 py-3"
-                            >
-                              <Avatar
-                                src={req.from.avatarUrl}
-                                name={req.from.displayName || req.from.username}
-                                userId={req.from.id}
-                                size="sm"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <Link
-                                  href={`/u/${req.from.username}`}
-                                  className="text-sm font-light text-[var(--text)] hover:text-atlas-300 transition-colors"
-                                >
-                                  {req.from.displayName || req.from.username}
-                                </Link>
-                                <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
-                                  {req.from.username && <span>@{req.from.username}</span>}
-                                  {req.from.userTag && (
-                                    <span className="text-atlas-400/60">#{req.from.userTag}</span>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex gap-2 shrink-0">
-                                <button
-                                  onClick={() => handleRespondToRequest(req.id, true)}
-                                  disabled={friendActionId === req.id}
-                                  className="text-xs text-emerald-400 border border-emerald-500/25 hover:border-emerald-400/50 hover:bg-emerald-500/8 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50"
-                                >
-                                  Accept
-                                </button>
-                                <button
-                                  onClick={() => handleRespondToRequest(req.id, false)}
-                                  disabled={friendActionId === req.id}
-                                  className="text-xs text-[var(--text-muted)] border border-[var(--border)] hover:border-zinc-500 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50"
-                                >
-                                  Decline
-                                </button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                      )
                     )}
+                  </div>
 
-                    {/* Sent / outgoing requests */}
-                    {sentRequests.length > 0 && (
-                      <div>
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="w-1.5 h-1.5 rounded-full bg-atlas-400" />
-                          <span className="text-xs font-mono text-atlas-300 uppercase tracking-widest">
-                            {sentRequests.length} sent request
-                            {sentRequests.length !== 1 ? 's' : ''}
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          {sentRequests.map((req) => (
-                            <div
-                              key={req.id}
-                              className="flex items-center gap-3 bg-atlas-500/5 border border-atlas-500/15 rounded-xl px-4 py-3"
-                            >
-                              <Avatar
-                                src={req.to.avatarUrl}
-                                name={req.to.displayName || req.to.username}
-                                userId={req.to.id}
-                                size="sm"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <Link
-                                  href={`/u/${req.to.username}`}
-                                  className="text-sm font-light text-[var(--text)] hover:text-atlas-300 transition-colors"
-                                >
-                                  {req.to.displayName || req.to.username}
-                                </Link>
-                                <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
-                                  {req.to.username && <span>@{req.to.username}</span>}
-                                  {req.to.userTag && (
-                                    <span className="text-atlas-400/60">#{req.to.userTag}</span>
-                                  )}
-                                  <span className="text-white/30">· awaiting response</span>
-                                </div>
-                              </div>
-                              <button
-                                onClick={() => handleCancelSentRequest(req.to.id)}
-                                disabled={friendActionId === req.to.id}
-                                className="text-xs text-[var(--text-muted)] border border-[var(--border)] hover:border-red-400/25 hover:text-red-400 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50 shrink-0"
-                              >
-                                {friendActionId === req.to.id ? '...' : 'Cancel'}
-                              </button>
+                  {searchResults.length > 0 && (
+                    <div className="mt-3 rounded-xl border border-[var(--border)] overflow-hidden">
+                      {searchResults.map((u, i) => (
+                        <div
+                          key={u.id}
+                          className={`flex items-center gap-3 px-4 py-3 hover:bg-white/3 transition-colors ${i > 0 ? 'border-t border-[var(--border)]' : ''}`}
+                        >
+                          <Avatar
+                            src={u.avatarUrl}
+                            name={u.displayName || u.username}
+                            userId={u.id}
+                            size="sm"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-sm font-light text-[var(--text)] truncate">
+                              {u.displayName || u.username}
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Friends list */}
-                    {friends.length === 0 &&
-                    friendRequests.length === 0 &&
-                    sentRequests.length === 0 ? (
-                      <div className="text-center py-10">
-                        <IconUsers className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2 opacity-30" />
-                        <p className="text-sm text-[var(--text-muted)]">
-                          Start building your network — search for developers to connect with.
-                        </p>
-                      </div>
-                    ) : friends.length > 0 ? (
-                      <div>
-                        {friendRequests.length > 0 && (
-                          <div className="border-t border-[var(--border)] pt-4" />
-                        )}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {friends.map((f) => (
-                            <div
-                              key={f.id}
-                              className="flex items-center gap-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-3 py-2.5 group hover:border-atlas-500/40 hover:shadow-lg transition-all duration-200"
-                            >
-                              <Avatar
-                                src={f.friend.avatarUrl}
-                                name={f.friend.displayName || f.friend.username}
-                                userId={f.friend.id}
-                                size="sm"
-                              />
-                              <div className="flex-1 min-w-0">
-                                <Link
-                                  href={`/u/${f.friend.username}`}
-                                  className="text-xs font-light text-[var(--text)] hover:text-atlas-300 transition-colors truncate block"
-                                >
-                                  {f.friend.displayName || f.friend.username}
-                                </Link>
-                                <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] font-mono">
-                                  {f.friend.username && <span>@{f.friend.username}</span>}
-                                  {f.friend.userTag && (
-                                    <span className="text-atlas-300">#{f.friend.userTag}</span>
-                                  )}
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button
-                                  onClick={() => handleUnfriend(f.friend.id)}
-                                  disabled={friendActionId === f.friend.id}
-                                  className="text-xs text-[var(--text-muted)] hover:text-red-400 border border-[var(--border)] hover:border-red-400/25 px-2 py-1 rounded-lg transition-all duration-200 disabled:opacity-50"
-                                  title="Remove friend"
-                                >
-                                  <IconX className="w-3 h-3" />
-                                </button>
-                              </div>
+                            <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
+                              {u.username && <span>@{u.username}</span>}
+                              {u.userTag && <span className="text-atlas-400/70">#{u.userTag}</span>}
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-
-
-
-          {/* ════════════════════════════════════════════
-          SECURITY
-      ════════════════════════════════════════════ */}
-          {tab === 'security' && (
-            <div className="space-y-4">
-              {/* ── Email address ── */}
-              <div className="profile-content-card">
-                <SectionHeader
-                  title="Email Address"
-                  subtitle="Update the email address associated with your account."
-                />
-                <Alert type="success" msg={secMsg} />
-                <Alert type="error" msg={secErr} />
-
-                <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] mb-4">
-                  <div>
-                    <div className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-0.5">
-                      Current email
-                    </div>
-                    <div className="text-sm font-light text-[var(--text)]">{userEmail || '—'}</div>
-                  </div>
-                  {emailStep === 'idle' && (
-                    <button
-                      type="button"
-                      onClick={() => setEmailStep('form')}
-                      className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-atlas-500/40 text-[var(--text-muted)] hover:text-atlas-400 transition-all"
-                    >
-                      Change
-                    </button>
-                  )}
-                </div>
-
-                {emailStep === 'form' && (
-                  <form onSubmit={handleRequestEmailChange} className="space-y-4">
-                    <Field label="New Email Address">
-                      <Input
-                        type="email"
-                        value={newEmail}
-                        onChange={(e) => setNewEmail(e.target.value)}
-                        required
-                        placeholder="new@example.com"
-                      />
-                    </Field>
-                    <Field label="Current Password">
-                      <Input
-                        type="password"
-                        value={emailPassword}
-                        onChange={(e) => setEmailPassword(e.target.value)}
-                        required
-                        placeholder="••••••••"
-                      />
-                    </Field>
-                    <div className="flex gap-2">
-                      <button
-                        type="submit"
-                        disabled={emailLoading}
-                        className="flex-1 py-3 rounded-xl text-sm font-light disabled:opacity-50 text-white transition-all"
-                        style={{
-                          background:
-                            'linear-gradient(180deg, rgba(20, 241, 149, 0.38) 0%, rgba(20, 241, 149, 0.14) 100%)',
-                          boxShadow:
-                            'inset 0 0 0 1px rgba(20, 241, 149, 0.48), inset 0 1px 0 rgba(255,255,255,0.08)',
-                        }}
-                      >
-                        {emailLoading ? 'Sending...' : 'Send verification code'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEmailStep('idle');
-                          setNewEmail('');
-                          setEmailPassword('');
-                        }}
-                        className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                )}
-
-                {emailStep === 'otp' && (
-                  <form onSubmit={handleConfirmEmailChange} className="space-y-4">
-                    <p className="text-sm text-[var(--text-secondary)] font-light">
-                      A 6-digit code was sent to <span className="text-atlas-400">{newEmail}</span>
-                      .
-                    </p>
-                    <Field label="Verification Code">
-                      <Input
-                        type="text"
-                        value={emailOtp}
-                        onChange={(e) => setEmailOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                        placeholder="000000"
-                        maxLength={6}
-                      />
-                    </Field>
-                    <div className="flex gap-2">
-                      <button
-                        type="submit"
-                        disabled={emailLoading || emailOtp.length !== 6}
-                        className="flex-1 py-3 rounded-xl text-sm font-light disabled:opacity-50 text-white transition-all"
-                        style={{
-                          background:
-                            'linear-gradient(180deg, rgba(20, 241, 149, 0.38) 0%, rgba(20, 241, 149, 0.14) 100%)',
-                          boxShadow:
-                            'inset 0 0 0 1px rgba(20, 241, 149, 0.48), inset 0 1px 0 rgba(255,255,255,0.08)',
-                        }}
-                      >
-                        {emailLoading ? 'Confirming...' : 'Confirm email change'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setEmailStep('idle')}
-                        className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </div>
-
-              {/* ── Two-Factor Authentication ── */}
-              <div className="profile-content-card">
-                <SectionHeader
-                  title="Two-Factor Authentication"
-                  subtitle="Add an extra layer of security to your account."
-                />
-
-                <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] mb-4">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${twoFAEnabled ? 'bg-emerald-400' : 'bg-zinc-500'}`}
-                    />
-                    <div>
-                      <div className="text-sm font-light text-[var(--text)]">
-                        {twoFAEnabled ? '2FA is enabled' : '2FA is disabled'}
-                      </div>
-                      <div className="text-xs text-[var(--text-muted)]">
-                        {twoFAEnabled
-                          ? 'Your account is protected with two-factor authentication.'
-                          : 'Enable 2FA to secure your account with a verification code.'}
-                      </div>
-                    </div>
-                  </div>
-                  {enable2FAStep === 'idle' && (
-                    <button
-                      type="button"
-                      onClick={handle2FAToggle}
-                      disabled={toggling2FA || (twoFAEnabled && !disable2FAPassword)}
-                      className={`text-xs px-3 py-1.5 rounded-lg border transition-all disabled:opacity-50 ${
-                        twoFAEnabled
-                          ? 'border-red-500/25 text-red-400 hover:border-red-500/40 hover:bg-red-500/5'
-                          : 'border-emerald-500/25 text-emerald-400 hover:border-emerald-500/40 hover:bg-emerald-500/5'
-                      }`}
-                    >
-                      {toggling2FA ? '...' : twoFAEnabled ? 'Disable' : 'Enable'}
-                    </button>
-                  )}
-                </div>
-
-                {twoFAEnabled && enable2FAStep === 'idle' && (
-                  <Field label="Password required to disable 2FA">
-                    <Input
-                      type="password"
-                      value={disable2FAPassword}
-                      onChange={(e) => setDisable2FAPassword(e.target.value)}
-                      placeholder="Enter your password"
-                    />
-                  </Field>
-                )}
-
-                {enable2FAStep === 'scan' && (
-                  <div className="space-y-5 mt-2">
-                    <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-5 items-center p-5 rounded-xl border border-atlas-500/20 bg-gradient-to-br from-atlas-500/5 to-transparent">
-                      {twoFAQrCode ? (
-                        <div className="flex justify-center md:justify-start">
-                          <div
-                            className="p-3 rounded-xl bg-white"
-                            style={{
-                              boxShadow:
-                                '0 0 0 1px rgba(20, 241, 149, 0.3), 0 0 32px -8px rgba(20, 241, 149, 0.45)',
-                            }}
-                          >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={twoFAQrCode}
-                              alt="2FA QR code"
-                              width={180}
-                              height={180}
-                              className="block w-[180px] h-[180px]"
-                            />
                           </div>
+                          <button
+                            onClick={() => handleSendFriendRequest(u.id)}
+                            disabled={sendingTo === u.id}
+                            className="text-xs text-atlas-400 border border-atlas-500/30 hover:border-atlas-400/60 hover:bg-atlas-500/8 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50 shrink-0"
+                          >
+                            {sendingTo === u.id ? '...' : '+ Add'}
+                          </button>
                         </div>
-                      ) : (
-                        <div className="w-[180px] h-[180px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
-                          <div className="w-5 h-5 rounded-full border-2 border-[var(--border)] border-t-atlas-400 animate-spin" />
+                      ))}
+                    </div>
+                  )}
+
+                  {searchQuery.trim() && !searching && searchResults.length === 0 && (
+                    <div className="mt-3 text-center py-6 text-xs text-[var(--text-muted)] font-mono border border-[var(--border)] rounded-xl">
+                      No users found for &quot;{searchQuery}&quot;
+                    </div>
+                  )}
+                </div>
+
+                {/* Requests + list */}
+                <div className="profile-content-card">
+                  {friendsLoading ? (
+                    <div className="flex items-center gap-2 py-6 justify-center text-xs text-[var(--text-muted)]">
+                      <div className="w-4 h-4 rounded-full border-2 border-[var(--border)] border-t-atlas-400 animate-spin" />
+                      Loading...
+                    </div>
+                  ) : (
+                    <div className="space-y-5">
+                      {/* Pending requests */}
+                      {friendRequests.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                            <span className="text-xs font-mono text-amber-400 uppercase tracking-widest">
+                              {friendRequests.length} pending request
+                              {friendRequests.length !== 1 ? 's' : ''}
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            {friendRequests.map((req) => (
+                              <div
+                                key={req.id}
+                                className="flex items-center gap-3 bg-amber-500/5 border border-amber-500/15 rounded-xl px-4 py-3"
+                              >
+                                <Avatar
+                                  src={req.from.avatarUrl}
+                                  name={req.from.displayName || req.from.username}
+                                  userId={req.from.id}
+                                  size="sm"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <Link
+                                    href={`/u/${req.from.username}`}
+                                    className="text-sm font-light text-[var(--text)] hover:text-atlas-300 transition-colors"
+                                  >
+                                    {req.from.displayName || req.from.username}
+                                  </Link>
+                                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
+                                    {req.from.username && <span>@{req.from.username}</span>}
+                                    {req.from.userTag && (
+                                      <span className="text-atlas-400/60">#{req.from.userTag}</span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="flex gap-2 shrink-0">
+                                  <button
+                                    onClick={() => handleRespondToRequest(req.id, true)}
+                                    disabled={friendActionId === req.id}
+                                    className="text-xs text-emerald-400 border border-emerald-500/25 hover:border-emerald-400/50 hover:bg-emerald-500/8 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50"
+                                  >
+                                    Accept
+                                  </button>
+                                  <button
+                                    onClick={() => handleRespondToRequest(req.id, false)}
+                                    disabled={friendActionId === req.id}
+                                    className="text-xs text-[var(--text-muted)] border border-[var(--border)] hover:border-zinc-500 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50"
+                                  >
+                                    Decline
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
-                      <div className="space-y-3 min-w-0">
+
+                      {/* Sent / outgoing requests */}
+                      {sentRequests.length > 0 && (
                         <div>
-                          <div className="text-xs uppercase tracking-widest text-atlas-300/80 mb-1">
-                            Step 1 · Scan
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-atlas-400" />
+                            <span className="text-xs font-mono text-atlas-300 uppercase tracking-widest">
+                              {sentRequests.length} sent request
+                              {sentRequests.length !== 1 ? 's' : ''}
+                            </span>
                           </div>
-                          <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
-                            Open an authenticator app (Google Authenticator, 1Password, Authy…) and
-                            scan this QR code.
+                          <div className="space-y-2">
+                            {sentRequests.map((req) => (
+                              <div
+                                key={req.id}
+                                className="flex items-center gap-3 bg-atlas-500/5 border border-atlas-500/15 rounded-xl px-4 py-3"
+                              >
+                                <Avatar
+                                  src={req.to.avatarUrl}
+                                  name={req.to.displayName || req.to.username}
+                                  userId={req.to.id}
+                                  size="sm"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <Link
+                                    href={`/u/${req.to.username}`}
+                                    className="text-sm font-light text-[var(--text)] hover:text-atlas-300 transition-colors"
+                                  >
+                                    {req.to.displayName || req.to.username}
+                                  </Link>
+                                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-mono">
+                                    {req.to.username && <span>@{req.to.username}</span>}
+                                    {req.to.userTag && (
+                                      <span className="text-atlas-400/60">#{req.to.userTag}</span>
+                                    )}
+                                    <span className="text-white/30">· awaiting response</span>
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => handleCancelSentRequest(req.to.id)}
+                                  disabled={friendActionId === req.to.id}
+                                  className="text-xs text-[var(--text-muted)] border border-[var(--border)] hover:border-red-400/25 hover:text-red-400 px-3 py-1.5 rounded-lg transition-all duration-200 disabled:opacity-50 shrink-0"
+                                >
+                                  {friendActionId === req.to.id ? '...' : 'Cancel'}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Friends list */}
+                      {friends.length === 0 &&
+                      friendRequests.length === 0 &&
+                      sentRequests.length === 0 ? (
+                        <div className="text-center py-10">
+                          <IconUsers className="w-8 h-8 text-[var(--text-muted)] mx-auto mb-2 opacity-30" />
+                          <p className="text-sm text-[var(--text-muted)]">
+                            Start building your network — search for developers to connect with.
                           </p>
                         </div>
-                        {twoFASecret && (
-                          <div>
-                            <div className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-1">
-                              Can&apos;t scan? Manual key
-                            </div>
-                            <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg px-3 py-2">
-                              <code className="flex-1 font-mono text-[11px] text-[var(--text)] break-all">
-                                {twoFASecret}
-                              </code>
-                              <button
-                                type="button"
-                                onClick={handleCopy2FASecret}
-                                className="text-[11px] px-2 py-1 rounded-md border border-atlas-500/25 hover:border-atlas-400/50 text-atlas-300 hover:text-atlas-200 transition-all shrink-0"
+                      ) : friends.length > 0 ? (
+                        <div>
+                          {friendRequests.length > 0 && (
+                            <div className="border-t border-[var(--border)] pt-4" />
+                          )}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {friends.map((f) => (
+                              <div
+                                key={f.id}
+                                className="flex items-center gap-3 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-3 py-2.5 group hover:border-atlas-500/40 hover:shadow-lg transition-all duration-200"
                               >
-                                {twoFASecretCopied ? 'Copied' : 'Copy'}
-                              </button>
-                            </div>
+                                <Avatar
+                                  src={f.friend.avatarUrl}
+                                  name={f.friend.displayName || f.friend.username}
+                                  userId={f.friend.id}
+                                  size="sm"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <Link
+                                    href={`/u/${f.friend.username}`}
+                                    className="text-xs font-light text-[var(--text)] hover:text-atlas-300 transition-colors truncate block"
+                                  >
+                                    {f.friend.displayName || f.friend.username}
+                                  </Link>
+                                  <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)] font-mono">
+                                    {f.friend.username && <span>@{f.friend.username}</span>}
+                                    {f.friend.userTag && (
+                                      <span className="text-atlas-300">#{f.friend.userTag}</span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <button
+                                    onClick={() => handleUnfriend(f.friend.id)}
+                                    disabled={friendActionId === f.friend.id}
+                                    className="text-xs text-[var(--text-muted)] hover:text-red-400 border border-[var(--border)] hover:border-red-400/25 px-2 py-1 rounded-lg transition-all duration-200 disabled:opacity-50"
+                                    title="Remove friend"
+                                  >
+                                    <IconX className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        )}
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ════════════════════════════════════════════
+          SECURITY
+      ════════════════════════════════════════════ */}
+            {tab === 'security' && (
+              <div className="space-y-4">
+                {/* ── Email address ── */}
+                <div className="profile-content-card">
+                  <SectionHeader
+                    title="Email Address"
+                    subtitle="Update the email address associated with your account."
+                  />
+                  <Alert type="success" msg={secMsg} />
+                  <Alert type="error" msg={secErr} />
+
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] mb-4">
+                    <div>
+                      <div className="text-xs text-[var(--text-muted)] uppercase tracking-widest mb-0.5">
+                        Current email
+                      </div>
+                      <div className="text-sm font-light text-[var(--text)]">
+                        {userEmail || '—'}
                       </div>
                     </div>
+                    {emailStep === 'idle' && (
+                      <button
+                        type="button"
+                        onClick={() => setEmailStep('form')}
+                        className="text-xs px-3 py-1.5 rounded-lg border border-[var(--border)] hover:border-atlas-500/40 text-[var(--text-muted)] hover:text-atlas-400 transition-all"
+                      >
+                        Change
+                      </button>
+                    )}
+                  </div>
 
-                    <div className="space-y-3">
-                      <div className="text-xs uppercase tracking-widest text-atlas-300/80">
-                        Step 2 · Verify
+                  {emailStep === 'form' && (
+                    <form onSubmit={handleRequestEmailChange} className="space-y-4">
+                      <Field label="New Email Address">
+                        <Input
+                          type="email"
+                          value={newEmail}
+                          onChange={(e) => setNewEmail(e.target.value)}
+                          required
+                          placeholder="new@example.com"
+                        />
+                      </Field>
+                      <Field label="Current Password">
+                        <Input
+                          type="password"
+                          value={emailPassword}
+                          onChange={(e) => setEmailPassword(e.target.value)}
+                          required
+                          placeholder="••••••••"
+                        />
+                      </Field>
+                      <div className="flex gap-2">
+                        <button
+                          type="submit"
+                          disabled={emailLoading}
+                          className="flex-1 py-3 rounded-xl text-sm font-light disabled:opacity-50 text-white transition-all"
+                          style={{
+                            background:
+                              'linear-gradient(180deg, rgba(20, 241, 149, 0.38) 0%, rgba(20, 241, 149, 0.14) 100%)',
+                            boxShadow:
+                              'inset 0 0 0 1px rgba(20, 241, 149, 0.48), inset 0 1px 0 rgba(255,255,255,0.08)',
+                          }}
+                        >
+                          {emailLoading ? 'Sending...' : 'Send verification code'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEmailStep('idle');
+                            setNewEmail('');
+                            setEmailPassword('');
+                          }}
+                          className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
+                        >
+                          Cancel
+                        </button>
                       </div>
-                      <Field label="6-digit code from your authenticator">
+                    </form>
+                  )}
+
+                  {emailStep === 'otp' && (
+                    <form onSubmit={handleConfirmEmailChange} className="space-y-4">
+                      <p className="text-sm text-[var(--text-secondary)] font-light">
+                        A 6-digit code was sent to{' '}
+                        <span className="text-atlas-400">{newEmail}</span>.
+                      </p>
+                      <Field label="Verification Code">
                         <Input
                           type="text"
-                          inputMode="numeric"
-                          autoComplete="one-time-code"
-                          value={enable2FACode}
+                          value={emailOtp}
                           onChange={(e) =>
-                            setEnable2FACode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                            setEmailOtp(e.target.value.replace(/\D/g, '').slice(0, 6))
                           }
                           placeholder="000000"
                           maxLength={6}
                         />
                       </Field>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <button
-                        type="button"
-                        onClick={handleEnable2FAConfirm}
-                        disabled={toggling2FA || enable2FACode.length !== 6}
-                        className="flex-1 py-3 rounded-xl text-sm font-light disabled:opacity-50 text-white transition-all"
-                        style={{
-                          background:
-                            'linear-gradient(180deg, rgba(20, 241, 149, 0.38) 0%, rgba(20, 241, 149, 0.14) 100%)',
-                          boxShadow:
-                            'inset 0 0 0 1px rgba(20, 241, 149, 0.48), inset 0 1px 0 rgba(255,255,255,0.08)',
-                        }}
-                      >
-                        {toggling2FA ? 'Verifying...' : 'Verify & Enable 2FA'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEnable2FAStep('idle');
-                          setEnable2FACode('');
-                          setTwoFAQrCode(null);
-                          setTwoFASecret(null);
-                        }}
-                        className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* ── Password ── */}
-              <div className="profile-content-card">
-                <SectionHeader
-                  title="Password"
-                  subtitle="Change your password via a secure email reset link."
-                />
-                <Alert type="success" msg={pwMsg} />
-                <Alert type="error" msg={pwErr} />
-
-                <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)]">
-                  <div className="min-w-0">
-                    <div className="text-sm font-light text-[var(--text)] mb-0.5">
-                      {pwStep === 'sent' ? 'Reset link sent' : 'Password reset'}
-                    </div>
-                    <div className="text-xs text-[var(--text-muted)]">
-                      {pwStep === 'sent'
-                        ? `Check ${userEmail || 'your inbox'} for instructions.`
-                        : 'We will email you a one-time link to set a new password.'}
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={handleRequestPasswordReset}
-                    disabled={pwLoading || !userEmail}
-                    className="text-xs px-3 py-1.5 rounded-lg border border-atlas-500/25 hover:border-atlas-500/50 text-atlas-300 hover:text-atlas-200 bg-atlas-500/5 hover:bg-atlas-500/10 transition-all disabled:opacity-50 shrink-0"
-                  >
-                    {pwLoading
-                      ? 'Sending...'
-                      : pwStep === 'sent'
-                        ? 'Resend link'
-                        : 'Send reset link'}
-                  </button>
+                      <div className="flex gap-2">
+                        <button
+                          type="submit"
+                          disabled={emailLoading || emailOtp.length !== 6}
+                          className="flex-1 py-3 rounded-xl text-sm font-light disabled:opacity-50 text-white transition-all"
+                          style={{
+                            background:
+                              'linear-gradient(180deg, rgba(20, 241, 149, 0.38) 0%, rgba(20, 241, 149, 0.14) 100%)',
+                            boxShadow:
+                              'inset 0 0 0 1px rgba(20, 241, 149, 0.48), inset 0 1px 0 rgba(255,255,255,0.08)',
+                          }}
+                        >
+                          {emailLoading ? 'Confirming...' : 'Confirm email change'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEmailStep('idle')}
+                          className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
                 </div>
-              </div>
 
-              {/* ── Delete Account ── */}
-              <div className="profile-content-card">
-                <SectionHeader
-                  title="Delete Account"
-                  subtitle="Permanently delete your account and all associated data."
-                />
+                {/* ── Two-Factor Authentication ── */}
+                <div className="profile-content-card">
+                  <SectionHeader
+                    title="Two-Factor Authentication"
+                    subtitle="Add an extra layer of security to your account."
+                  />
 
-                {deleteStep === 'idle' && (
-                  <div className="space-y-4">
-                    <div className="p-4 rounded-xl border border-red-500/15 bg-red-500/5 text-sm text-red-300/80 font-light leading-relaxed">
-                      This action is irreversible. All your data, agents, listings, and transaction
-                      history will be permanently removed.
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] mb-4">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`w-2 h-2 rounded-full ${twoFAEnabled ? 'bg-emerald-400' : 'bg-zinc-500'}`}
+                      />
+                      <div>
+                        <div className="text-sm font-light text-[var(--text)]">
+                          {twoFAEnabled ? '2FA is enabled' : '2FA is disabled'}
+                        </div>
+                        <div className="text-xs text-[var(--text-muted)]">
+                          {twoFAEnabled
+                            ? 'Your account is protected with two-factor authentication.'
+                            : 'Enable 2FA to secure your account with a verification code.'}
+                        </div>
+                      </div>
+                    </div>
+                    {enable2FAStep === 'idle' && (
+                      <button
+                        type="button"
+                        onClick={handle2FAToggle}
+                        disabled={toggling2FA || (twoFAEnabled && !disable2FAPassword)}
+                        className={`text-xs px-3 py-1.5 rounded-lg border transition-all disabled:opacity-50 ${
+                          twoFAEnabled
+                            ? 'border-red-500/25 text-red-400 hover:border-red-500/40 hover:bg-red-500/5'
+                            : 'border-emerald-500/25 text-emerald-400 hover:border-emerald-500/40 hover:bg-emerald-500/5'
+                        }`}
+                      >
+                        {toggling2FA ? '...' : twoFAEnabled ? 'Disable' : 'Enable'}
+                      </button>
+                    )}
+                  </div>
+
+                  {twoFAEnabled && enable2FAStep === 'idle' && (
+                    <Field label="Password required to disable 2FA">
+                      <Input
+                        type="password"
+                        value={disable2FAPassword}
+                        onChange={(e) => setDisable2FAPassword(e.target.value)}
+                        placeholder="Enter your password"
+                      />
+                    </Field>
+                  )}
+
+                  {enable2FAStep === 'scan' && (
+                    <div className="space-y-5 mt-2">
+                      <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-5 items-center p-5 rounded-xl border border-atlas-500/20 bg-gradient-to-br from-atlas-500/5 to-transparent">
+                        {twoFAQrCode ? (
+                          <div className="flex justify-center md:justify-start">
+                            <div
+                              className="p-3 rounded-xl bg-white"
+                              style={{
+                                boxShadow:
+                                  '0 0 0 1px rgba(20, 241, 149, 0.3), 0 0 32px -8px rgba(20, 241, 149, 0.45)',
+                              }}
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={twoFAQrCode}
+                                alt="2FA QR code"
+                                width={180}
+                                height={180}
+                                className="block w-[180px] h-[180px]"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-[180px] h-[180px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-full border-2 border-[var(--border)] border-t-atlas-400 animate-spin" />
+                          </div>
+                        )}
+                        <div className="space-y-3 min-w-0">
+                          <div>
+                            <div className="text-xs uppercase tracking-widest text-atlas-300/80 mb-1">
+                              Step 1 · Scan
+                            </div>
+                            <p className="text-sm text-[var(--text-secondary)] font-light leading-relaxed">
+                              Open an authenticator app (Google Authenticator, 1Password, Authy…)
+                              and scan this QR code.
+                            </p>
+                          </div>
+                          {twoFASecret && (
+                            <div>
+                              <div className="text-xs uppercase tracking-widest text-[var(--text-muted)] mb-1">
+                                Can&apos;t scan? Manual key
+                              </div>
+                              <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-lg px-3 py-2">
+                                <code className="flex-1 font-mono text-[11px] text-[var(--text)] break-all">
+                                  {twoFASecret}
+                                </code>
+                                <button
+                                  type="button"
+                                  onClick={handleCopy2FASecret}
+                                  className="text-[11px] px-2 py-1 rounded-md border border-atlas-500/25 hover:border-atlas-400/50 text-atlas-300 hover:text-atlas-200 transition-all shrink-0"
+                                >
+                                  {twoFASecretCopied ? 'Copied' : 'Copy'}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div className="text-xs uppercase tracking-widest text-atlas-300/80">
+                          Step 2 · Verify
+                        </div>
+                        <Field label="6-digit code from your authenticator">
+                          <Input
+                            type="text"
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
+                            value={enable2FACode}
+                            onChange={(e) =>
+                              setEnable2FACode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                            }
+                            placeholder="000000"
+                            maxLength={6}
+                          />
+                        </Field>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={handleEnable2FAConfirm}
+                          disabled={toggling2FA || enable2FACode.length !== 6}
+                          className="flex-1 py-3 rounded-xl text-sm font-light disabled:opacity-50 text-white transition-all"
+                          style={{
+                            background:
+                              'linear-gradient(180deg, rgba(20, 241, 149, 0.38) 0%, rgba(20, 241, 149, 0.14) 100%)',
+                            boxShadow:
+                              'inset 0 0 0 1px rgba(20, 241, 149, 0.48), inset 0 1px 0 rgba(255,255,255,0.08)',
+                          }}
+                        >
+                          {toggling2FA ? 'Verifying...' : 'Verify & Enable 2FA'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setEnable2FAStep('idle');
+                            setEnable2FACode('');
+                            setTwoFAQrCode(null);
+                            setTwoFASecret(null);
+                          }}
+                          className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* ── Password ── */}
+                <div className="profile-content-card">
+                  <SectionHeader
+                    title="Password"
+                    subtitle="Change your password via a secure email reset link."
+                  />
+                  <Alert type="success" msg={pwMsg} />
+                  <Alert type="error" msg={pwErr} />
+
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)]">
+                    <div className="min-w-0">
+                      <div className="text-sm font-light text-[var(--text)] mb-0.5">
+                        {pwStep === 'sent' ? 'Reset link sent' : 'Password reset'}
+                      </div>
+                      <div className="text-xs text-[var(--text-muted)]">
+                        {pwStep === 'sent'
+                          ? `Check ${userEmail || 'your inbox'} for instructions.`
+                          : 'We will email you a one-time link to set a new password.'}
+                      </div>
                     </div>
                     <button
                       type="button"
-                      onClick={() => setDeleteStep('confirm')}
-                      className="w-full py-3 rounded-xl border border-red-500/25 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 text-red-400 text-sm font-light transition-all duration-200"
+                      onClick={handleRequestPasswordReset}
+                      disabled={pwLoading || !userEmail}
+                      className="text-xs px-3 py-1.5 rounded-lg border border-atlas-500/25 hover:border-atlas-500/50 text-atlas-300 hover:text-atlas-200 bg-atlas-500/5 hover:bg-atlas-500/10 transition-all disabled:opacity-50 shrink-0"
                     >
-                      Delete my account
+                      {pwLoading
+                        ? 'Sending...'
+                        : pwStep === 'sent'
+                          ? 'Resend link'
+                          : 'Send reset link'}
                     </button>
                   </div>
-                )}
+                </div>
 
-                {deleteStep === 'confirm' && (
-                  <div className="space-y-4">
-                    <p className="text-sm text-[var(--text-secondary)] font-light">
-                      Are you sure? We will send a confirmation code to your email.
-                    </p>
-                    <div className="flex gap-2">
+                {/* ── Delete Account ── */}
+                <div className="profile-content-card">
+                  <SectionHeader
+                    title="Delete Account"
+                    subtitle="Permanently delete your account and all associated data."
+                  />
+
+                  {deleteStep === 'idle' && (
+                    <div className="space-y-4">
+                      <div className="p-4 rounded-xl border border-red-500/15 bg-red-500/5 text-sm text-red-300/80 font-light leading-relaxed">
+                        This action is irreversible. All your data, agents, listings, and
+                        transaction history will be permanently removed.
+                      </div>
                       <button
                         type="button"
-                        onClick={handleRequestDeleteAccount}
-                        disabled={requestingDelete}
-                        className="flex-1 py-3 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm font-light disabled:opacity-50 transition-all"
+                        onClick={() => setDeleteStep('confirm')}
+                        className="w-full py-3 rounded-xl border border-red-500/25 hover:border-red-500/40 bg-red-500/5 hover:bg-red-500/10 text-red-400 text-sm font-light transition-all duration-200"
                       >
-                        {requestingDelete ? 'Sending code...' : 'Yes, send confirmation code'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setDeleteStep('idle')}
-                        className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
-                      >
-                        Cancel
+                        Delete my account
                       </button>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {deleteStep === 'otp' && (
-                  <form onSubmit={handleDeleteAccount} className="space-y-4">
-                    <p className="text-sm text-[var(--text-secondary)] font-light">
-                      Enter the confirmation code sent to your email to permanently delete your
-                      account.
-                    </p>
-                    <Alert type="error" msg={secErr} />
-                    <Field label="Confirmation Code">
-                      <Input
-                        type="text"
-                        value={deleteOtp}
-                        onChange={(e) =>
-                          setDeleteOtp(e.target.value.replace(/\D/g, '').slice(0, 6))
-                        }
-                        placeholder="000000"
-                        maxLength={6}
-                      />
-                    </Field>
-                    <div className="flex gap-2">
-                      <button
-                        type="submit"
-                        disabled={deleting || deleteOtp.length !== 6}
-                        className="flex-1 py-3 rounded-xl border border-red-500/40 bg-red-500/15 hover:bg-red-500/25 text-red-300 text-sm font-light disabled:opacity-50 transition-all"
-                      >
-                        {deleting ? 'Deleting...' : 'Permanently delete account'}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setDeleteStep('idle');
-                          setDeleteOtp('');
-                        }}
-                        className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
-                      >
-                        Cancel
-                      </button>
+                  {deleteStep === 'confirm' && (
+                    <div className="space-y-4">
+                      <p className="text-sm text-[var(--text-secondary)] font-light">
+                        Are you sure? We will send a confirmation code to your email.
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={handleRequestDeleteAccount}
+                          disabled={requestingDelete}
+                          className="flex-1 py-3 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-sm font-light disabled:opacity-50 transition-all"
+                        >
+                          {requestingDelete ? 'Sending code...' : 'Yes, send confirmation code'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setDeleteStep('idle')}
+                          className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
-                  </form>
-                )}
+                  )}
+
+                  {deleteStep === 'otp' && (
+                    <form onSubmit={handleDeleteAccount} className="space-y-4">
+                      <p className="text-sm text-[var(--text-secondary)] font-light">
+                        Enter the confirmation code sent to your email to permanently delete your
+                        account.
+                      </p>
+                      <Alert type="error" msg={secErr} />
+                      <Field label="Confirmation Code">
+                        <Input
+                          type="text"
+                          value={deleteOtp}
+                          onChange={(e) =>
+                            setDeleteOtp(e.target.value.replace(/\D/g, '').slice(0, 6))
+                          }
+                          placeholder="000000"
+                          maxLength={6}
+                        />
+                      </Field>
+                      <div className="flex gap-2">
+                        <button
+                          type="submit"
+                          disabled={deleting || deleteOtp.length !== 6}
+                          className="flex-1 py-3 rounded-xl border border-red-500/40 bg-red-500/15 hover:bg-red-500/25 text-red-300 text-sm font-light disabled:opacity-50 transition-all"
+                        >
+                          {deleting ? 'Deleting...' : 'Permanently delete account'}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setDeleteStep('idle');
+                            setDeleteOtp('');
+                          }}
+                          className="px-4 py-3 rounded-xl text-sm font-light border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] transition-all"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-
+            )}
           </div>
           {/* end profile-content */}
         </div>
@@ -2837,9 +2859,7 @@ function RankProgressPanel({ points }: { points: number }) {
       </div>
 
       <div className="mt-4 flex items-baseline justify-between">
-        <span className="font-mono tabular-nums text-xl text-white">
-          {points.toLocaleString()}
-        </span>
+        <span className="font-mono tabular-nums text-xl text-white">{points.toLocaleString()}</span>
         <span className="text-[11px] text-zinc-500 font-light">rays total</span>
       </div>
 
@@ -2852,15 +2872,16 @@ function RankProgressPanel({ points }: { points: number }) {
             className="h-full rounded-full transition-all"
             style={{
               width: `${progress}%`,
-              background:
-                'linear-gradient(90deg, #06B6D4 0%, #14F195 50%, #EC4899 100%)',
+              background: 'linear-gradient(90deg, #06B6D4 0%, #14F195 50%, #EC4899 100%)',
               boxShadow: '0 0 10px rgba(20, 241, 149, 0.5)',
             }}
           />
         </div>
         {nextTier ? (
           <div className="mt-1.5 flex items-center justify-between text-[11px] font-light text-zinc-500">
-            <span className="text-zinc-400">{Math.floor(progress)}% to {nextTier.label}</span>
+            <span className="text-zinc-400">
+              {Math.floor(progress)}% to {nextTier.label}
+            </span>
             <span className="font-mono tabular-nums">
               {(nextTier.threshold - points).toLocaleString()} rays to go
             </span>
@@ -2900,7 +2921,9 @@ function RankProgressPanel({ points }: { points: number }) {
               </div>
               <span
                 className="text-[11.5px] font-light flex-1"
-                style={{ color: isCurrent ? 'var(--text)' : reached ? '#d4d4d8' : 'var(--text-muted)' }}
+                style={{
+                  color: isCurrent ? 'var(--text)' : reached ? '#d4d4d8' : 'var(--text-muted)',
+                }}
               >
                 {tier.label}
               </span>

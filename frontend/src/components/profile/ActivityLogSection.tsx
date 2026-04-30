@@ -93,8 +93,7 @@ export const ActivityLogSection: React.FC<ActivityLogSectionProps> = ({ events, 
             className="px-4 py-2 rounded-lg text-[13px] font-light tracking-[0.005em] text-zinc-300 hover:text-white hover:brightness-110 transition-colors flex items-center gap-2"
             style={{
               background: 'linear-gradient(180deg, rgba(40,40,48,0.7) 0%, var(--bg-card) 100%)',
-              boxShadow:
-                'inset 0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
+              boxShadow: 'inset 0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
             }}
           >
             <Download className="w-4 h-4" />
@@ -109,8 +108,7 @@ export const ActivityLogSection: React.FC<ActivityLogSectionProps> = ({ events, 
           <div
             className="relative p-12 rounded-xl text-center overflow-hidden"
             style={{
-              background:
-                'var(--bg-card)',
+              background: 'var(--bg-card)',
               boxShadow: '0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
             }}
           >
@@ -157,8 +155,7 @@ export const ActivityLogSection: React.FC<ActivityLogSectionProps> = ({ events, 
                   <div
                     className="absolute left-[23px] top-12 w-px h-4"
                     style={{
-                      background:
-                        'linear-gradient(180deg, var(--border) 0%, transparent 100%)',
+                      background: 'linear-gradient(180deg, var(--border) 0%, transparent 100%)',
                     }}
                   />
                 )}

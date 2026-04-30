@@ -133,8 +133,7 @@ export const AgentSelector: React.FC<AgentSelectorProps> = ({
               transition={{ type: 'spring', stiffness: 380, damping: 28 }}
               className="absolute top-full left-0 right-0 mt-2 z-50 rounded-xl overflow-hidden origin-top"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow:
                   '0 0 0 1px rgba(20, 241, 149, 0.2), inset 0 1px 0 rgba(255,255,255,0.04), 0 20px 60px -10px rgba(0,0,0,0.5)',
                 backdropFilter: 'blur(8px)',

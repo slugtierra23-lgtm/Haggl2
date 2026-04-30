@@ -1,16 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import {
-  Activity,
-  Clock,
-  Key,
-  Package,
-  ShoppingBag,
-  Store,
-  TrendingUp,
-  Users,
-} from 'lucide-react';
+import { Activity, Clock, Key, Package, ShoppingBag, Store, TrendingUp, Users } from 'lucide-react';
 import React from 'react';
 
 interface UsageData {
@@ -158,7 +149,7 @@ export const UsageSection: React.FC<UsageSectionProps> = ({ data }) => {
           Icon={Package}
         />
         <StatCard
-          delay={0.20}
+          delay={0.2}
           accent="#22c55e"
           label="Sales"
           value={sales}
@@ -170,11 +161,7 @@ export const UsageSection: React.FC<UsageSectionProps> = ({ data }) => {
           accent="#f59e0b"
           label="API keys"
           value={apiKeys}
-          sub={
-            data.lastApiUsedAt
-              ? `Last used ${timeAgo(data.lastApiUsedAt)}`
-              : 'None used yet'
-          }
+          sub={data.lastApiUsedAt ? `Last used ${timeAgo(data.lastApiUsedAt)}` : 'None used yet'}
           Icon={Key}
         />
         <StatCard

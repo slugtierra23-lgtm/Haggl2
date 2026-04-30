@@ -159,8 +159,7 @@ export default function ProfileSetupPage() {
             <div
               className="flex items-center gap-2 rounded-lg px-3.5 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)] transition-all"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
             >
@@ -192,8 +191,7 @@ export default function ProfileSetupPage() {
               placeholder="Your Name"
               className="w-full rounded-lg px-3.5 py-2.5 text-white text-[13px] outline-none transition-all focus:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)] placeholder:text-zinc-600"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
               maxLength={50}
@@ -212,8 +210,7 @@ export default function ProfileSetupPage() {
               rows={3}
               className="w-full rounded-lg px-3.5 py-2.5 text-white text-[13px] outline-none transition-all focus:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)] placeholder:text-zinc-600 resize-none"
               style={{
-                background:
-                  'var(--bg-card)',
+                background: 'var(--bg-card)',
                 boxShadow: '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
               }}
               maxLength={300}
@@ -231,8 +228,7 @@ export default function ProfileSetupPage() {
               <div
                 className="flex items-center gap-2.5 rounded-lg px-3.5 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)] transition-all"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                 }}
@@ -257,8 +253,7 @@ export default function ProfileSetupPage() {
               <div
                 className="flex items-center gap-2.5 rounded-lg px-3.5 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)] transition-all"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                 }}
@@ -283,8 +278,7 @@ export default function ProfileSetupPage() {
               <div
                 className="flex items-center gap-2.5 rounded-lg px-3.5 py-2.5 focus-within:shadow-[0_0_0_3px_rgba(20, 241, 149, 0.12)] transition-all"
                 style={{
-                  background:
-                    'var(--bg-card)',
+                  background: 'var(--bg-card)',
                   boxShadow:
                     '0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.03)',
                 }}

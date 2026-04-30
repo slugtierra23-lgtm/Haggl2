@@ -80,10 +80,7 @@ export interface IProtocolAdapter {
    * we can parse. The `latencyMs` is wall-clock from request send to
    * parsed response.
    */
-  invoke(
-    config: AgentEndpointConfig,
-    input: AgentInvokeInput,
-  ): Promise<AgentInvokeOutput>;
+  invoke(config: AgentEndpointConfig, input: AgentInvokeInput): Promise<AgentInvokeOutput>;
 
   /**
    * Quick structural validation of the user-supplied config. Returns

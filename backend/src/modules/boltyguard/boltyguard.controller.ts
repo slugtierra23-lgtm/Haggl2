@@ -182,9 +182,7 @@ export class BoltyGuardController {
       // bundle scanner throws Errors with human-readable messages
       // ("not a zip", "too many entries", "aggregate uncompressed
       // size exceeds limit", etc).
-      throw new BadRequestException(
-        (err as Error).message || 'failed to scan bundle',
-      );
+      throw new BadRequestException((err as Error).message || 'failed to scan bundle');
     }
     return {
       ...result,
@@ -216,9 +214,7 @@ export class BoltyGuardController {
   ) {
     const spec = this.github.parseRepoSpec(String(body?.url || ''));
     if (!spec) {
-      throw new BadRequestException(
-        'Provide a github.com URL or owner/repo (e.g. ar00ii/bolty).',
-      );
+      throw new BadRequestException('Provide a github.com URL or owner/repo (e.g. ar00ii/bolty).');
     }
     const gate = await this.holderGate.isHolder(userId);
     if (!gate.holder) {
@@ -233,9 +229,7 @@ export class BoltyGuardController {
     try {
       zipBuf = await this.github.fetchZip(spec);
     } catch (err) {
-      throw new BadRequestException(
-        (err as Error).message || 'failed to download repo',
-      );
+      throw new BadRequestException((err as Error).message || 'failed to download repo');
     }
     const result = await this.bundle.scanZip(zipBuf, {
       isAgent: !!body?.isAgent,
@@ -252,11 +246,8 @@ export class BoltyGuardController {
   /** Decrement the per-user daily quota in Redis. Returns the count
    *  of remaining scans AFTER this call; -1 means already exhausted. */
   private async consumeFreeQuota(userId: string | null): Promise<number> {
-    const bucket =
-      userId ?? `anon-${new Date().toISOString().slice(0, 10)}`;
-    const key = `boltyguard:freequota:${bucket}:${new Date()
-      .toISOString()
-      .slice(0, 10)}`;
+    const bucket = userId ?? `anon-${new Date().toISOString().slice(0, 10)}`;
+    const key = `boltyguard:freequota:${bucket}:${new Date().toISOString().slice(0, 10)}`;
     const used = await this.redis.incr(key);
     if (used === 1) {
       // Expire at end of day. 25h is fine — generous TTL avoids race.

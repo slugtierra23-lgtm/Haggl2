@@ -23,7 +23,12 @@ class FakePrisma {
       const existing = this.rows.get(where.listingId);
       const next = existing
         ? { ...existing, ...this.applyIncrements(update, existing), updatedAt: new Date() }
-        : { id: `cuid-${where.listingId}`, createdAt: new Date(), updatedAt: new Date(), ...create };
+        : {
+            id: `cuid-${where.listingId}`,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            ...create,
+          };
       this.rows.set(where.listingId, next);
       return Promise.resolve(next);
     },
@@ -107,13 +112,19 @@ describe('AgentXService', () => {
   describe('upsertAppCredentials', () => {
     it('rejects empty inputs', async () => {
       const { svc } = makeService();
-      await expect(svc.upsertAppCredentials('L1', '', '')).rejects.toBeInstanceOf(BadRequestException);
-      await expect(svc.upsertAppCredentials('L1', 'cid', '')).rejects.toBeInstanceOf(BadRequestException);
+      await expect(svc.upsertAppCredentials('L1', '', '')).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
+      await expect(svc.upsertAppCredentials('L1', 'cid', '')).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
     });
     it('rejects unreasonably long inputs', async () => {
       const { svc } = makeService();
       const huge = 'x'.repeat(201);
-      await expect(svc.upsertAppCredentials('L1', huge, 'cs')).rejects.toBeInstanceOf(BadRequestException);
+      await expect(svc.upsertAppCredentials('L1', huge, 'cs')).rejects.toBeInstanceOf(
+        BadRequestException,
+      );
     });
     it('persists encrypted credentials on first save', async () => {
       const { svc, prisma } = makeService();
@@ -200,7 +211,9 @@ describe('AgentXService', () => {
     });
     it('rejects unknown state (expired or never minted)', async () => {
       const { svc } = makeService();
-      await expect(svc.handleCallback('code', 'unknown')).rejects.toBeInstanceOf(ForbiddenException);
+      await expect(svc.handleCallback('code', 'unknown')).rejects.toBeInstanceOf(
+        ForbiddenException,
+      );
     });
     it('completes the OAuth dance and persists tokens', async () => {
       const { svc, prisma } = makeService();

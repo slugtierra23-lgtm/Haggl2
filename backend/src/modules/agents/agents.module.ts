@@ -10,19 +10,7 @@ import { WebhookAdapter } from './protocols/webhook.adapter';
 
 @Module({
   controllers: [AgentsController, AgentsTestController],
-  providers: [
-    AgentsService,
-    AgentsTestService,
-    WebhookAdapter,
-    McpAdapter,
-    OpenAiAdapter,
-  ],
-  exports: [
-    AgentsService,
-    AgentsTestService,
-    WebhookAdapter,
-    McpAdapter,
-    OpenAiAdapter,
-  ],
+  providers: [AgentsService, AgentsTestService, WebhookAdapter, McpAdapter, OpenAiAdapter],
+  exports: [AgentsService, AgentsTestService, WebhookAdapter, McpAdapter, OpenAiAdapter],
 })
 export class AgentsModule {}

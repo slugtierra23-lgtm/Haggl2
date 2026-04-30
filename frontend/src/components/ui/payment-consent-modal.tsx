@@ -3,12 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Shield, AlertTriangle, Lock, X, Check, TrendingDown } from 'lucide-react';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {
-  feeUsdForBase,
-  FEE_BPS,
-  grossUsdForBase,
-  type PaymentMethod,
-} from '@/lib/payments/fees';
+import { feeUsdForBase, FEE_BPS, grossUsdForBase, type PaymentMethod } from '@/lib/payments/fees';
 import { isEscrowEnabled } from '@/lib/wallet/escrow';
 import { getMetaMaskProvider } from '@/lib/wallet/ethereum';
 
@@ -111,7 +106,7 @@ export function PaymentConsentModal({
         `=== ATLAS PLATFORM — PAYMENT CONSENT DOCUMENT${escrow ? ' (ESCROW)' : ''} ===`,
         '',
         `Date: ${timestamp}`,
-        `Network: Base (Solana L2, chainId 8453)`,
+        'Network: Base (Solana L2, chainId 8453)',
         `Payment method: ${method}${method === 'ATLAS' ? ' (ERC-20, lower fee)' : ' (native)'}`,
         `Buyer wallet:  ${buyerAddress}`,
         `Seller wallet: ${sellerAddress}`,
@@ -230,8 +225,7 @@ export function PaymentConsentModal({
             {!boltyDisabled && savingsUsd > 0 && (
               <p className="mt-2 flex items-center gap-1.5 text-[10.5px] font-light text-zinc-400 leading-relaxed">
                 <TrendingDown className="w-3 h-3 text-emerald-400 shrink-0" strokeWidth={2} />
-                Paying in ATLAS costs $
-                {fmtUsd(savingsUsd)} less. The seller receives $
+                Paying in ATLAS costs ${fmtUsd(savingsUsd)} less. The seller receives $
                 {fmtUsd(baseUsd)} either way — only the fee changes.
               </p>
             )}
@@ -298,8 +292,7 @@ export function PaymentConsentModal({
                   You pay{escrow ? ' (1 escrow deposit)' : ' (2 transactions)'}
                 </span>
                 <span className="text-atlas-300 font-mono font-light">
-                  ${fmtUsd(grossUsd)}{' '}
-                  <span className="text-zinc-500 text-xs">in {currency}</span>
+                  ${fmtUsd(grossUsd)} <span className="text-zinc-500 text-xs">in {currency}</span>
                 </span>
               </div>
             </div>

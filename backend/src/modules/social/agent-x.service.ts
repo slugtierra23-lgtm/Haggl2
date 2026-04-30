@@ -1,3 +1,5 @@
+import * as crypto from 'crypto';
+
 import {
   BadRequestException,
   ForbiddenException,
@@ -7,7 +9,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import axios from 'axios';
-import * as crypto from 'crypto';
 
 import { decryptToken, encryptToken } from '../../common/crypto/token-cipher.util';
 import { PrismaService } from '../../common/prisma/prisma.service';
@@ -91,7 +92,9 @@ export class AgentXService {
       throw new BadRequestException('Both Client ID and Client Secret are required');
     }
     if (cid.length > 200 || cs.length > 200) {
-      throw new BadRequestException('Credentials look unreasonably long — double-check what you pasted');
+      throw new BadRequestException(
+        'Credentials look unreasonably long — double-check what you pasted',
+      );
     }
     const existing = await this.prisma.agentXConnection.findUnique({
       where: { listingId },
@@ -136,9 +139,7 @@ export class AgentXService {
   ): Promise<{ url: string }> {
     const row = await this.prisma.agentXConnection.findUnique({ where: { listingId } });
     if (!row) {
-      throw new BadRequestException(
-        'Save your X App credentials first (Client ID + Secret).',
-      );
+      throw new BadRequestException('Save your X App credentials first (Client ID + Secret).');
     }
     const clientId = decryptToken(row.clientIdEnc);
     if (!clientId) {
@@ -243,7 +244,11 @@ export class AgentXService {
     return {
       configured: true as const,
       connected,
-      authMethod: oauth1Connected ? ('oauth1' as const) : oauth2Connected ? ('oauth2' as const) : null,
+      authMethod: oauth1Connected
+        ? ('oauth1' as const)
+        : oauth2Connected
+          ? ('oauth2' as const)
+          : null,
       screenName: row.screenName,
       postsLast24h: row.postsLast24h,
       dailyCap: AgentXService.DAILY_POST_CAP,
@@ -286,7 +291,11 @@ export class AgentXService {
         ? {
             configured: true as const,
             connected: oauth1Connected || oauth2Connected,
-            authMethod: oauth1Connected ? ('oauth1' as const) : oauth2Connected ? ('oauth2' as const) : null,
+            authMethod: oauth1Connected
+              ? ('oauth1' as const)
+              : oauth2Connected
+                ? ('oauth2' as const)
+                : null,
             screenName: x.screenName,
             postsLast24h: x.postsLast24h,
             connectedAt: oauth1Connected || oauth2Connected ? x.updatedAt.toISOString() : null,
@@ -323,7 +332,9 @@ export class AgentXService {
   ): Promise<{ ok: true; screenName: string }> {
     const { consumerKey, consumerSecret, accessToken, accessTokenSecret } = creds;
     if (!consumerKey || !consumerSecret || !accessToken || !accessTokenSecret) {
-      throw new BadRequestException('All four keys are required (API Key, API Key Secret, Access Token, Access Token Secret)');
+      throw new BadRequestException(
+        'All four keys are required (API Key, API Key Secret, Access Token, Access Token Secret)',
+      );
     }
     if (
       consumerKey.length > 200 ||
@@ -484,18 +495,14 @@ export class AgentXService {
 
     let res;
     try {
-      res = await axios.post(
-        url,
-        payload,
-        {
-          headers: {
-            Authorization: authHeader,
-            'Content-Type': 'application/json',
-          },
-          timeout: 10_000,
-          validateStatus: () => true,
+      res = await axios.post(url, payload, {
+        headers: {
+          Authorization: authHeader,
+          'Content-Type': 'application/json',
         },
-      );
+        timeout: 10_000,
+        validateStatus: () => true,
+      });
     } catch (err) {
       throw new HttpException(
         `Could not reach X: ${(err as Error).message ?? 'network error'}`,
@@ -507,21 +514,25 @@ export class AgentXService {
       // pre-funded credits in the dev portal. There's nothing we can
       // do server-side; surface a precise reason so the FE can route
       // the seller straight to developer.x.com to fund their account.
-      const data = res.data as { detail?: string; title?: string; errors?: Array<{ message?: string }> } | undefined;
+      const data = res.data as
+        | { detail?: string; title?: string; errors?: Array<{ message?: string }> }
+        | undefined;
       const msg =
         data?.detail || data?.title || data?.errors?.[0]?.message || 'pay-per-use credits required';
       throw new HttpException(`X requires API credits to post: ${msg}`, 402);
     }
     if (res.status === 401 || res.status === 403) {
-      const data = res.data as { detail?: string; title?: string; errors?: Array<{ message?: string }> } | undefined;
-      const msg =
-        data?.detail || data?.title || data?.errors?.[0]?.message || `http_${res.status}`;
+      const data = res.data as
+        | { detail?: string; title?: string; errors?: Array<{ message?: string }> }
+        | undefined;
+      const msg = data?.detail || data?.title || data?.errors?.[0]?.message || `http_${res.status}`;
       throw new HttpException(`X refused tweet (${res.status}): ${msg}`, res.status);
     }
     if (res.status >= 400) {
-      const data = res.data as { detail?: string; title?: string; errors?: Array<{ message?: string }> } | undefined;
-      const msg =
-        data?.detail || data?.title || data?.errors?.[0]?.message || `http_${res.status}`;
+      const data = res.data as
+        | { detail?: string; title?: string; errors?: Array<{ message?: string }> }
+        | undefined;
+      const msg = data?.detail || data?.title || data?.errors?.[0]?.message || `http_${res.status}`;
       throw new HttpException(`X API ${res.status}: ${msg}`, res.status);
     }
     const out = res.data?.data ?? {};
@@ -718,17 +729,13 @@ export class AgentXService {
       code_verifier: verifier,
     });
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-    const res = await axios.post<TokenResponse>(
-      AgentXService.OAUTH_TOKEN_URL,
-      body.toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${auth}`,
-        },
-        timeout: 8000,
+    const res = await axios.post<TokenResponse>(AgentXService.OAUTH_TOKEN_URL, body.toString(), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${auth}`,
       },
-    );
+      timeout: 8000,
+    });
     return res.data;
   }
 
@@ -739,17 +746,13 @@ export class AgentXService {
       client_id: clientId,
     });
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
-    const res = await axios.post<TokenResponse>(
-      AgentXService.OAUTH_TOKEN_URL,
-      body.toString(),
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${auth}`,
-        },
-        timeout: 8000,
+    const res = await axios.post<TokenResponse>(AgentXService.OAUTH_TOKEN_URL, body.toString(), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${auth}`,
       },
-    );
+      timeout: 8000,
+    });
     return res.data;
   }
 

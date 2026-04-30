@@ -53,10 +53,7 @@ const variantClass: Record<Variant, string> = {
   // Pure black/white pill — same language as .atlas-cta. Visible on both
   // dark and light surfaces without any green wash. Bold weight so the
   // text reads at any size; AAA contrast against either surface.
-  primary: cn(
-    'atlas-cta',
-    '!font-semibold',
-  ),
+  primary: cn('atlas-cta', '!font-semibold'),
   secondary: cn(
     'bg-[var(--bg-card)] text-[var(--text)] border border-[var(--border)]',
     'hover:bg-[var(--bg-card2)] hover:border-[var(--border-hover)]',

@@ -141,10 +141,8 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
                 }}
                 className="relative p-4 rounded-xl overflow-hidden transition-all hover:brightness-110"
                 style={{
-                  background:
-                    'var(--bg-card)',
-                  boxShadow:
-                    '0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
+                  background: 'var(--bg-card)',
+                  boxShadow: '0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
                 }}
               >
                 <div
@@ -271,10 +269,8 @@ export const NotificationsSection: React.FC<NotificationsSectionProps> = ({
                 transition={{ type: 'spring', stiffness: 360, damping: 22 }}
                 className="flex-1 px-4 py-2.5 text-zinc-300 rounded-lg font-light text-[13px] tracking-[0.005em] transition-all hover:brightness-110 hover:text-white disabled:opacity-50"
                 style={{
-                  background:
-                    'linear-gradient(180deg, rgba(40,40,48,0.7) 0%, var(--bg-card) 100%)',
-                  boxShadow:
-                    'inset 0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
+                  background: 'linear-gradient(180deg, rgba(40,40,48,0.7) 0%, var(--bg-card) 100%)',
+                  boxShadow: 'inset 0 0 0 1px var(--bg-card2), inset 0 1px 0 var(--bg-card2)',
                 }}
               >
                 Cancel

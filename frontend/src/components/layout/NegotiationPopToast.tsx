@@ -3,10 +3,10 @@
 import { CheckCircle2, MessageSquare, X, XCircle, Zap } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { io, Socket } from '@/lib/realtime/io';
 
 import { WS_URL } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { io, Socket } from '@/lib/realtime/io';
 
 interface Toast {
   id: string;
@@ -111,8 +111,7 @@ export function NegotiationPopToast() {
         body: n.body ?? '',
         url: n.url ?? '/orders',
         counterparty: m?.counterparty ?? '',
-        priceLabel:
-          m?.agreedPrice != null ? `${m.agreedPrice} ${m.currency ?? 'SOL'}` : null,
+        priceLabel: m?.agreedPrice != null ? `${m.agreedPrice} ${m.currency ?? 'SOL'}` : null,
       });
     });
 
@@ -169,8 +168,7 @@ function ToastCard({
           : kind === 'message'
             ? '#06B6D4'
             : '#14F195';
-  const Icon =
-    kind === 'agreed' ? CheckCircle2 : kind === 'rejected' ? XCircle : MessageSquare;
+  const Icon = kind === 'agreed' ? CheckCircle2 : kind === 'rejected' ? XCircle : MessageSquare;
   const label =
     kind === 'started'
       ? 'New negotiation'
@@ -250,9 +248,7 @@ function ToastCard({
           </div>
         </div>
         <div className="mt-2 flex items-center justify-between">
-          <span className="text-[10.5px] text-zinc-500 font-light">
-            Click to open the chat
-          </span>
+          <span className="text-[10.5px] text-zinc-500 font-light">Click to open the chat</span>
           <span className="text-[10.5px] font-mono" style={{ color: accent }}>
             Open →
           </span>

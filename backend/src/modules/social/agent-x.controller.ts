@@ -63,7 +63,8 @@ export class AgentXController {
   async setupOauth1(
     @CurrentUser('id') userId: string,
     @Param('listingId') listingId: string,
-    @Body() body: {
+    @Body()
+    body: {
       consumerKey?: string;
       consumerSecret?: string;
       accessToken?: string;
@@ -125,10 +126,7 @@ export class AgentXController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':listingId/status')
-  async status(
-    @CurrentUser('id') userId: string,
-    @Param('listingId') listingId: string,
-  ) {
+  async status(@CurrentUser('id') userId: string, @Param('listingId') listingId: string) {
     await this.agentX.assertOwner(listingId, userId);
     return this.agentX.getStatus(listingId);
   }
@@ -143,10 +141,7 @@ export class AgentXController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   @Delete(':listingId')
-  async disconnect(
-    @CurrentUser('id') userId: string,
-    @Param('listingId') listingId: string,
-  ) {
+  async disconnect(@CurrentUser('id') userId: string, @Param('listingId') listingId: string) {
     await this.agentX.assertOwner(listingId, userId);
     await this.agentX.disconnect(listingId);
     return { ok: true };
@@ -158,10 +153,7 @@ export class AgentXController {
    *  toggles in the setup-x autonomous panel. */
   @UseGuards(JwtAuthGuard)
   @Get(':listingId/autonomous')
-  async autonomousConfig(
-    @CurrentUser('id') userId: string,
-    @Param('listingId') listingId: string,
-  ) {
+  async autonomousConfig(@CurrentUser('id') userId: string, @Param('listingId') listingId: string) {
     await this.agentX.assertOwner(listingId, userId);
     return this.autonomous.getConfig(listingId);
   }
@@ -174,7 +166,8 @@ export class AgentXController {
   async updateAutonomous(
     @CurrentUser('id') userId: string,
     @Param('listingId') listingId: string,
-    @Body() body: {
+    @Body()
+    body: {
       autonomousEnabled?: boolean;
       postIntervalHours?: number;
       requireApproval?: boolean;
@@ -198,7 +191,8 @@ export class AgentXController {
     await this.agentX.assertOwner(listingId, userId);
     const validStatuses = ['PENDING_APPROVAL', 'POSTED', 'FAILED', 'REJECTED'] as const;
     type Q = (typeof validStatuses)[number];
-    const q = status && (validStatuses as readonly string[]).includes(status) ? (status as Q) : undefined;
+    const q =
+      status && (validStatuses as readonly string[]).includes(status) ? (status as Q) : undefined;
     return this.autonomous.listQueue(listingId, q);
   }
 
@@ -231,10 +225,7 @@ export class AgentXController {
   @UseGuards(JwtAuthGuard)
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @Post(':listingId/decide-now')
-  async decideNow(
-    @CurrentUser('id') userId: string,
-    @Param('listingId') listingId: string,
-  ) {
+  async decideNow(@CurrentUser('id') userId: string, @Param('listingId') listingId: string) {
     await this.agentX.assertOwner(listingId, userId);
     return this.autonomous.decideNow(listingId);
   }
