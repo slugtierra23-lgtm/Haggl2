@@ -102,8 +102,16 @@ async function bootstrap(): Promise<void> {
   // ── API Prefix ───────────────────────────────────────────────────────────
   app.setGlobalPrefix('api/v1');
 
-  await app.listen(port, '0.0.0.0');
-  logger.log(`haggl Backend running on port ${port}`, 'Bootstrap');
+  // BIND_HOST controls which interface the server listens on.
+  //   - Cloud (Render / Railway / fly.io / docker): 0.0.0.0 — must accept
+  //     traffic from the platform's reverse proxy on a different IP.
+  //   - Local self-host with Cloudflare Tunnel: 127.0.0.1 — cloudflared
+  //     runs on the same machine, so loopback is reachable; other LAN
+  //     devices cannot talk to the backend directly even if they're on
+  //     the same Wi-Fi.
+  const bindHost = configService.get<string>('BIND_HOST', '0.0.0.0');
+  await app.listen(port, bindHost);
+  logger.log(`haggl Backend running on ${bindHost}:${port}`, 'Bootstrap');
   logger.log(`Environment: ${configService.get('NODE_ENV')}`, 'Bootstrap');
 }
 
