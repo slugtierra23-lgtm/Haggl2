@@ -4,7 +4,7 @@ import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { BoltyLogo } from '@/components/ui/BoltyLogo';
+import { HagglLogo } from '@/components/ui/HagglLogo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -151,7 +151,7 @@ export default function RadialOrbitalTimeline({ timelineData }: RadialOrbitalTim
               className="absolute inset-0 rounded-full blur-xl opacity-40"
               style={{ background: 'rgba(20, 241, 149, 0.6)' }}
             />
-            <BoltyLogo
+            <HagglLogo
               size={250}
               color="#14F195"
               className="relative z-10"

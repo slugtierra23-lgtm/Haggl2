@@ -13,7 +13,7 @@ const BALANCE_CACHE_TTL_MS = 60_000;
 const FREE_QUOTA_PER_DAY = 5; // anonymous quota — IP-bucketed in the controller
 
 /**
- * Gates the public BoltyGuard scan API on holding a configurable
+ * Gates the public HagglGuard scan API on holding a configurable
  * amount of $HAGGL. Free tier (no auth, no holding) gets a small
  * daily quota; paid tier (≥ MIN_HOLDING $HAGGL in any wallet linked
  * to the user) is unmetered.
@@ -36,14 +36,14 @@ export class HolderGateService {
   ) {
     // Reuse the project-wide ETH_RPC_URL convention (escrow, market,
     // rays all read it). BASE_RPC_URL is honoured as a backwards-
-    // compatible alias if someone set it explicitly for BoltyGuard.
+    // compatible alias if someone set it explicitly for HagglGuard.
     const rpc =
       this.config.get<string>('ETH_RPC_URL') ??
       this.config.get<string>('BASE_RPC_URL') ??
       'https://mainnet.base.org';
     this.tokenAddress = this.config.get<string>('HAGGL_TOKEN_ADDRESS') ?? null;
-    const minRaw = this.config.get<string>('BOLTYGUARD_MIN_HOLDING') ?? '1000';
-    // Default 1,000 BOLTY in 18-decimal units. Override via env.
+    const minRaw = this.config.get<string>('HAGGLGUARD_MIN_HOLDING') ?? '1000';
+    // Default 1,000 HAGGL in 6-decimal SPL units. Override via env.
     this.minHolding = ethers.parseUnits(minRaw, 18);
 
     this.provider = rpc ? new ethers.JsonRpcProvider(rpc) : null;

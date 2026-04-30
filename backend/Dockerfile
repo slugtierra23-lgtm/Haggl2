@@ -14,7 +14,7 @@ RUN npm run build
 
 FROM node:20-alpine AS production
 
-# openssl: required by Prisma. python3 + py3-pip: BoltyGuard's Semgrep
+# openssl: required by Prisma. python3 + py3-pip: HagglGuard's Semgrep
 # pass shells out to the `semgrep` CLI for deterministic static analysis.
 # git: semgrep --config=auto needs git for the working-dir scan.
 RUN apk add --no-cache openssl python3 py3-pip git \
@@ -29,8 +29,8 @@ COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nestjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nestjs:nodejs /app/package.json ./
 # Custom Semgrep rules (yaml) — referenced by SemgrepRunner via
-# BOLTYGUARD_RULES_DIR (defaults to /app/boltyguard-rules).
-COPY --from=builder --chown=nestjs:nodejs /app/src/modules/boltyguard/rules ./boltyguard-rules
+# HAGGLGUARD_RULES_DIR (defaults to /app/hagglguard-rules).
+COPY --from=builder --chown=nestjs:nodejs /app/src/modules/hagglguard/rules ./hagglguard-rules
 
 RUN mkdir -p /app/uploads/avatars && chown -R nestjs:nodejs /app/uploads
 

@@ -1,4 +1,4 @@
-# BoltyGuard custom rule: detect eval/exec on data that looks like
+# HagglGuard custom rule: detect eval/exec on data that looks like
 # LLM output. The rule is intentionally aggressive — any eval at all
 # in an AI agent codebase is a finding because we cannot statically
 # prove the input is sanitised.
@@ -7,7 +7,7 @@
 # the job of the Claude pass that runs in parallel.
 
 rules:
-  - id: bolty-eval-llm-output-js
+  - id:  haggl-eval-llm-output-js
     message: >-
       eval() / new Function() with arbitrary input is a remote-code-execution
       sink. In an AI agent context the input is often LLM-generated and
@@ -18,8 +18,8 @@ rules:
     metadata:
       category: security
       cwe: 'CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code'
-      bolty_severity: CRITICAL
-      bolty_fix: >-
+       haggl_severity: CRITICAL
+       haggl_fix: >-
         Replace eval/new Function with a safe parser (JSON.parse for data,
         or a sandboxed VM with no host bindings for code).
     pattern-either:
@@ -34,7 +34,7 @@ rules:
                     - pattern: window
                     - pattern: globalThis
 
-  - id: bolty-exec-llm-output-py
+  - id:  haggl-exec-llm-output-py
     message: >-
       exec() / eval() in Python with non-literal input is a remote-code-execution
       sink. Treat any LLM-derived string as attacker-controlled. Use a parser,
@@ -42,8 +42,8 @@ rules:
     severity: ERROR
     languages: [python]
     metadata:
-      bolty_severity: CRITICAL
-      bolty_fix: >-
+       haggl_severity: CRITICAL
+       haggl_fix: >-
         Replace exec/eval with a parser (json.loads / ast.literal_eval) or
         an explicit allowlist.
     pattern-either:

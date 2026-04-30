@@ -1,7 +1,7 @@
 .PHONY: help install dev build test lint format clean audit security docs docker-up docker-down
 
 help:
-	@echo "Bolty Platform - Development Commands"
+	@echo "haggl Platform - Development Commands"
 	@echo "===================================="
 	@echo ""
 	@echo "Setup:"

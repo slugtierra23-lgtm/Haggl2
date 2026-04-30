@@ -409,14 +409,14 @@ function MarketScreener() {
     const seen = new Set(listings.map((l) => l.id));
     const fresh = liveListings.filter((l) => !seen.has(l.id));
     let merged = [...fresh, ...listings];
-    // Drop any legacy "bolty"-named listings that survive the rebrand
+    // Drop any legacy "haggl"-named listings that survive the rebrand
     // (seed data, third-party clones, etc). Defensive client-side
     // filter so the user never sees them.
     merged = merged.filter((l) => {
       const t = (l.title || '').toLowerCase();
       const u = (l.seller?.username || '').toLowerCase();
       const tags = (l.tags || []).map((x) => x.toLowerCase());
-      return !t.includes('bolty') && !u.includes('bolty') && !tags.includes('bolty');
+      return !t.includes('haggl') && !u.includes('haggl') && !tags.includes('haggl');
     });
     if (!priceBand) return merged;
     return merged.filter((l) => {
@@ -857,7 +857,7 @@ function NewLaunchesTicker({
           <div
             className="flex gap-7 whitespace-nowrap px-4"
             style={{
-              animation: 'bolty-ticker 60s linear infinite',
+              animation: 'haggl-ticker 60s linear infinite',
             }}
           >
             {doubled.map((item, i) => {
@@ -886,7 +886,7 @@ function NewLaunchesTicker({
         </div>
       </div>
       <style jsx>{`
-        @keyframes bolty-ticker {
+        @keyframes  haggl-ticker {
           from {
             transform: translateX(0);
           }

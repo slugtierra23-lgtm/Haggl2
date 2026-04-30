@@ -466,11 +466,11 @@ export function composeLaunchTweet(input: {
   const fullByLine = agentName ? ` by ${agentName}` : '';
 
   // Try the rich form first.
-  const rich = `Just launched ${sym} on Bolty${fullByLine}.\n\nChart, holders, and CA: ${url}`;
+  const rich = `Just launched ${sym} on haggl${fullByLine}.\n\nChart, holders, and CA: ${url}`;
   if (rich.length <= 280) return rich;
   // Drop the agent attribution if we are over.
-  const lean = `Just launched ${sym} on Bolty.\n\nChart, holders, and CA: ${url}`;
+  const lean = `Just launched ${sym} on haggl.\n\nChart, holders, and CA: ${url}`;
   if (lean.length <= 280) return lean;
   // Last resort — keep it tweetable even with very long URLs.
-  return `Just launched ${sym} on Bolty. ${url}`.slice(0, 280);
+  return `Just launched ${sym} on haggl. ${url}`.slice(0, 280);
 }

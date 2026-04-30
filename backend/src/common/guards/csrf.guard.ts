@@ -16,7 +16,7 @@ export const SkipCsrf = (): ClassDecorator & MethodDecorator => SetMetadata(SKIP
 /**
  * CSRF Guard — Double-submit cookie pattern.
  *
- * The cookie is issued with Domain=COOKIE_DOMAIN (e.g. ".boltynetwork.xyz") so
+ * The cookie is issued with Domain=COOKIE_DOMAIN (e.g. ".haggl.tech") so
  * the frontend JS — which runs on a different subdomain than the API — can
  * read it via document.cookie and mirror it back as the X-CSRF-Token header.
  *

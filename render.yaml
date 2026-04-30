@@ -83,7 +83,7 @@ services:
         value: 'false'
       - key: SEED_LISTINGS_ON_BOOT
         value: 'false'
-      - key: BOLTYGUARD_BACKFILL_ON_BOOT
+      - key: HAGGLGUARD_BACKFILL_ON_BOOT
         value: 'false'
       - key: JWT_EXPIRES_IN
         value: 15m
@@ -91,7 +91,7 @@ services:
         value: 30d
       - key: HAGGL_TOKEN_DECIMALS
         value: '18'
-      - key: BOLTYGUARD_MIN_HOLDING
+      - key: HAGGLGUARD_MIN_HOLDING
         value: '0'
       - key: PRICE_API_URL
         value: https://api.coingecko.com/api/v3

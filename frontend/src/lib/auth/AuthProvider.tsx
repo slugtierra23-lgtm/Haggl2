@@ -71,7 +71,7 @@ const AuthContext = createContext<AuthContextType>({
 // in localStorage and seed state from it on mount + keep it across refresh so
 // the avatar stays rendered through the transition. The cookie-authenticated
 // `/auth/me` call still gets the final word.
-const HINT_KEY = 'bolty:auth-hint';
+const HINT_KEY = 'haggl:auth-hint';
 
 function readHint(): User | null {
   if (typeof window === 'undefined') return null;
@@ -161,7 +161,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     fetchUser();
   }, [fetchUser]);
 
-  // Global 401 listener — ApiClient emits `bolty:auth-expired` when a
+  // Global 401 listener — ApiClient emits `haggl:auth-expired` when a
   // request still fails auth after the refresh attempt. Drops the user
   // and bounces to login ONLY if there was actually a signed-in user
   // to begin with. Anon visitors hitting protected endpoints should
@@ -182,8 +182,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         window.location.href = `/auth/login?redirect=${encodeURIComponent(here)}`;
       }
     };
-    window.addEventListener('bolty:auth-expired', handler);
-    return () => window.removeEventListener('bolty:auth-expired', handler);
+    window.addEventListener('haggl:auth-expired', handler);
+    return () => window.removeEventListener('haggl:auth-expired', handler);
   }, []);
 
   // Warm-prefetch common landing pages in the background once we know
@@ -239,14 +239,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // cost when there's actually data to fetch. Keys must match
       // useFavorites.ts.
       try {
-        const repoIds = JSON.parse(window.localStorage.getItem('bolty.repo.favorites.v1') || '[]');
+        const repoIds = JSON.parse(window.localStorage.getItem('haggl.repo.favorites.v1') || '[]');
         if (Array.isArray(repoIds) && repoIds.length > 0) {
           void prefetch(`favorites:repos:${repoIds.join(',')}`, () =>
             api.get(`/repos/by-ids?ids=${encodeURIComponent(repoIds.join(','))}`),
           );
         }
         const listingIds = JSON.parse(
-          window.localStorage.getItem('bolty.market.favorites.v1') || '[]',
+          window.localStorage.getItem('haggl.market.favorites.v1') || '[]',
         );
         if (Array.isArray(listingIds) && listingIds.length > 0) {
           void prefetch(`favorites:listings:${listingIds.join(',')}`, () =>

@@ -186,14 +186,14 @@ class ApiClient {
     // opt out by calling with their own `signal` — we fire the event on
     // every call but pair it with a `done` so the bar completes quickly.
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('bolty:progress-start'));
+      window.dispatchEvent(new CustomEvent('haggl:progress-start'));
     }
     let response: Response;
     try {
       response = await this.doFetchWithRetry(method, path, body, options);
     } catch (err) {
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('bolty:progress-done'));
+        window.dispatchEvent(new CustomEvent('haggl:progress-done'));
       }
       throw err;
     }
@@ -222,7 +222,7 @@ class ApiClient {
 
     if (!response.ok) {
       if (typeof window !== 'undefined') {
-        window.dispatchEvent(new CustomEvent('bolty:progress-done'));
+        window.dispatchEvent(new CustomEvent('haggl:progress-done'));
       }
       const error = await response.json().catch(() => ({ message: 'Unknown error' }));
       // Global 401 hook: broadcast so the app can react from a single
@@ -239,7 +239,7 @@ class ApiClient {
         typeof window !== 'undefined'
       ) {
         window.dispatchEvent(
-          new CustomEvent('bolty:auth-expired', {
+          new CustomEvent('haggl:auth-expired', {
             detail: { path },
           }),
         );
@@ -253,7 +253,7 @@ class ApiClient {
     }
 
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('bolty:progress-done'));
+      window.dispatchEvent(new CustomEvent('haggl:progress-done'));
     }
 
     const contentType = response.headers.get('content-type');

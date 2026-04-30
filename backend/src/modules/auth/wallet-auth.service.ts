@@ -250,7 +250,7 @@ export class WalletAuthService {
   }
 
   private buildSignMessage(address: string, nonce: string, chain: string): string {
-    return `Welcome to Bolty!\n\nPlease sign this message to authenticate.\n\nChain: ${chain}\nAddress: ${address}\nNonce: ${nonce}\n\nThis request will not trigger any blockchain transaction.`;
+    return `Welcome to haggl!\n\nPlease sign this message to authenticate.\n\nChain: ${chain}\nAddress: ${address}\nNonce: ${nonce}\n\nThis request will not trigger any blockchain transaction.`;
   }
 
   private async findOrCreateWalletUser(address: string) {

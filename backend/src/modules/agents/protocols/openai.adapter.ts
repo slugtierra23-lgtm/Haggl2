@@ -23,7 +23,7 @@ import {
  *   - `model`:    model id, e.g. gpt-4o-mini, claude-3.5-sonnet, …
  *   - `apiKey`:   bearer token forwarded as `Authorization: Bearer …`
  *
- * We do NOT sign with HMAC here — the agent isn't a Bolty-aware
+ * We do NOT sign with HMAC here — the agent isn't a haggl-aware
  * service, it's a raw inference endpoint. Auth is the seller's bearer
  * token; we proxy it verbatim.
  *
@@ -176,7 +176,7 @@ export class OpenAiAdapter implements IProtocolAdapter {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'User-Agent': 'BoltyOpenAiClient/1.0',
+      'User-Agent': 'HagglOpenAiClient/1.0',
     };
     if (config.apiKey) {
       headers.Authorization = `Bearer ${config.apiKey}`;

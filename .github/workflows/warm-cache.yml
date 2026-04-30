@@ -23,7 +23,7 @@ jobs:
       - name: Prime edge cache for default listing views
         run: |
           set -uo pipefail
-          BASE='https://bolty-backend.onrender.com/api/v1'
+          BASE='https://haggl-backend.onrender.com/api/v1'
           # URLs that match what the frontend requests on first mount
           # for /market, /market/agents, /market/repos. If you add a
           # new high-traffic default view, add it here.

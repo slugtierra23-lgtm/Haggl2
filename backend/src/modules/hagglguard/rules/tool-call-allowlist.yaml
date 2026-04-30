@@ -1,10 +1,10 @@
-# BoltyGuard custom rule: detect agents that execute arbitrary
+# HagglGuard custom rule: detect agents that execute arbitrary
 # shell / spawn / network calls without an allowlist. In an AI agent
 # context, the LLM frequently controls these calls — without an
 # allowlist they're trivially exploitable via prompt injection.
 
 rules:
-  - id: bolty-shell-no-allowlist-js
+  - id:  haggl-shell-no-allowlist-js
     message: >-
       child_process spawn/exec without an obvious allowlist. In an AI agent,
       the command often comes from the LLM — gate on a fixed allowlist of
@@ -12,8 +12,8 @@ rules:
     severity: WARNING
     languages: [javascript, typescript]
     metadata:
-      bolty_severity: HIGH
-      bolty_fix: >-
+       haggl_severity: HIGH
+       haggl_fix: >-
         Validate the command name against a hardcoded array of allowed
         executables before passing it to spawn / exec. Refuse unknown ones.
     pattern-either:
@@ -26,15 +26,15 @@ rules:
       - pattern: |
           execSync(...)
 
-  - id: bolty-shell-no-allowlist-py
+  - id:  haggl-shell-no-allowlist-py
     message: >-
       subprocess.* with shell=True or arbitrary command list. AI agents
       should validate against a fixed allowlist of binaries before exec.
     severity: WARNING
     languages: [python]
     metadata:
-      bolty_severity: HIGH
-      bolty_fix: >-
+       haggl_severity: HIGH
+       haggl_fix: >-
         Pass a fixed list of strings (no shell=True). Validate args[0]
         against an allowlist before calling subprocess.run.
     pattern-either:

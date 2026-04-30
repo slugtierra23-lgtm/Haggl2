@@ -58,7 +58,7 @@ export function UserAvatar({
   }, [resolved]);
 
   const seed = userId || name || '';
-  const hue = hashHue(seed || 'bolty');
+  const hue = hashHue(seed || 'haggl');
   const letters = initials(name);
   const bg = `linear-gradient(135deg, hsl(${hue}, 72%, 62%) 0%, hsl(${(hue + 40) % 360}, 68%, 52%) 100%)`;
   const ringStyle = ring ? { boxShadow: '0 0 0 2px rgba(20, 241, 149, 0.35)' } : {};

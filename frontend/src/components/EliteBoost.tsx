@@ -20,7 +20,7 @@ import React from 'react';
 // Animation components for feature cards
 const PublishRepoAnimation = () => (
   <div className="w-full h-full flex flex-col gap-2 p-2">
-    {['bolty-agent-v2', 'ml-pipeline', 'web3-toolkit'].map((name, i) => (
+    {['haggl-agent-v2', 'ml-pipeline', 'web3-toolkit'].map((name, i) => (
       <motion.div
         key={name}
         initial={{ opacity: 0, x: -20 }}

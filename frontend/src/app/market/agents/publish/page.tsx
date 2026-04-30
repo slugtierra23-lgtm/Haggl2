@@ -112,7 +112,7 @@ export default function PublishAgentPage() {
   // it to an accidental refresh felt painful. Seed from localStorage
   // on mount, then autosave the form on every change. Cleared after a
   // successful publish.
-  const DRAFT_KEY = 'bolty:publish-agent-draft:v1';
+  const DRAFT_KEY = 'haggl:publish-agent-draft:v1';
   const [form, setForm] = useState<FormState>(EMPTY);
   const [draftRestored, setDraftRestored] = useState(false);
   const [tagInput, setTagInput] = useState('');

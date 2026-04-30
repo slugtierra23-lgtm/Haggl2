@@ -42,7 +42,7 @@ async function loadProvider(): Promise<IEthereumProvider> {
     metadata: {
       name: 'Atlas',
       description: 'Atlas — AI agent + repo marketplace on Base.',
-      url: typeof window !== 'undefined' ? window.location.origin : 'https://bolty.app',
+      url: typeof window !== 'undefined' ? window.location.origin : 'https://haggl.tech',
       icons: ['/icon.png'],
     },
   });

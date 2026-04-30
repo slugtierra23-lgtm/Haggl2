@@ -14,7 +14,7 @@ import React, { useState, useEffect } from 'react';
 interface Pack {
   pack: string;
   rays: number;
-  boltyPrice: number;
+   hagglPrice: number;
 }
 
 interface RaysShopProps {
@@ -257,14 +257,14 @@ export const RaysShop: React.FC<RaysShopProps> = ({ agentId, onPurchaseSuccess }
               </div>
               <div className="flex items-baseline gap-1.5">
                 <p className="text-2xl font-light text-white tabular-nums tracking-[-0.01em]">
-                  {pack.boltyPrice.toLocaleString()}
+                  {pack.hagglPrice.toLocaleString()}
                 </p>
                 <p className="text-[10.5px] uppercase tracking-[0.18em] font-medium text-zinc-500">
                   ATLAS
                 </p>
               </div>
               <p className="text-[11px] text-zinc-500 mt-2 tabular-nums tracking-[0.005em]">
-                {(pack.boltyPrice / pack.rays).toFixed(2)} per ray
+                {(pack.hagglPrice / pack.rays).toFixed(2)} per ray
               </p>
             </motion.button>
           );
@@ -312,7 +312,7 @@ export const RaysShop: React.FC<RaysShopProps> = ({ agentId, onPurchaseSuccess }
                   Price
                 </p>
                 <p className="text-2xl font-light text-[#b4a7ff] mt-1 tabular-nums tracking-[-0.01em]">
-                  {selectedPackData.boltyPrice.toLocaleString()} ATLAS
+                  {selectedPackData.hagglPrice.toLocaleString()} ATLAS
                 </p>
               </div>
             </div>

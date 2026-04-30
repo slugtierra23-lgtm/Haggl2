@@ -281,7 +281,7 @@ export default function ReposPage() {
       await api.delete('/repos/github/cache').catch(() => {});
       const data = await api.get<GitHubRepo[]>('/repos/github');
       const raw = Array.isArray(data) ? data : [];
-      const needsReauth = raw.some((r) => (r as unknown as Record<string, unknown>)._bolty_reauth);
+      const needsReauth = raw.some((r) => (r as unknown as Record<string, unknown>)._haggl_reauth);
       if (needsReauth) {
         setGhNeedsReauth(true);
         setGhRepos([]);

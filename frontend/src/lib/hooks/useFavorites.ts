@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-const LISTING_KEY = 'bolty.market.favorites.v1';
-const REPO_KEY = 'bolty.repo.favorites.v1';
+const LISTING_KEY = 'haggl.market.favorites.v1';
+const REPO_KEY = 'haggl.repo.favorites.v1';
 const MAX_FAVORITES = 200;
-const EVENT = 'bolty:favorites-changed';
+const EVENT = 'haggl:favorites-changed';
 
 function readStore(key: string): string[] {
   if (typeof window === 'undefined') return [];

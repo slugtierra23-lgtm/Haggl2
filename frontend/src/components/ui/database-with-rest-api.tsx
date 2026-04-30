@@ -152,7 +152,7 @@ const DatabaseWithRestApi = ({
         <div className="relative z-10 flex h-[150px] w-full items-center justify-center overflow-hidden rounded-lg border border-white/08 bg-black/80 shadow-md">
           <div className="absolute bottom-8 left-12 z-10 h-7 rounded-full bg-[#101112] px-3 text-xs border border-white/10 flex items-center gap-2">
             <HeartHandshakeIcon className="size-4 text-atlas-400" />
-            <span className="text-zinc-300">{buttonTexts?.first || 'bolty.dev'}</span>
+            <span className="text-zinc-300">{buttonTexts?.first || 'haggl.tech'}</span>
           </div>
           <div className="absolute right-16 z-10 hidden h-7 rounded-full bg-[#101112] px-3 text-xs sm:flex border border-white/10 items-center gap-2">
             <Folder className="size-4 text-atlas-400" />

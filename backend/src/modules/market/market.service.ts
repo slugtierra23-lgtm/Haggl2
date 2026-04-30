@@ -13,7 +13,7 @@ import { ethers } from 'ethers';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { RedisService } from '../../common/redis/redis.service';
 import { sanitizeText, isSafeUrl, isSafeUrlResolving } from '../../common/sanitize/sanitize.util';
-import { BoltyGuardService } from '../boltyguard/boltyguard.service';
+import { HagglGuardService } from '../hagglguard/hagglguard.service';
 import { EmailService } from '../email/email.service';
 import { NotificationsService } from '../notifications/notifications.service';
 import { ReputationService } from '../reputation/reputation.service';
@@ -62,7 +62,7 @@ export class MarketService {
     private readonly reputation: ReputationService,
     private readonly email: EmailService,
     private readonly redis: RedisService,
-    private readonly boltyGuard: BoltyGuardService,
+    private readonly  hagglGuard: HagglGuardService,
   ) {
     this.anthropic = new Anthropic({
       apiKey: this.config.get<string>('ANTHROPIC_API_KEY') || '',
@@ -352,14 +352,14 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       include: { seller: { select: { id: true, username: true, avatarUrl: true } } },
     });
 
-    // BoltyGuard: kick off the deep scan in the background so publish
+    // HagglGuard: kick off the deep scan in the background so publish
     // stays fast. The first /market/:id/security read after this
     // resolves picks up the persisted score. If the seller has no
     // file uploaded the scan no-ops with score=100.
     if (created.fileKey) {
-      void this.boltyGuard
+      void this.hagglGuard
         .scanListing(created.id)
-        .catch((err) => this.logger?.warn?.(`BoltyGuard scan failed: ${err}`));
+        .catch((err) => this.logger?.warn?.(`HagglGuard scan failed: ${err}`));
     }
 
     if (created.status === 'ACTIVE') {
@@ -494,7 +494,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         include: {
           seller: { select: { id: true, username: true, avatarUrl: true } },
           repository: { select: { id: true, name: true, githubUrl: true, language: true } },
-          // Bake the latest BoltyGuard scan into each row so the badge
+          // Bake the latest HagglGuard scan into each row so the badge
           // on every card doesn't have to fire its own GET. Eliminates
           // the N-extra-requests-per-list-page waterfall that made
           // filter changes feel like a fresh page load. `findings` is
@@ -1080,7 +1080,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
           timeout: 10000,
           headers: {
             'Content-Type': 'application/json',
-            'X-Bolty-Event': 'demo_invoke',
+            'X-Haggl-Event': 'demo_invoke',
           },
           maxBodyLength: 8192,
           maxContentLength: 8192,
@@ -1858,7 +1858,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
     });
     if (!sellerByWallet) {
       throw new BadRequestException(
-        'Could not match the tx recipient to a Bolty seller wallet. If it went through escrow, open /orders and retry from there.',
+        'Could not match the tx recipient to a haggl seller wallet. If it went through escrow, open /orders and retry from there.',
       );
     }
 
@@ -2145,7 +2145,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
               throw new BadRequestException('Platform fee transaction failed or not found');
             }
             if (!feeTx || feeTx.to?.toLowerCase() !== platformWallet.toLowerCase()) {
-              throw new BadRequestException('Platform fee recipient does not match Bolty wallet');
+              throw new BadRequestException('Platform fee recipient does not match haggl wallet');
             }
             platformFeeWei = feeTx.value.toString();
           } catch (err) {

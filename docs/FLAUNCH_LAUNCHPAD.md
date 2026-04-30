@@ -14,7 +14,7 @@ one-time setup needed for Phase 2 (real contracts, real ETH).
 | **Gating** | Open to every listing owner |
 | **Data source** | Flaunch subgraph (no backend mirror day 1) |
 | **Gas model** | User pays from their own wallet |
-| **Token footer** | Bolty attribution appended to every token description |
+| **Token footer** | haggl attribution appended to every token description |
 | **Framing** | Community memecoins (not revenue claims / securities) |
 
 These live in `frontend/src/lib/flaunch/config.ts` and
@@ -141,7 +141,7 @@ keep trading on Flaunch — they're not "ours" to turn off.
   max buy, no sell during window) are enforced by Flaunch's hooks and
   cannot be bypassed per-launch.
 - Subgraph queries should filter by `revenueManager` so we only surface
-  tokens launched through Bolty — other RevenueManagers share the
+  tokens launched through haggl — other RevenueManagers share the
   Flaunch protocol but aren't ours.
 - The `PRIVATE_KEY` used for the deploy does NOT need to be the treasury
   key. Any funded Base wallet works; you can delete it after deploy.

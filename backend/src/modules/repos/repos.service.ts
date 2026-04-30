@@ -230,7 +230,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       this.logger.warn(`No GitHub token for user ${userId} (${githubLogin}) — need re-auth`);
       return [
         {
-          _bolty_reauth: true,
+          _haggl_reauth: true,
           name: 'Reconecta GitHub para ver todos tus repos',
           id: -1,
           full_name: 'reauth',
@@ -247,7 +247,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
 
     const headers: Record<string, string> = {
       Accept: 'application/vnd.github.v3+json',
-      'User-Agent': 'Bolty-Platform/1.0',
+      'User-Agent': 'haggl-Platform/1.0',
     };
 
     if (token) {
@@ -316,7 +316,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         // Return empty list with reauth notice — token was revoked
         return [
           {
-            _bolty_reauth: true,
+            _haggl_reauth: true,
             name: 'Reconecta GitHub para ver todos tus repos (públicos y privados)',
             id: -1,
             full_name: 'reauth',
@@ -354,7 +354,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         }
         return [
           {
-            _bolty_reauth: true,
+            _haggl_reauth: true,
             name: 'Reconecta GitHub para ver todos tus repos (públicos y privados)',
             id: -1,
             full_name: 'reauth',
@@ -460,7 +460,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         {
           headers: {
             Accept: 'application/vnd.github.v3+json',
-            'User-Agent': 'Bolty-Platform/1.0',
+            'User-Agent': 'haggl-Platform/1.0',
             Authorization: `Bearer ${token}`,
           },
           timeout: 10_000,
@@ -521,7 +521,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       throw new ForbiddenException(`Repository rejected by security scanner: ${scan.reason}`);
     }
 
-    // Block cross-user hijack: if another Bolty account already claimed
+    // Block cross-user hijack: if another haggl account already claimed
     // this GitHub repo id, only that owner may update it.
     const existing = await this.prisma.repository.findUnique({
       where: { githubRepoId: String(authoritative.id) },
@@ -920,7 +920,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
       throw new BadRequestException(
         sellerUsername
           ? `@${sellerUsername} has no wallet matching this transaction. Make sure the username is correct.`
-          : 'No seller wallet on Bolty matches this transaction. Pass the seller username to help match.',
+          : 'No seller wallet on haggl matches this transaction. Pass the seller username to help match.',
       );
     }
 
@@ -968,19 +968,19 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         .filter((w): w is string => !!w)
         .map((w) => w.toLowerCase()),
     );
-    const boltyContract = this.config.get<string>('HAGGL_TOKEN_CONTRACT', '');
+    const  hagglContract = this.config.get<string>('HAGGL_TOKEN_CONTRACT', '');
     let paidWei: bigint = 0n;
     let isHagglPath = false;
     if (tx.value && BigInt(tx.value) > 0n) {
       paidWei = BigInt(tx.value);
-    } else if (boltyContract) {
+    } else if (hagglContract) {
       isHagglPath = true;
       // HAGGL path: only count Transfer logs emitted by the configured
       // HAGGL contract whose `to` topic is one of the seller candidate
       // wallets. This prevents unrelated ERC-20 transfers in the same tx
       // from inflating `paidWei` during disambiguation.
       for (const log of receipt.logs) {
-        if (log.address.toLowerCase() !== boltyContract.toLowerCase()) continue;
+        if (log.address.toLowerCase() !==  hagglContract.toLowerCase()) continue;
         if (log.topics[0] !== TRANSFER_TOPIC) continue;
         if (!log.topics[2]) continue;
         const to = '0x' + log.topics[2].slice(26).toLowerCase();

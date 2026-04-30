@@ -1,18 +1,18 @@
 /**
  * One-shot script: scan every existing AI_AGENT / BOT marketplace
- * listing through BoltyGuard so the badges on the marketplace +
+ * listing through HagglGuard so the badges on the marketplace +
  * agent detail pages stop showing "Unscanned" for legacy data.
  *
  * Usage (from backend/):
  *
  *   # In production — runs against the live DB. Anthropic key required.
- *   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/backfill-boltyguard-scans.ts
+ *   ANTHROPIC_API_KEY=sk-... npx ts-node scripts/backfill-hagglguard-scans.ts
  *
  *   # Add LIMIT=10 to cap the run for testing.
  *   # Add ONLY_MISSING=1 to skip listings that already have a scan.
  *
  * The script bootstraps a NestJS application context so it can reuse
- * BoltyGuardService directly — same code path as the publish flow.
+ * HagglGuardService directly — same code path as the publish flow.
  * Listings without a fileKey produce score 100 and are still recorded
  * so the UI doesn't keep showing them as "Unscanned".
  */
@@ -21,7 +21,7 @@ import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from '../src/app.module';
 import { PrismaService } from '../src/common/prisma/prisma.service';
-import { BoltyGuardService } from '../src/modules/boltyguard/boltyguard.service';
+import { HagglGuardService } from '../src/modules/hagglguard/hagglguard.service';
 
 async function main() {
   const limit = Number(process.env.LIMIT) || Infinity;
@@ -31,7 +31,7 @@ async function main() {
     logger: ['error', 'warn'],
   });
   const prisma = app.get(PrismaService);
-  const guard = app.get(BoltyGuardService);
+  const guard = app.get(HagglGuardService);
 
   const listings = await prisma.marketListing.findMany({
     where: {

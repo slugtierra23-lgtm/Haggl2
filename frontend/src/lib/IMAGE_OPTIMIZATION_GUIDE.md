@@ -1,6 +1,6 @@
 # Image Optimization Guide
 
-This guide outlines best practices for optimizing images in the Bolty frontend.
+This guide outlines best practices for optimizing images in the haggl frontend.
 
 ## Principles
 

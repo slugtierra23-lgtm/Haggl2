@@ -103,7 +103,7 @@ async function bootstrap(): Promise<void> {
   app.setGlobalPrefix('api/v1');
 
   await app.listen(port, '0.0.0.0');
-  logger.log(`Bolty Backend running on port ${port}`, 'Bootstrap');
+  logger.log(`haggl Backend running on port ${port}`, 'Bootstrap');
   logger.log(`Environment: ${configService.get('NODE_ENV')}`, 'Bootstrap');
 }
 

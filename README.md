@@ -1,11 +1,11 @@
-# Bolty Platform
+# haggl Platform
 
 > A professional full-stack Web3 memecoin platform with terminal aesthetics.
 
 ## Architecture Overview
 
 ```
-bolty-platform/
+haggl-platform/
 ├── frontend/          # Next.js 14 + TypeScript + TailwindCSS
 ├── backend/           # NestJS + PostgreSQL + Redis
 ├── docker-compose.yml # Full stack orchestration

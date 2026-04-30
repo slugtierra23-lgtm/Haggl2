@@ -34,9 +34,9 @@ export class EmailService {
 
   constructor(private readonly _config: ConfigService) {
     const apiKey = this._config.get<string>('RESEND_API_KEY', '');
-    this.from = this._config.get<string>('EMAIL_FROM', 'Bolty <noreply@boltynetwork.xyz>');
-    this.appUrl = this._config.get<string>('APP_URL', 'https://bolty.dev');
-    this.logoUrl = `${this.appUrl}/bolty-icon.png`;
+    this.from = this._config.get<string>('EMAIL_FROM', 'haggl <noreply.haggl.tech>');
+    this.appUrl = this._config.get<string>('APP_URL', 'https://haggl.tech');
+    this.logoUrl = `${this.appUrl}/haggl-icon.png`;
 
     if (apiKey) {
       this.resend = new Resend(apiKey);
@@ -68,7 +68,7 @@ export class EmailService {
           <tr>
             <td align="center" style="padding-bottom:28px;">
               <a href="${this.appUrl}" style="text-decoration:none;">
-                <img src="${this.logoUrl}" alt="Bolty" width="96" height="96" style="display:block;border:0;outline:none;" />
+                <img src="${this.logoUrl}" alt="haggl" width="96" height="96" style="display:block;border:0;outline:none;" />
               </a>
             </td>
           </tr>
@@ -84,11 +84,11 @@ export class EmailService {
           <tr>
             <td align="center" style="padding:28px 0 8px;">
               <p style="margin:0;color:#a1a1aa;font-size:12px;line-height:1.6;">
-                You received this because an action was initiated on your Bolty account.<br/>
+                You received this because an action was initiated on your haggl account.<br/>
                 If you didn't request this, you can safely ignore this email.
               </p>
               <p style="margin:10px 0 0;color:#d4d4d8;font-size:11px;">
-                &copy; ${year} Bolty &middot; <a href="${this.appUrl}" style="color:#a1a1aa;text-decoration:none;">bolty.dev</a>
+                &copy; ${year} haggl &middot; <a href="${this.appUrl}" style="color:#a1a1aa;text-decoration:none;">haggl.tech</a>
               </p>
             </td>
           </tr>
@@ -136,12 +136,12 @@ export class EmailService {
   // ── Welcome ──────────────────────────────────────────────────────────────
 
   async sendWelcomeEmail(to: string, username: string): Promise<void> {
-    const subject = 'Welcome to Bolty';
+    const subject = 'Welcome to haggl';
     const html = this.shell(
       subject,
-      `Welcome to Bolty, ${username}!`,
+      `Welcome to haggl, ${username}!`,
       bodyWrap(`
-      <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Welcome to Bolty</h1>
+      <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Welcome to haggl</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">
         Hi <strong style="color:#18181b;">@${username}</strong>, your account is ready.
         You're now part of the AI developer platform built for builders.
@@ -173,21 +173,21 @@ export class EmailService {
       </a>
     `),
     );
-    const text = `Welcome to Bolty, @${username}!\n\nYour account is ready. Start exploring at ${this.appUrl}`;
+    const text = `Welcome to haggl, @${username}!\n\nYour account is ready. Start exploring at ${this.appUrl}`;
     await this.send(to, subject, html, text);
   }
 
   // ── 2FA login code ───────────────────────────────────────────────────────
 
   async send2FACode(to: string, code: string): Promise<void> {
-    const subject = `${code} — your Bolty sign-in code`;
+    const subject = `${code} — your haggl sign-in code`;
     const html = this.shell(
       subject,
-      `Your Bolty sign-in code is ${code}`,
+      `Your haggl sign-in code is ${code}`,
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Complete Your Sign-In</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">
-        Here's your 6-digit verification code to complete your Bolty sign-in.
+        Here's your 6-digit verification code to complete your haggl sign-in.
         This code expires in <strong style="color:#18181b;">10 minutes</strong>.
       </p>
       ${otpBlock(code)}
@@ -196,27 +196,27 @@ export class EmailService {
       </p>
       <div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:14px 18px;">
         <p style="margin:0;font-size:13px;color:#3730a3;">
-          <strong>Security tip:</strong> Never share this code with anyone. Bolty will never ask for it by phone or email.
+          <strong>Security tip:</strong> Never share this code with anyone. haggl will never ask for it by phone or email.
           If you didn't request this sign-in, you can safely ignore this email.
         </p>
       </div>
     `),
     );
-    const text = `Your Bolty 2FA sign-in code: ${code}\n\nExpires in 10 minutes. Never share it.`;
+    const text = `Your haggl 2FA sign-in code: ${code}\n\nExpires in 10 minutes. Never share it.`;
     await this.send(to, subject, html, text);
   }
 
   // ── Email change ─────────────────────────────────────────────────────────
 
   async sendEmailChangeConfirmation(to: string, code: string): Promise<void> {
-    const subject = `${code} — confirm your new Bolty email`;
+    const subject = `${code} — confirm your new haggl email`;
     const html = this.shell(
       subject,
       `Confirm your email change with code ${code}`,
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Confirm Email Change</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">
-        You requested to change your Bolty email address to this one.
+        You requested to change your haggl email address to this one.
         Enter the 6-digit code below to confirm the change.
         This code expires in <strong style="color:#18181b;">15 minutes</strong>.
       </p>
@@ -231,21 +231,21 @@ export class EmailService {
       </div>
     `),
     );
-    const text = `Your Bolty email change code: ${code}\n\nExpires in 15 minutes.`;
+    const text = `Your haggl email change code: ${code}\n\nExpires in 15 minutes.`;
     await this.send(to, subject, html, text);
   }
 
   // ── Password reset ───────────────────────────────────────────────────────
 
   async sendPasswordResetEmail(to: string, resetUrl: string): Promise<void> {
-    const subject = 'Reset your Bolty password';
+    const subject = 'Reset your haggl password';
     const html = this.shell(
       subject,
-      'Reset your Bolty password',
+      'Reset your haggl password',
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Password Reset</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">
-        We received a request to reset your Bolty password.
+        We received a request to reset your haggl password.
         Click the button below to set a new one. The link expires in <strong style="color:#18181b;">15 minutes</strong>.
       </p>
       <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:24px;">
@@ -268,7 +268,7 @@ export class EmailService {
       </div>
     `),
     );
-    const text = `Reset your Bolty password\n\nClick the link below (expires in 15 minutes):\n${resetUrl}\n\nIf you didn't request this, ignore this email.`;
+    const text = `Reset your haggl password\n\nClick the link below (expires in 15 minutes):\n${resetUrl}\n\nIf you didn't request this, ignore this email.`;
     await this.send(to, subject, html, text);
   }
 
@@ -282,7 +282,7 @@ export class EmailService {
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Enable Two-Factor Authentication</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">
-        You requested to enable two-factor authentication (2FA) on your Bolty account.
+        You requested to enable two-factor authentication (2FA) on your haggl account.
         This adds an extra layer of security to protect your account.
         Enter the 6-digit code below to confirm. This code expires in <strong style="color:#18181b;">10 minutes</strong>.
       </p>
@@ -298,7 +298,7 @@ export class EmailService {
       </div>
     `),
     );
-    const text = `Your Bolty 2FA activation code: ${code}\n\nExpires in 10 minutes.`;
+    const text = `Your haggl 2FA activation code: ${code}\n\nExpires in 10 minutes.`;
     await this.send(to, subject, html, text);
   }
 
@@ -369,7 +369,7 @@ export class EmailService {
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">⚠️ Account Deletion Request</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">
-        You requested to permanently delete your Bolty account.
+        You requested to permanently delete your haggl account.
         This action <strong style="color:#18181b;">cannot be undone</strong>.
         Enter the 6-digit code below to confirm. This code expires in <strong style="color:#18181b;">10 minutes</strong>.
       </p>
@@ -382,7 +382,7 @@ export class EmailService {
           ⚠️ Warning: This will permanently delete:
         </p>
         <ul style="margin:8px 0 0 0;padding-left:20px;color:#9f1239;font-size:13px;">
-          <li>Your entire Bolty account and profile</li>
+          <li>Your entire haggl account and profile</li>
           <li>All your API keys and tokens</li>
           <li>All your listings and agent posts</li>
           <li>All your data and activity history</li>
@@ -393,21 +393,21 @@ export class EmailService {
       </div>
     `),
     );
-    const text = `Your Bolty account deletion code: ${code}\n\nExpires in 10 minutes. This is PERMANENT and will delete all your data.`;
+    const text = `Your haggl account deletion code: ${code}\n\nExpires in 10 minutes. This is PERMANENT and will delete all your data.`;
     await this.send(to, subject, html, text);
   }
 
   // ── API Key deletion verification ────────────────────────────────────────
 
   async sendApiKeyDeleteCode(to: string, code: string): Promise<void> {
-    const subject = `${code} — revoke your Bolty API key`;
+    const subject = `${code} — revoke your haggl API key`;
     const html = this.shell(
       subject,
       `Confirm API key revocation: ${code}`,
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Revoke API Key</h1>
       <p style="margin:0 0 4px;color:#71717a;font-size:15px;line-height:1.6;">
-        You requested to revoke an API key on your Bolty account.
+        You requested to revoke an API key on your haggl account.
         Enter this code to confirm. Expires in <strong style="color:#18181b;">10 minutes</strong>.
       </p>
       ${otpBlock(code)}
@@ -419,7 +419,7 @@ export class EmailService {
       </div>
     `),
     );
-    const text = `Your Bolty API key revocation code: ${code}\n\nExpires in 10 minutes.`;
+    const text = `Your haggl API key revocation code: ${code}\n\nExpires in 10 minutes.`;
     await this.send(to, subject, html, text);
   }
 
@@ -429,7 +429,7 @@ export class EmailService {
     to: string,
     errors: Array<{ endpoint: string; error: string; timestamp: string }>,
   ): Promise<void> {
-    const subject = 'Alert: API Errors Detected on Your Bolty Account';
+    const subject = 'Alert: API Errors Detected on Your haggl Account';
     const errorsList = errors
       .map(
         (e) => `
@@ -460,7 +460,7 @@ export class EmailService {
       </p>
     `),
     );
-    const text = `API Errors: ${errors.length} errors detected. Check your Bolty dashboard for details.`;
+    const text = `API Errors: ${errors.length} errors detected. Check your haggl dashboard for details.`;
     await this.send(to, subject, html, text);
   }
 
@@ -477,7 +477,7 @@ export class EmailService {
     const subject = `Weekly Usage Report — ${stats.totalCalls} API calls`;
     const html = this.shell(
       subject,
-      `${username}, here's your weekly Bolty usage summary`,
+      `${username}, here's your weekly haggl usage summary`,
       bodyWrap(`
       <h1 style="margin:0 0 8px;font-size:24px;font-weight:700;color:#09090b;letter-spacing:-0.5px;">Weekly Usage Report</h1>
       <p style="margin:0 0 20px;color:#71717a;font-size:15px;line-height:1.6;">

@@ -6,9 +6,9 @@ import * as path from 'path';
 
 import { Injectable, Logger } from '@nestjs/common';
 
-import type { Finding, Severity } from './boltyguard.service';
+import type { Finding, Severity } from './hagglguard.service';
 
-const RULES_DIR = process.env.BOLTYGUARD_RULES_DIR ?? path.join(process.cwd(), 'boltyguard-rules');
+const RULES_DIR = process.env.HAGGLGUARD_RULES_DIR ?? path.join(process.cwd(), 'hagglguard-rules');
 const SEMGREP_TIMEOUT_MS = 30_000;
 
 interface SemgrepResult {
@@ -20,8 +20,8 @@ interface SemgrepResult {
       severity: 'INFO' | 'WARNING' | 'ERROR';
       message: string;
       metadata?: {
-        bolty_severity?: Severity;
-        bolty_fix?: string;
+         haggl_severity?: Severity;
+         haggl_fix?: string;
       };
     };
   }>;
@@ -84,7 +84,7 @@ export class SemgrepRunner {
 
   private async makeTempDir(): Promise<string> {
     const id = crypto.randomBytes(8).toString('hex');
-    const dir = path.join(os.tmpdir(), `boltyguard-${id}`);
+    const dir = path.join(os.tmpdir(), `hagglguard-${id}`);
     await fs.promises.mkdir(dir, { recursive: true });
     return dir;
   }
@@ -148,7 +148,7 @@ function inferExtension(fileName: string): string {
 }
 
 function mapResult(r: SemgrepResult['results'][0]): Finding {
-  const sevFromMeta = r.extra.metadata?.bolty_severity;
+  const sevFromMeta = r.extra.metadata?.haggl_severity;
   const severity: Severity =
     sevFromMeta && isSeverity(sevFromMeta)
       ? sevFromMeta
@@ -166,7 +166,7 @@ function mapResult(r: SemgrepResult['results'][0]): Finding {
     file: path.basename(r.path),
     line: r.start.line,
     message: r.extra.message.slice(0, 400),
-    fix: r.extra.metadata?.bolty_fix?.slice(0, 400),
+    fix: r.extra.metadata?.haggl_fix?.slice(0, 400),
   };
 }
 

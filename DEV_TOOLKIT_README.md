@@ -1,6 +1,6 @@
-# 🛠️ Bolty Developer Toolkit
+# 🛠️ haggl Developer Toolkit
 
-A comprehensive validation and analysis suite for Bolty development. All 8 tools integrated into a single CLI.
+A comprehensive validation and analysis suite for haggl development. All 8 tools integrated into a single CLI.
 
 ## Installation
 
@@ -119,7 +119,7 @@ Create `.vscode/tasks.json`:
 
 ### ✅ All Checks Pass
 ```
-🚀 Bolty Developer Toolkit
+🚀 haggl Developer Toolkit
 
 🔍 Validating TypeScript Types...
 ✅ TypeScript validation passed
@@ -180,7 +180,7 @@ Typography: xs, sm, base, lg, xl...
 
 ## Extending the Toolkit
 
-Add new validators in `BoltyDevToolkit` class:
+Add new validators in `HagglDevToolkit` class:
 
 ```typescript
 case 'custom':
@@ -197,5 +197,5 @@ case 'custom':
 
 ---
 
-**Created for Bolty by Claude**  
+**Created for haggl by Claude**  
 Enhance your development workflow with automated validation

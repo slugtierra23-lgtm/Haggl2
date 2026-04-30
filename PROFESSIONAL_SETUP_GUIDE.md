@@ -1,4 +1,4 @@
-# 🚀 Bolty Platform - Professional Setup & Implementation Guide
+# 🚀 haggl Platform - Professional Setup & Implementation Guide
 
 ## Phase 1: Infrastructure Setup (COMPLETED ✅)
 
@@ -211,7 +211,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Bolty API')
+    .setTitle('haggl API')
     .setDescription('AI Developer Platform API')
     .setVersion('1.0.0')
     .addBearerAuth()

@@ -1021,7 +1021,7 @@ export class NegotiationService {
         timeout: 8000,
         headers: {
           'Content-Type': 'application/json',
-          'X-Bolty-Event': (payload as { event?: string }).event ?? '',
+          'X-Haggl-Event': (payload as { event?: string }).event ?? '',
         },
         maxBodyLength: 4096,
         maxContentLength: 4096,

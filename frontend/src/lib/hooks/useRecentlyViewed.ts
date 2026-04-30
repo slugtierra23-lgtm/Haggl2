@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-const KEY = 'bolty.market.recent.v1';
+const KEY = 'haggl.market.recent.v1';
 const MAX_RECENT = 24;
 
 export interface RecentListing {
@@ -33,7 +33,7 @@ function writeStore(items: RecentListing[]) {
   if (typeof window === 'undefined') return;
   try {
     window.localStorage.setItem(KEY, JSON.stringify(items.slice(0, MAX_RECENT)));
-    window.dispatchEvent(new CustomEvent('bolty:recent-changed'));
+    window.dispatchEvent(new CustomEvent('haggl:recent-changed'));
   } catch {
     /* storage full or disabled */
   }
@@ -45,10 +45,10 @@ export function useRecentlyViewed() {
   useEffect(() => {
     setItems(readStore());
     const onChange = () => setItems(readStore());
-    window.addEventListener('bolty:recent-changed', onChange);
+    window.addEventListener('haggl:recent-changed', onChange);
     window.addEventListener('storage', onChange);
     return () => {
-      window.removeEventListener('bolty:recent-changed', onChange);
+      window.removeEventListener('haggl:recent-changed', onChange);
       window.removeEventListener('storage', onChange);
     };
   }, []);

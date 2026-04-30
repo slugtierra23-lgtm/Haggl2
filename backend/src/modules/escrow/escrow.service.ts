@@ -12,7 +12,7 @@ import { ethers } from 'ethers';
 import { PrismaService } from '../../common/prisma/prisma.service';
 import { NotificationsService } from '../notifications/notifications.service';
 
-// Mirrors the on-chain enum ordering in BoltyEscrow.sol
+// Mirrors the on-chain enum ordering in HagglEscrow (Solana program — TBD)
 // NONE=0, FUNDED=1, RELEASED=2, DISPUTED=3, RESOLVED=4, REFUNDED=5
 enum OnChainStatus {
   NONE = 0,

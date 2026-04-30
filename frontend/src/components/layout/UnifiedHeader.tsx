@@ -20,7 +20,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
 
-import { BoltyLogoSVG } from '@/components/ui/BoltyLogo';
+import { HagglLogoSVG } from '@/components/ui/HagglLogo';
 import { getReputationRank } from '@/components/ui/reputation-badge';
 import { ShimmerButton } from '@/components/ui/ShimmerButton';
 import { UserAvatar } from '@/components/ui/UserAvatar';
@@ -372,7 +372,7 @@ export function UnifiedHeader() {
                 style={{ borderColor: 'rgba(255,255,255,0.06)' }}
               >
                 <div className="flex items-center gap-2.5">
-                  <BoltyLogoSVG size={22} />
+                  <HagglLogoSVG size={22} />
                   <div className="flex flex-col leading-none">
                     <span className="text-[13px] font-semibold text-white">haggl</span>
                     <span className="text-[10px] text-zinc-500 mt-1 tracking-[0.18em] uppercase">

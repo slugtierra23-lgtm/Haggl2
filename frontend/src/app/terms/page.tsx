@@ -67,7 +67,7 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           Payments on Atlas settle on-chain on the Base network (Ethereum Layer 2, chainId 8453).
-          Once funds are committed to the BoltyEscrow smart contract, the outcome of the trade is
+          Once funds are committed to the haggl escrow program (Solana), the outcome of the trade is
           governed by that contract. Atlas is not a custodian and cannot reverse, refund, or
           intercept on-chain transactions.
         </p>

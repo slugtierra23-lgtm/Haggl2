@@ -93,7 +93,7 @@ export const RANK_META: Record<
     label: 'Legend',
     color: '#836ef9',
     badge: '⚡',
-    description: 'Hall of fame — the pinnacle of the Bolty ecosystem',
+    description: 'Hall of fame — the pinnacle of the haggl ecosystem',
   },
 };
 

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 
 /** SVG logo — lightning bolt inside rounded square */
-export function BoltyLogoSVG({
+export function HagglLogoSVG({
   size = 40,
   className = '',
   color = '#14F195',
@@ -40,26 +40,26 @@ export function BoltyLogoSVG({
   );
 }
 
-interface BoltyLogoProps {
+interface HagglLogoProps {
   className?: string;
   size?: number;
   style?: React.CSSProperties;
   color?: string;
 }
 
-export function BoltyLogo({ className = '', size = 40, style, color }: BoltyLogoProps) {
+export function HagglLogo({ className = '', size = 40, style, color }: HagglLogoProps) {
   return (
     <div
       className={className}
       style={{ width: size, height: size, display: 'inline-flex', ...style }}
     >
-      <BoltyLogoSVG size={size} color={color} />
+      <HagglLogoSVG size={size} color={color} />
     </div>
   );
 }
 
 /** Full-size logo with drop-shadow glow */
-export function BoltyLogoGlow({ size = 40 }: { size?: number }) {
+export function HagglLogoGlow({ size = 40 }: { size?: number }) {
   return (
     <div
       className="relative inline-flex items-center justify-center"
@@ -71,13 +71,13 @@ export function BoltyLogoGlow({ size = 40 }: { size?: number }) {
           background: 'radial-gradient(circle, rgba(20, 241, 149, 0.7) 0%, transparent 70%)',
         }}
       />
-      <BoltyLogo size={size} style={{ position: 'relative', zIndex: 10 }} />
+      <HagglLogo size={size} style={{ position: 'relative', zIndex: 10 }} />
     </div>
   );
 }
 
 /** Floating background logos that fade in/out at random positions */
-export function BoltyFloatingLogos() {
+export function HagglFloatingLogos() {
   const [logos, setLogos] = useState<
     Array<{
       id: number;
@@ -113,15 +113,15 @@ export function BoltyFloatingLogos() {
           style={{
             left: `${l.x}%`,
             top: `${l.y}%`,
-            animation: `bolty-float-fade ${l.duration}s ease-in-out ${l.delay}s infinite`,
+            animation: `haggl-float-fade ${l.duration}s ease-in-out ${l.delay}s infinite`,
             opacity: 0,
           }}
         >
-          <BoltyLogoSVG size={l.size} color="rgba(20, 241, 149, 0.06)" />
+          <HagglLogoSVG size={l.size} color="rgba(20, 241, 149, 0.06)" />
         </div>
       ))}
       <style>{`
-        @keyframes bolty-float-fade {
+        @keyframes  haggl-float-fade {
           0%, 100% { opacity: 0; transform: translateY(8px) scale(0.95); }
           30%, 70% { opacity: 1; transform: translateY(-4px) scale(1); }
         }

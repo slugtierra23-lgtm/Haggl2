@@ -14,11 +14,11 @@ import {
 } from './protocol-adapter.interface';
 
 /**
- * Bolty Webhook protocol — the simplest contract.
+ * haggl Webhook protocol — the simplest contract.
  *
  *   POST <endpoint>
- *   X-Bolty-Event: health_check | invoke
- *   X-Bolty-Signature: t=…,v1=…
+ *   X-Haggl-Event: health_check | invoke
+ *   X-Haggl-Signature: t=…,v1=…
  *   Content-Type: application/json
  *
  *   { event, prompt?, conversationId?, history? }
@@ -151,8 +151,8 @@ export class WebhookAdapter implements IProtocolAdapter {
     const secret = process.env.AGENT_HMAC_SECRET ?? '';
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'X-Bolty-Event': event,
-      'User-Agent': 'BoltyAgentPing/1.0',
+      'X-Haggl-Event': event,
+      'User-Agent': 'HagglAgentPing/1.0',
     };
     if (secret) {
       const signed = signRequest(body, secret);

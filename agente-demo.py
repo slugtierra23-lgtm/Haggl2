@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Agente de IA simple para testear Bolty
+Agente de IA simple para testear haggl
 Recibe peticiones POST y devuelve respuestas
 """
 
@@ -41,7 +41,7 @@ class AgentHandler(BaseHTTPRequestHandler):
 
                 output = f"Sentimiento detectado: {sentiment}\nTexto: {user_input}"
 
-            # Respuesta en formato Bolty
+            # Respuesta en formato haggl
             response = {
                 "output": output,
                 "metadata": {

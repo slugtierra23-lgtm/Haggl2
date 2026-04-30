@@ -15,7 +15,7 @@
 Monorepo with:
 - `frontend/` — Next.js 14 (App Router), TypeScript, TailwindCSS, framer-motion.
 - `backend/` — NestJS 10, Prisma, PostgreSQL, Redis, WebSockets.
-- `contracts/` — Solidity smart contracts (BOLTY ERC20, Escrow).
+- `contracts/` — Solidity smart contracts (HAGGL ERC20, Escrow).
 
 ## Frontend design language
 

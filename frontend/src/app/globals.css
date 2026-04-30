@@ -5351,7 +5351,7 @@ aside button[data-active='true']::after {
   font-size: 12px;
 }
 /* Primary action — black/white pill, same as .atlas-cta. The old
-   green-fluo / lavender hover was a holdover from the Bolty era. */
+   green-fluo / lavender hover was a holdover from the legacy era. */
 .mk-app .mk-btn--primary {
   background: #ffffff;
   color: #000000;

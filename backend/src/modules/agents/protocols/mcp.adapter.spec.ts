@@ -93,7 +93,7 @@ describe('McpAdapter', () => {
       expect(body.jsonrpc).toBe('2.0');
       expect(body.method).toBe('initialize');
       expect(body.params.protocolVersion).toBe('2024-11-05');
-      expect(body.params.clientInfo.name).toBe('bolty');
+      expect(body.params.clientInfo.name).toBe('haggl');
     });
   });
 
@@ -180,8 +180,8 @@ describe('McpAdapter', () => {
       });
       await adapter.invoke({ endpoint: 'https://mcp.example.com' }, { prompt: 'hi' });
       const headers = mockedAxios.post.mock.calls[0][2]?.headers as Record<string, string>;
-      expect(headers['X-Bolty-Event']).toBe('invoke');
-      expect(headers['x-bolty-signature']).toMatch(/^t=\d+,v1=[a-f0-9]{64}$/);
+      expect(headers['X-Haggl-Event']).toBe('invoke');
+      expect(headers['x-haggl-signature']).toMatch(/^t=\d+,v1=[a-f0-9]{64}$/);
     });
   });
 });

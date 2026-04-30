@@ -1,6 +1,6 @@
-# Bolty scripts
+# haggl scripts
 
-Standalone utility scripts that talk to the running Bolty backend through its
+Standalone utility scripts that talk to the running haggl backend through its
 public API. Nothing here is deployed — these are tools you run on your laptop.
 
 ## daian-bot
@@ -32,7 +32,7 @@ All optional, read from env:
 | `BOT_API_URL`      | `http://localhost:3001/api/v1` | Backend REST base URL                           |
 | `BOT_WS_URL`       | `http://localhost:3001`        | Backend websocket origin                        |
 | `BOT_USERNAME`     | `daian`                        | Lowercase, 3-30 chars, `a-z0-9_-`               |
-| `BOT_EMAIL`        | `daian@bolty.local`            | Only used on first run (registration)           |
+| `BOT_EMAIL`        | `daian@haggl.local`            | Only used on first run (registration)           |
 | `BOT_PASSWORD`     | `DaianBot!2026`                | Must satisfy the backend password policy        |
 | `BOT_INTERVAL_MS`  | `45000`                        | Minimum 11000 — chat gateway caps at 10 per 10s |
 | `BOT_JITTER_MS`    | `15000`                        | Random extra delay added on top                 |
@@ -42,8 +42,8 @@ Example:
 ```bash
 BOT_USERNAME=daian \
 BOT_INTERVAL_MS=60000 \
-BOT_API_URL=https://api.bolty.dev/api/v1 \
-BOT_WS_URL=https://api.bolty.dev \
+BOT_API_URL=https://api.haggl.tech/api/v1 \
+BOT_WS_URL=https://api.haggl.tech \
 npm run daian
 ```
 

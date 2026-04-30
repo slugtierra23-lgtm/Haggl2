@@ -17,9 +17,9 @@ export class TokenController {
   @Public()
   @Throttle({ default: { limit: 60, ttl: 60000 } })
   @Header('Cache-Control', 'public, s-maxage=20, stale-while-revalidate=60')
-  @Get('bolty')
-  getBolty() {
-    return this.tokenService.getBoltyStats();
+  @Get('haggl')
+  getHaggl() {
+    return this.tokenService.getHagglStats();
   }
 
   /**
@@ -31,13 +31,13 @@ export class TokenController {
   @Public()
   @Throttle({ default: { limit: 180, ttl: 60000 } })
   @Header('Cache-Control', 'public, s-maxage=5, stale-while-revalidate=15')
-  @Get('bolty/trades')
-  getBoltyTrades() {
-    return this.tokenService.getBoltyTrades();
+  @Get('haggl/trades')
+  getHagglTrades() {
+    return this.tokenService.getHagglTrades();
   }
 
   /**
-   * OHLCV candles for the /bolty native chart. Timeframe + aggregate
+   * OHLCV candles for the /haggl native chart. Timeframe + aggregate
    * map to GeckoTerminal's pool-level OHLCV endpoint. Cached 15s so
    * the client-side poll loop (every ~10s while the tab is visible)
    * mostly hits Redis.
@@ -45,8 +45,8 @@ export class TokenController {
   @Public()
   @Throttle({ default: { limit: 120, ttl: 60000 } })
   @Header('Cache-Control', 'public, s-maxage=30, stale-while-revalidate=120')
-  @Get('bolty/ohlcv')
-  getBoltyOhlcv(
+  @Get('haggl/ohlcv')
+  getHagglOhlcv(
     @Query('timeframe') timeframe?: 'minute' | 'hour' | 'day',
     @Query('aggregate') aggregate?: string,
     @Query('limit') limit?: string,
@@ -55,7 +55,7 @@ export class TokenController {
       timeframe === 'hour' || timeframe === 'day' ? timeframe : 'minute';
     const agg = Math.max(1, Math.min(Number(aggregate) || 1, 60));
     const lim = Math.max(30, Math.min(Number(limit) || 300, 1000));
-    return this.tokenService.getBoltyOhlcv(tf, agg, lim);
+    return this.tokenService.getHagglOhlcv(tf, agg, lim);
   }
 
   /**

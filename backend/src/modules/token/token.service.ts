@@ -11,18 +11,18 @@ export const HAGGL_CONTRACT = '0xA383e85a626171edCB2727AEcAED4Fc5e27E42a7';
 export const HAGGL_CHAIN = 'base';
 
 const CACHE_TTL_SEC = 60;
-const CACHE_KEY = 'token:bolty:stats:v1';
+const CACHE_KEY = 'token:haggl:stats:v1';
 // Trades refresh more often — the UI promises a live feed.
 const TRADES_CACHE_TTL_SEC = 4;
-const TRADES_CACHE_KEY = 'token:bolty:trades:v1';
+const TRADES_CACHE_KEY = 'token:haggl:trades:v1';
 const OHLCV_CACHE_TTL_SEC = 60;
 // Long-lived "last good" copy so a GeckoTerminal rate-limit / 503 / timeout
 // doesn't leave the chart blank. We always serve the fresh entry first,
 // fall back to this only when the upstream call fails outright. Keep it
 // long enough to survive a sustained upstream outage (1h).
 const OHLCV_STALE_CACHE_TTL_SEC = 3600;
-const OHLCV_CACHE_KEY = 'token:bolty:ohlcv:v1';
-const OHLCV_STALE_KEY = 'token:bolty:ohlcv:v1:stale';
+const OHLCV_CACHE_KEY = 'token:haggl:ohlcv:v1';
+const OHLCV_STALE_KEY = 'token:haggl:ohlcv:v1:stale';
 
 /** Shape we expose to the frontend — curated from DexScreener pair data. */
 export interface TokenStats {
@@ -67,7 +67,7 @@ interface DexScreenerResponse {
   pairs?: DexScreenerPair[] | null;
 }
 
-export interface BoltyCandle {
+export interface HagglCandle {
   t: number; // unix seconds
   o: number;
   h: number;
@@ -76,7 +76,7 @@ export interface BoltyCandle {
   v: number; // volume USD
 }
 
-export interface BoltyTrade {
+export interface HagglTrade {
   id: string;
   side: 'buy' | 'sell';
   priceUsd: number | null;
@@ -124,7 +124,7 @@ export class TokenService {
 
   constructor(private readonly redis: RedisService) {}
 
-  async getBoltyStats(): Promise<TokenStats> {
+  async getHagglStats(): Promise<TokenStats> {
     const cached = await this.redis.get(CACHE_KEY).catch(() => null);
     if (cached) {
       try {
@@ -194,23 +194,23 @@ export class TokenService {
    * minute aggregates directly (JSON) and let the client render
    * them with lightweight-charts — our CSP blocks external iframes.
    */
-  async getBoltyOhlcv(
+  async getHagglOhlcv(
     timeframe: 'minute' | 'hour' | 'day' = 'minute',
     aggregate = 1,
     limit = 300,
-  ): Promise<BoltyCandle[]> {
+  ): Promise<HagglCandle[]> {
     const key = `${OHLCV_CACHE_KEY}:${timeframe}:${aggregate}:${limit}`;
     const staleKey = `${OHLCV_STALE_KEY}:${timeframe}:${aggregate}:${limit}`;
     const cached = await this.redis.get(key).catch(() => null);
     if (cached) {
       try {
-        return JSON.parse(cached) as BoltyCandle[];
+        return JSON.parse(cached) as HagglCandle[];
       } catch {
         /* fall through */
       }
     }
 
-    const stats = await this.getBoltyStats();
+    const stats = await this.getHagglStats();
     if (!stats.pairAddress) {
       // No pair yet — fall back to the last-good copy if we ever had
       // one (e.g. DexScreener temporarily blank). Empty array as last
@@ -218,7 +218,7 @@ export class TokenService {
       const stale = await this.redis.get(staleKey).catch(() => null);
       if (stale) {
         try {
-          return JSON.parse(stale) as BoltyCandle[];
+          return JSON.parse(stale) as HagglCandle[];
         } catch {
           /* corrupt — give up */
         }
@@ -226,7 +226,7 @@ export class TokenService {
       return [];
     }
 
-    let candles: BoltyCandle[] | null = null;
+    let candles: HagglCandle[] | null = null;
     try {
       candles = await this.fetchOhlcv(stats.pairAddress, timeframe, aggregate, limit);
     } catch (err) {
@@ -251,7 +251,7 @@ export class TokenService {
     const stale = await this.redis.get(staleKey).catch(() => null);
     if (stale) {
       try {
-        return JSON.parse(stale) as BoltyCandle[];
+        return JSON.parse(stale) as HagglCandle[];
       } catch {
         /* corrupt — give up */
       }
@@ -261,7 +261,7 @@ export class TokenService {
 
   /**
    * Generic GeckoTerminal OHLCV proxy for any Base pool. Same
-   * caching shape as Bolty's chart — fresh 60 s, stale 1 h — but
+   * caching shape as haggl's chart — fresh 60 s, stale 1 h — but
    * keyed per pool address so each launchpad token has its own
    * sliding window. Empty arrays are NOT cached (tokens that haven't
    * traded yet should be re-checked next tick rather than locked into
@@ -272,7 +272,7 @@ export class TokenService {
     timeframe: 'minute' | 'hour' | 'day' = 'minute',
     aggregate = 1,
     limit = 300,
-  ): Promise<BoltyCandle[]> {
+  ): Promise<HagglCandle[]> {
     const safePool = poolAddress.toLowerCase().replace(/[^0-9a-fx]/g, '');
     if (!safePool || safePool.length < 10) return [];
     const key = `token:coin:ohlcv:v1:${safePool}:${timeframe}:${aggregate}:${limit}`;
@@ -280,13 +280,13 @@ export class TokenService {
     const cached = await this.redis.get(key).catch(() => null);
     if (cached) {
       try {
-        return JSON.parse(cached) as BoltyCandle[];
+        return JSON.parse(cached) as HagglCandle[];
       } catch {
         /* fall through */
       }
     }
 
-    let candles: BoltyCandle[] | null = null;
+    let candles: HagglCandle[] | null = null;
     try {
       candles = await this.fetchOhlcv(safePool, timeframe, aggregate, limit);
     } catch (err) {
@@ -308,7 +308,7 @@ export class TokenService {
     const stale = await this.redis.get(staleKey).catch(() => null);
     if (stale) {
       try {
-        return JSON.parse(stale) as BoltyCandle[];
+        return JSON.parse(stale) as HagglCandle[];
       } catch {
         /* corrupt — fall through */
       }
@@ -321,7 +321,7 @@ export class TokenService {
     timeframe: string,
     aggregate: number,
     limit: number,
-  ): Promise<BoltyCandle[]> {
+  ): Promise<HagglCandle[]> {
     const url = `https://api.geckoterminal.com/api/v2/networks/base/pools/${pairAddress}/ohlcv/${timeframe}?aggregate=${aggregate}&limit=${Math.min(limit, 1000)}&currency=usd`;
     const res = await axios.get<GeckoTerminalOhlcvResponse>(url, {
       timeout: 6000,
@@ -334,7 +334,7 @@ export class TokenService {
     // needs ascending by time, so we reverse here.
     return rows
       .map(
-        ([t, o, h, l, c, v]): BoltyCandle => ({
+        ([t, o, h, l, c, v]): HagglCandle => ({
           t,
           o,
           h,
@@ -359,22 +359,22 @@ export class TokenService {
    * this endpoint aggressively without proxying every user to the
    * upstream API.
    */
-  async getBoltyTrades(): Promise<BoltyTrade[]> {
+  async getHagglTrades(): Promise<HagglTrade[]> {
     const cached = await this.redis.get(TRADES_CACHE_KEY).catch(() => null);
     if (cached) {
       try {
-        return JSON.parse(cached) as BoltyTrade[];
+        return JSON.parse(cached) as HagglTrade[];
       } catch {
         /* fall through */
       }
     }
 
-    const stats = await this.getBoltyStats();
+    const stats = await this.getHagglStats();
     if (!stats.pairAddress) return [];
 
     const trades = await this.fetchTrades(stats.pairAddress).catch((err) => {
       this.logger.warn(`GeckoTerminal trades fetch failed: ${(err as Error).message}`);
-      return [] as BoltyTrade[];
+      return [] as HagglTrade[];
     });
 
     await this.redis
@@ -383,7 +383,7 @@ export class TokenService {
     return trades;
   }
 
-  private async fetchTrades(pairAddress: string): Promise<BoltyTrade[]> {
+  private async fetchTrades(pairAddress: string): Promise<HagglTrade[]> {
     const url = `https://api.geckoterminal.com/api/v2/networks/base/pools/${pairAddress}/trades?trade_volume_in_usd_greater_than=0`;
     const res = await axios.get<GeckoTerminalTradesResponse>(url, {
       timeout: 6000,
@@ -419,7 +419,7 @@ export class TokenService {
       contract: HAGGL_CONTRACT,
       chain: HAGGL_CHAIN,
       symbol: 'HAGGL',
-      name: 'Bolty',
+      name: 'haggl',
       imageUrl: null,
       priceUsd: null,
       priceChange24h: null,

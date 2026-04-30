@@ -23,7 +23,7 @@ jobs:
           for i in 1 2 3; do
             code=$(curl -sS -o /dev/null -w "%{http_code}" \
               --max-time 30 \
-              "https://bolty-backend.onrender.com/api/v1/market/pulse?limit=1" || true)
+              "https://haggl-backend.onrender.com/api/v1/market/pulse?limit=1" || true)
             echo "Attempt $i → HTTP $code"
             if [ "$code" = "200" ]; then
               exit 0

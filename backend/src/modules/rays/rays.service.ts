@@ -135,7 +135,7 @@ export class RaysService {
         agentId,
         raysPack: pack,
         raysAmount: packConfig.rays,
-        boltyAmount: packConfig.hagglPrice.toString(),
+         hagglAmount: packConfig.hagglPrice.toString(),
         txHash,
         status: PurchaseStatus.COMPLETED,
       },

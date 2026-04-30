@@ -12,7 +12,7 @@ const ThemeContext = createContext<{
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof localStorage === 'undefined') return 'dark';
-    const stored = localStorage.getItem('bolty-theme') as Theme | null;
+    const stored = localStorage.getItem('haggl-theme') as Theme | null;
     return stored === 'light' ? 'light' : 'dark';
   });
   const [mounted, setMounted] = useState(false);
@@ -26,7 +26,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = () => {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
-    localStorage.setItem('bolty-theme', next);
+    localStorage.setItem('haggl-theme', next);
     document.documentElement.setAttribute('data-theme', next);
   };
 

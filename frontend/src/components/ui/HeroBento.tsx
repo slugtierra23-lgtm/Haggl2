@@ -147,7 +147,7 @@ function ApiAnimation() {
         style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(20, 241, 149, 0.1)' }}
       >
         <div className="text-[9px] font-mono text-zinc-500">
-          <span className="text-atlas-400">X-Agent-Key</span>: sk_bolty_xxx...
+          <span className="text-atlas-400">X-Agent-Key</span>: sk_haggl_xxx...
         </div>
       </div>
     </div>

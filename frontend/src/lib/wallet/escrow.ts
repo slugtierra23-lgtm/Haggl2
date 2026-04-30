@@ -1,5 +1,5 @@
 /**
- * BoltyEscrow smart contract interaction helpers.
+ * haggl escrow program (Solana) interaction helpers.
  *
  * The contract holds ETH in escrow until the buyer confirms delivery
  * or a dispute is resolved by the admin.

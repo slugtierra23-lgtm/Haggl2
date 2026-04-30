@@ -1325,7 +1325,7 @@ function ReposMarketPageContent() {
       await api.delete('/repos/github/cache').catch(() => {});
       const data = await api.get<GitHubRepo[]>('/repos/github');
       const raw = Array.isArray(data) ? data : [];
-      const needsReauth = raw.some((r: any) => r._bolty_reauth);
+      const needsReauth = raw.some((r: any) => r._haggl_reauth);
       if (needsReauth) {
         setGhNeedsReauth(true);
         setGhRepos([]);

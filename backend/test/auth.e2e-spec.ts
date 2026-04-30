@@ -28,7 +28,7 @@ describe('Auth (e2e)', () => {
         .expect(201)
         .expect((res: any) => {
           expect(res.body.nonce).toBeDefined();
-          expect(res.body.message).toContain('Bolty');
+          expect(res.body.message).toContain('haggl');
         });
     });
 

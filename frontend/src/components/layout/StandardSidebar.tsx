@@ -201,7 +201,7 @@ export function StandardSidebar() {
       {/* Search trigger — click or ⌘K to open the palette */}
       <button
         type="button"
-        onClick={() => window.dispatchEvent(new CustomEvent('bolty:open-command'))}
+        onClick={() => window.dispatchEvent(new CustomEvent('haggl:open-command'))}
         className="mx-3 mt-3 mb-2 flex items-center gap-2 px-[10px] py-[7px] rounded-lg text-[12.5px] transition-colors cursor-text"
         style={{
           background: 'var(--bg)',

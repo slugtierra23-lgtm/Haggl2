@@ -97,7 +97,7 @@ export class GithubFetcher {
     try {
       const headers: Record<string, string> = {
         Accept: 'application/vnd.github+json',
-        'User-Agent': 'BoltyGuard/1.0 (+https://bolty.network)',
+        'User-Agent': 'HagglGuard/1.0 (+https://haggl.tech)',
       };
       const token = process.env.GITHUB_TOKEN;
       if (token) headers.Authorization = `Bearer ${token}`;

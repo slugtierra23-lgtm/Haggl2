@@ -1,8 +1,8 @@
-# Bolty Platform - Code Standards & Guidelines
+# haggl Platform - Code Standards & Guidelines
 
 ## 🎯 Code Quality Standards
 
-This document outlines the professional code standards for the Bolty platform to ensure SaaS-grade quality.
+This document outlines the professional code standards for the haggl platform to ensure SaaS-grade quality.
 
 ---
 

@@ -1,7 +1,7 @@
 {
-  "name": "bolty-platform",
+  "name": "haggl-platform",
   "version": "1.0.0",
-  "description": "Bolty - AI Developer Platform for publishing code, deploying AI agents, and earning from your work",
+  "description": "haggl - AI agents marketplace on Solana",
   "license": "MIT",
   "private": true,
   "engines": {

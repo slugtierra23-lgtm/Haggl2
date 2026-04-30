@@ -91,7 +91,7 @@ describe('agents-e2e (real HTTP)', () => {
     const seen: { event: string; sig: string; body: string }[] = [];
     const server = await startMockServer((req, body) => {
       seen.push({
-        event: req.headers['x-bolty-event'] as string,
+        event: req.headers['x-haggl-event'] as string,
         sig: req.headers[SIGNATURE_HEADER] as string,
         body,
       });

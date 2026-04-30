@@ -106,7 +106,7 @@ export class AgentXController {
     @Query('error') error: string | undefined,
     @Res() res: Response,
   ) {
-    const fe = process.env.FRONTEND_URL || 'https://www.boltynetwork.xyz';
+    const fe = process.env.FRONTEND_URL || 'https://www.haggl.tech';
     if (error) {
       return res.redirect(302, `${fe}/profile?agent_x_error=${encodeURIComponent(error)}`);
     }

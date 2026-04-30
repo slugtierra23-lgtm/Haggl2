@@ -399,8 +399,8 @@ export class AuthService {
 
     // Generate TOTP secret
     const secret = speakeasy.generateSecret({
-      name: `Bolty (${user.email || user.id})`,
-      issuer: 'Bolty',
+      name: `haggl (${user.email || user.id})`,
+      issuer: 'haggl',
       length: 32,
     });
 
@@ -648,14 +648,14 @@ export class AuthService {
 
     if (!user) {
       // NO auto-linking by username. Previously, if an email-registered
-      // user "alice" existed on Bolty and someone signed in with GitHub
+      // user "alice" existed on haggl and someone signed in with GitHub
       // user "alice", we merged the GitHub identity into that account and
       // handed the OAuth caller a session for it — straightforward account
-      // takeover (GitHub username != proof of Bolty identity).
+      // takeover (GitHub username != proof of haggl identity).
       //
       // Policy: new githubId → always create a new account. Username
       // collisions get a suffix so the existing account is untouched.
-      // Linking an existing Bolty account to GitHub must happen via the
+      // Linking an existing haggl account to GitHub must happen via the
       // authenticated /auth/link-github flow.
       let username = githubProfile.login;
       const clash = await this.prisma.user.findUnique({ where: { username } });

@@ -16,7 +16,7 @@ const PriceSchema = z.object({
 });
 
 const CACHE_TTL = 30; // seconds
-const PRICE_CACHE_KEY = 'bolty_price';
+const PRICE_CACHE_KEY = 'haggl_price';
 const ETH_PRICE_CACHE_KEY = 'eth_usd_price';
 const HISTORY_LIMIT = 288; // 24h at 5-min intervals
 
@@ -54,7 +54,7 @@ export class ChartService {
 
       const response = await axios.get(url, {
         timeout: 5000,
-        headers: { 'User-Agent': 'Bolty-Platform/1.0' },
+        headers: { 'User-Agent': 'haggl-Platform/1.0' },
         // Limit response size to prevent memory attacks
         maxContentLength: 100 * 1024, // 100KB
       });
@@ -103,7 +103,7 @@ export class ChartService {
         'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd',
         {
           timeout: 5000,
-          headers: { 'User-Agent': 'Bolty-Platform/1.0' },
+          headers: { 'User-Agent': 'haggl-Platform/1.0' },
           maxContentLength: 10 * 1024,
         },
       );

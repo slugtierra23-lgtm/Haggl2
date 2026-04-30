@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Bolty Developer Toolkit
+ * haggl Developer Toolkit
  * Comprehensive validation and analysis tools for development
  * Usage: npx ts-node dev-toolkit.ts [command]
  */
@@ -451,11 +451,11 @@ class CodeQualityAnalyzer {
 // MAIN CLI
 // ============================================================================
 
-class BoltyDevToolkit {
+class HagglDevToolkit {
   async run(): Promise<void> {
     const command = process.argv[2] || 'all';
 
-    console.log('🚀 Bolty Developer Toolkit\n');
+    console.log('🚀 haggl Developer Toolkit\n');
 
     try {
       switch (command) {
@@ -534,4 +534,4 @@ Available commands:
 }
 
 // Run
-new BoltyDevToolkit().run().catch(console.error);
+new HagglDevToolkit().run().catch(console.error);

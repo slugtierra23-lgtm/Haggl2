@@ -7,7 +7,7 @@
 export type ProtocolKind = 'webhook' | 'mcp' | 'openai';
 
 export interface AgentInvokeInput {
-  /** Free text from the buyer / Bolty internals. */
+  /** Free text from the buyer / haggl internals. */
   prompt: string;
   /** Optional conversation id when the adapter supports multi-turn. */
   conversationId?: string;
@@ -19,7 +19,7 @@ export interface AgentInvokeInput {
 export interface AgentInvokeOutput {
   /** The reply text the buyer sees. Always present, possibly empty. */
   reply: string;
-  /** Optional structured action the agent wants Bolty to take. */
+  /** Optional structured action the agent wants haggl to take. */
   action?: { type: string; data?: unknown } | null;
   /** Round-trip latency in milliseconds, set by the adapter. */
   latencyMs: number;

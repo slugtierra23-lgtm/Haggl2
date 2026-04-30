@@ -70,7 +70,7 @@ class FakeRedis {
 }
 
 function makeService() {
-  process.env.X_REDIRECT_URI = 'https://api.boltynetwork.xyz/api/v1/social/agent-x/callback';
+  process.env.X_REDIRECT_URI = 'https://api.haggl.tech/api/v1/social/agent-x/callback';
   // Cipher util expects TOKEN_CRYPTO_KEY to be a base64 string that
   // decodes to exactly 32 bytes (AES-256). Anything else makes it
   // silently fall back to plaintext storage, which would mask bugs in
@@ -312,7 +312,7 @@ describe('AgentXService', () => {
         postsWindowStart: new Date(),
       });
       mockedAxios.post.mockResolvedValueOnce({
-        data: { data: { id: 'tweet-123', text: 'Just launched $TEST on Bolty' } },
+        data: { data: { id: 'tweet-123', text: 'Just launched $TEST on haggl' } },
       });
       const r = await svc.postLaunchTweet('L1', tokenInput);
       expect(r.posted).toBe(true);

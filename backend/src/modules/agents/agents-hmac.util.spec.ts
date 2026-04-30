@@ -8,7 +8,7 @@ describe('agents-hmac.util', () => {
     it('produces a header in t=…,v1=… format', () => {
       const headers = signRequest(BODY, SECRET, 1_700_000_000_000);
       expect(headers[SIGNATURE_HEADER]).toMatch(/^t=1700000000,v1=[a-f0-9]{64}$/);
-      expect(headers['x-bolty-timestamp']).toBe('1700000000');
+      expect(headers['x-haggl-timestamp']).toBe('1700000000');
     });
 
     it('throws on empty secret', () => {

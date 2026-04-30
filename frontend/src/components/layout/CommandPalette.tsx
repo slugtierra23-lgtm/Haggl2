@@ -182,10 +182,10 @@ export function CommandPalette() {
     // open the palette without relying on the keyboard shortcut.
     const openHandler = () => setOpen(true);
     window.addEventListener('keydown', handler);
-    window.addEventListener('bolty:open-command', openHandler);
+    window.addEventListener('haggl:open-command', openHandler);
     return () => {
       window.removeEventListener('keydown', handler);
-      window.removeEventListener('bolty:open-command', openHandler);
+      window.removeEventListener('haggl:open-command', openHandler);
     };
   }, [open]);
 

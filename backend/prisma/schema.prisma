@@ -1,4 +1,4 @@
-// Bolty Platform - Prisma Schema
+// haggl Platform - Prisma Schema
 // Database: PostgreSQL
 
 generator client {
@@ -263,12 +263,12 @@ model RepoPurchase {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  txHash    String  @unique // Base tx hash (seller payment: 93% ETH path / 97% BOLTY path)
+  txHash    String  @unique // Base tx hash (seller payment (HAGGL Solana SPL transfer))
   verified  Boolean @default(false)
   amountWei String  @default("0") // stored as string to avoid precision loss
 
-  // Platform commission on Base: 7% for ETH payments, 3% for BOLTY payments.
-  platformFeeTxHash String? // Bolty commission tx hash
+  // Platform commission: 3% for HAGGL payments.
+  platformFeeTxHash String? // haggl commission tx hash
   platformFeeWei    String? // commission amount in wei
 
   // Consent document (EIP-191 signed)
@@ -295,7 +295,7 @@ model MarketPurchase {
   amountWei String  @default("0")
   verified  Boolean @default(false)
 
-  // Platform commission on Base: 7% for ETH payments, 3% for BOLTY payments.
+  // Platform commission: 3% for HAGGL payments.
   platformFeeTxHash String?
   platformFeeWei    String?
 
@@ -516,7 +516,7 @@ model MarketListing {
   fileSize         Int? // bytes
   fileMimeType     String? // MIME type
   agentEndpoint    String? // Webhook URL — seller's bot receives negotiation messages here
-  // Protocol the agent endpoint speaks. One of: "webhook" (Bolty JSON
+  // Protocol the agent endpoint speaks. One of: "webhook" (haggl JSON
   // contract), "mcp" (Model Context Protocol JSON-RPC), "openai"
   // (/v1/chat/completions). Defaults to "webhook" so existing rows
   // are correctly characterised.
@@ -715,7 +715,7 @@ model AgentApiKey {
   @@map("agent_api_keys")
 }
 
-// ─── BoltyGuard ───────────────────────────────────────────────────────────────
+// ─── HagglGuard ───────────────────────────────────────────────────────────────
 //
 // Security scan results for marketplace listings. One row per scan; a listing
 // can have many over time as the seller updates the code. The latest row is
@@ -1290,7 +1290,7 @@ model RaysPurchase {
 
   raysPack    RaysPack // 10, 25, 50, 120, 250
   raysAmount  Int // Actual rays purchased
-  boltyAmount Decimal // Amount paid in BOLTY
+   hagglAmount Decimal // Amount paid in HAGGL
 
   txHash String? // Blockchain transaction hash (optional, for tracking)
   status PurchaseStatus @default(COMPLETED)

@@ -158,7 +158,7 @@ export class AgentHealthService {
         {
           timeout: this.PING_TIMEOUT_MS,
           maxRedirects: 0,
-          headers: { 'Content-Type': 'application/json', 'X-Bolty-Event': 'health_check' },
+          headers: { 'Content-Type': 'application/json', 'X-Haggl-Event': 'health_check' },
           maxBodyLength: 4096,
           maxContentLength: 4096,
           validateStatus: (s) => s >= 200 && s < 500,

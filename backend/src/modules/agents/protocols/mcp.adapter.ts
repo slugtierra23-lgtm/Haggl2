@@ -21,7 +21,7 @@ import {
  *
  *   - `initialize` for the health check (lightweight handshake every
  *     conformant MCP server answers).
- *   - `prompts/get` (or `tools/call` if a `bolty_invoke` tool is
+ *   - `prompts/get` (or `tools/call` if a `haggl_invoke` tool is
  *     declared) for the invoke path. To keep v1 surgical we map a
  *     buyer prompt onto the tool call `{ name: 'invoke', arguments:
  *     { prompt } }` — sellers wire that up server-side.
@@ -74,7 +74,7 @@ export class McpAdapter implements IProtocolAdapter {
       params: {
         protocolVersion: McpAdapter.PROTOCOL_VERSION,
         capabilities: {},
-        clientInfo: { name: 'bolty', version: '1.0' },
+        clientInfo: { name: 'haggl', version: '1.0' },
       },
     });
 
@@ -187,8 +187,8 @@ export class McpAdapter implements IProtocolAdapter {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      'X-Bolty-Event': event,
-      'User-Agent': 'BoltyMcpClient/1.0',
+      'X-Haggl-Event': event,
+      'User-Agent': 'HagglMcpClient/1.0',
     };
     if (secret) {
       Object.assign(headers, signRequest(body, secret));

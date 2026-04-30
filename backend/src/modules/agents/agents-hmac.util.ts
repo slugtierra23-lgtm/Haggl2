@@ -3,12 +3,12 @@ import * as crypto from 'crypto';
 /**
  * HMAC signing for outbound agent webhooks.
  *
- * Every request Bolty sends to a seller's agent endpoint carries a
+ * Every request haggl sends to a seller's agent endpoint carries a
  * signature header so the agent can prove the call really came from
- * Bolty (and not from anyone who guessed the URL). Format mirrors the
+ * haggl (and not from anyone who guessed the URL). Format mirrors the
  * Stripe / GitHub webhook style for familiarity:
  *
- *   X-Bolty-Signature: t=<unix_ts>,v1=<hex_hmac_sha256>
+ *   X-Haggl-Signature: t=<unix_ts>,v1=<hex_hmac_sha256>
  *
  *   v1 = HMAC-SHA256(secret, `${t}.${rawBody}`)
  *
@@ -23,16 +23,16 @@ import * as crypto from 'crypto';
 
 /** Reject signatures whose timestamp is more than this many seconds in
  *  the past or future. 5 min covers reasonable clock skew between
- *  Bolty + the agent host while still defeating long replay windows. */
+ *   haggl + the agent host while still defeating long replay windows. */
 export const MAX_SKEW_SEC = 300;
 
 /** Header name agents look for in the incoming request. Lower-cased
  *  in tests because Node's `req.headers` lowercases automatically. */
-export const SIGNATURE_HEADER = 'x-bolty-signature';
+export const SIGNATURE_HEADER = 'x-haggl-signature';
 
 export interface SignedHeaders {
   [SIGNATURE_HEADER]: string;
-  'x-bolty-timestamp': string;
+  'x-haggl-timestamp': string;
 }
 
 /**
@@ -54,7 +54,7 @@ export function signRequest(
   const sig = crypto.createHmac('sha256', secret).update(`${ts}.${body}`).digest('hex');
   return {
     [SIGNATURE_HEADER]: `t=${ts},v1=${sig}`,
-    'x-bolty-timestamp': ts,
+    'x-haggl-timestamp': ts,
   };
 }
 
@@ -64,8 +64,8 @@ export function signRequest(
  *
  * Used by the test endpoint to round-trip its own signature (sanity
  * check for the docs examples), and exported so anyone building a
- * Node.js agent on top of Bolty can `import { verifyRequest } from
- * '@boltynetwork/agent-sdk'` and reuse the exact same logic.
+ * Node.js agent on top of haggl can `import { verifyRequest } from
+ * '@haggl/agent-sdk'` and reuse the exact same logic.
  */
 export function verifyRequest(
   body: string,

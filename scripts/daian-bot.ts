@@ -1,5 +1,5 @@
 /**
- * Daian bot — standalone chat bot for the Bolty global chat.
+ * Daian bot — standalone chat bot for the haggl global chat.
  *
  * Registers (or logs in) as a regular user through the public API, then
  * connects to the /chat WebSocket and posts a random message every N seconds.
@@ -9,7 +9,7 @@
  *   BOT_API_URL        default http://localhost:3001/api/v1
  *   BOT_WS_URL         default http://localhost:3001
  *   BOT_USERNAME       default daian
- *   BOT_EMAIL          default daian@bolty.local
+ *   BOT_EMAIL          default daian@haggl.local
  *   BOT_PASSWORD       default DaianBot!2026
  *   BOT_INTERVAL_MS    default 45000  (min 11000 — gateway rate limits 10/10s)
  *   BOT_JITTER_MS      default 15000  (adds up to +N random ms per tick)
@@ -24,7 +24,7 @@ import { io, Socket } from 'socket.io-client';
 const API_URL = process.env.BOT_API_URL ?? 'http://localhost:3001/api/v1';
 const WS_URL = process.env.BOT_WS_URL ?? 'http://localhost:3001';
 const USERNAME = process.env.BOT_USERNAME ?? 'daian';
-const EMAIL = process.env.BOT_EMAIL ?? 'daian@bolty.local';
+const EMAIL = process.env.BOT_EMAIL ?? 'daian@haggl.local';
 const PASSWORD = process.env.BOT_PASSWORD ?? 'DaianBot!2026';
 const INTERVAL_MS = Math.max(11_000, Number(process.env.BOT_INTERVAL_MS ?? 45_000));
 const JITTER_MS = Math.max(0, Number(process.env.BOT_JITTER_MS ?? 15_000));

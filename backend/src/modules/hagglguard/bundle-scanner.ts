@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as yauzl from 'yauzl';
 
-import type { Finding } from './boltyguard.service';
-import { BoltyGuardService } from './boltyguard.service';
+import type { Finding } from './hagglguard.service';
+import { HagglGuardService } from './hagglguard.service';
 
 /**
- * Hardened ZIP bundle scanner. Used by `/api/boltyguard/scan` when
+ * Hardened ZIP bundle scanner. Used by `/api/hagglguard/scan` when
  * the user uploads a zip instead of pasting code. Treats the zip as
  * adversarial and applies strict caps to neutralise:
  *
@@ -55,7 +55,7 @@ export class BundleScanner {
     'txt',
   ]);
 
-  constructor(private readonly guard: BoltyGuardService) {}
+  constructor(private readonly guard: HagglGuardService) {}
 
   /**
    * Scan a zip buffer. Returns merged findings + per-file score

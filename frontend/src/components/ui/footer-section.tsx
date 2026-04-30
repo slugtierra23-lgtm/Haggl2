@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-import { BoltyLogoSVG } from '@/components/ui/BoltyLogo';
+import { HagglLogoSVG } from '@/components/ui/HagglLogo';
 
 interface FooterLink {
   title: string;
@@ -59,7 +59,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2.5 mb-3">
-              <BoltyLogoSVG size={24} />
+              <HagglLogoSVG size={24} />
               <span
                 className="text-sm font-light tracking-tight"
                 style={{

@@ -49,16 +49,16 @@ const PRISMA_SEVERITY: Record<Severity, ScanSeverity> = {
 };
 
 /**
- * BoltyGuard — security scanner for marketplace listings + a public API.
+ * HagglGuard — security scanner for marketplace listings + a public API.
  *
  * Today the scanner is LLM-only (Claude). The interface is shaped so
  * we can layer Semgrep on top in a follow-up: each pass produces a
- * `Finding[]`, BoltyGuard merges them, computes a 0–100 score, persists
+ * `Finding[]`, HagglGuard merges them, computes a 0–100 score, persists
  * the report. The score is what gates AI-launch + drives the badge.
  */
 @Injectable()
-export class BoltyGuardService implements OnApplicationBootstrap {
-  private readonly logger = new Logger(BoltyGuardService.name);
+export class HagglGuardService implements OnApplicationBootstrap {
+  private readonly logger = new Logger(HagglGuardService.name);
   private readonly anthropic: Anthropic;
 
   constructor(
@@ -73,7 +73,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
 
   /**
    * One-shot backfill on app startup. Gated behind the
-   * BOLTYGUARD_BACKFILL_ON_BOOT env so it never runs by accident.
+   * HAGGLGUARD_BACKFILL_ON_BOOT env so it never runs by accident.
    *
    * After the deploy completes once with the flag set, unset the
    * env var so subsequent boots skip the work. Backfill walks every
@@ -82,7 +82,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
    * listing so one bad row can't block the rest.
    */
   async onApplicationBootstrap(): Promise<void> {
-    if (this.config.get<string>('BOLTYGUARD_BACKFILL_ON_BOOT') !== '1') return;
+    if (this.config.get<string>('HAGGLGUARD_BACKFILL_ON_BOOT') !== '1') return;
     // Defer so the Nest module graph finishes wiring before we hit
     // the DB / Anthropic. Keeps boot quick; backfill runs in bg.
     setTimeout(() => {
@@ -93,7 +93,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
   }
 
   private async runBootBackfill(): Promise<void> {
-    this.logger.log('[backfill] starting BOLTYGUARD_BACKFILL_ON_BOOT pass');
+    this.logger.log('[backfill] starting HAGGLGUARD_BACKFILL_ON_BOOT pass');
     const listings = await this.prisma.marketListing.findMany({
       where: {
         type: { in: ['AI_AGENT', 'BOT'] },
@@ -128,7 +128,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
 
     this.logger.log(
       `[backfill] done. scanned=${scanned} failed=${failed}. ` +
-        "Unset BOLTYGUARD_BACKFILL_ON_BOOT in Render so it doesn't re-run.",
+        "Unset HAGGLGUARD_BACKFILL_ON_BOOT in Render so it doesn't re-run.",
     );
   }
 
@@ -249,7 +249,7 @@ export class BoltyGuardService implements OnApplicationBootstrap {
 - Secret exposure (API keys, env vars, private keys)`
       : 'This is a general script / repo. Focus on OWASP Top 10 + supply-chain risks.';
 
-    const prompt = `You are BoltyGuard, an application-security analyst.
+    const prompt = `You are HagglGuard, an application-security analyst.
 Audit the following code and return a strict JSON object — nothing else.
 
 File: ${opts.fileName ?? 'unknown'}

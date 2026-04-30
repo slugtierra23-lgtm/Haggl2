@@ -21,15 +21,15 @@ import { Public } from '../../common/decorators/public.decorator';
 import { SkipCsrf } from '../../common/guards/csrf.guard';
 import { RedisService } from '../../common/redis/redis.service';
 
-import { BoltyGuardService } from './boltyguard.service';
+import { HagglGuardService } from './hagglguard.service';
 import { BundleScanner } from './bundle-scanner';
 import { GithubFetcher } from './github-fetcher';
 import { FREE_TIER_DAILY_QUOTA, HolderGateService } from './holder-gate.service';
 
-@Controller('boltyguard')
-export class BoltyGuardController {
+@Controller('hagglguard')
+export class HagglGuardController {
   constructor(
-    private readonly guard: BoltyGuardService,
+    private readonly guard: HagglGuardService,
     private readonly holderGate: HolderGateService,
     private readonly redis: RedisService,
     private readonly bundle: BundleScanner,
@@ -214,7 +214,7 @@ export class BoltyGuardController {
   ) {
     const spec = this.github.parseRepoSpec(String(body?.url || ''));
     if (!spec) {
-      throw new BadRequestException('Provide a github.com URL or owner/repo (e.g. ar00ii/bolty).');
+      throw new BadRequestException('Provide a github.com URL or owner/repo (e.g. ar00ii/haggl).');
     }
     const gate = await this.holderGate.isHolder(userId);
     if (!gate.holder) {
@@ -247,7 +247,7 @@ export class BoltyGuardController {
    *  of remaining scans AFTER this call; -1 means already exhausted. */
   private async consumeFreeQuota(userId: string | null): Promise<number> {
     const bucket = userId ?? `anon-${new Date().toISOString().slice(0, 10)}`;
-    const key = `boltyguard:freequota:${bucket}:${new Date().toISOString().slice(0, 10)}`;
+    const key = `hagglguard:freequota:${bucket}:${new Date().toISOString().slice(0, 10)}`;
     const used = await this.redis.incr(key);
     if (used === 1) {
       // Expire at end of day. 25h is fine — generous TTL avoids race.

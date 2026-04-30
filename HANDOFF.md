@@ -1,4 +1,4 @@
-# Handoff — Bolty launch sprint
+# Handoff — haggl launch sprint
 
 **Launch: mañana.** Dos agentes Claude trabajan en paralelo sobre `main`. Lee esto entero antes de empezar y haz `git pull --rebase origin main` al arranque y antes de cada commit.
 

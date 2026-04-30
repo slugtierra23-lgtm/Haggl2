@@ -1,17 +1,17 @@
 /**
  * One-shot DB cleanup: remove every listing / repository / tag whose
- * title, description, or tag includes "bolty" (the pre-rebrand brand
+ * title, description, or tag includes "haggl" (the pre-rebrand brand
  * name). Idempotent — safe to re-run.
  *
  * Usage (locally):
  *   cd backend
- *   npx ts-node scripts/wipe-bolty-listings.ts
+ *   npx ts-node scripts/wipe-haggl-listings-legacy.ts
  *
  * Usage (Render shell):
- *   render shell <service> -- npx ts-node scripts/wipe-bolty-listings.ts
+ *   render shell <service> -- npx ts-node scripts/wipe-haggl-listings-legacy.ts
  *
  * Outputs counts of rows removed per table. Does not touch the User
- * table — usernames containing "bolty" stay (those are people, not
+ * table — usernames containing "haggl" stay (those are people, not
  * brand artifacts).
  */
 import { PrismaClient, Prisma } from '@prisma/client';
@@ -20,12 +20,12 @@ async function main(): Promise<void> {
   const prisma = new PrismaClient();
   try {
     // ── Marketplace listings ─────────────────────────────────────────
-    // Match title OR description OR tags array containing "bolty".
+    // Match title OR description OR tags array containing "haggl".
     const listingMatch: Prisma.MarketListingWhereInput = {
       OR: [
-        { title: { contains: 'bolty', mode: 'insensitive' } },
-        { description: { contains: 'bolty', mode: 'insensitive' } },
-        { tags: { has: 'bolty' } },
+        { title: { contains: 'haggl', mode: 'insensitive' } },
+        { description: { contains: 'haggl', mode: 'insensitive' } },
+        { tags: { has: 'haggl' } },
       ],
     };
     const listingsToWipe = await prisma.marketListing.findMany({
@@ -45,10 +45,10 @@ async function main(): Promise<void> {
     // ── Repositories ─────────────────────────────────────────────────
     const repoMatch: Prisma.RepositoryWhereInput = {
       OR: [
-        { name: { contains: 'bolty', mode: 'insensitive' } },
-        { fullName: { contains: 'bolty', mode: 'insensitive' } },
-        { description: { contains: 'bolty', mode: 'insensitive' } },
-        { topics: { has: 'bolty' } },
+        { name: { contains: 'haggl', mode: 'insensitive' } },
+        { fullName: { contains: 'haggl', mode: 'insensitive' } },
+        { description: { contains: 'haggl', mode: 'insensitive' } },
+        { topics: { has: 'haggl' } },
       ],
     };
     const reposToWipe = await prisma.repository.findMany({
@@ -67,7 +67,7 @@ async function main(): Promise<void> {
 
     if (listingsToWipe.length === 0 && reposToWipe.length === 0) {
       // eslint-disable-next-line no-console
-      console.log('[wipe] no bolty rows found — DB already clean.');
+      console.log('[wipe] no  haggl rows found — DB already clean.');
     } else {
       // eslint-disable-next-line no-console
       console.log(

@@ -1110,11 +1110,11 @@ function AgentsPageContent() {
       const rows = all.filter((r) => {
         // Drop REPO listings — they belong on /market/repos.
         if (r.type === 'REPO') return false;
-        // Drop legacy "bolty"-named listings (seed leftovers, etc).
+        // Drop legacy "haggl"-named listings (seed leftovers, etc).
         const title = (r.title || '').toLowerCase();
         const username = (r.seller?.username || '').toLowerCase();
         const tags = (r.tags || []).map((t) => t.toLowerCase());
-        if (title.includes('bolty') || username.includes('bolty') || tags.includes('bolty')) {
+        if (title.includes('haggl') || username.includes('haggl') || tags.includes('haggl')) {
           return false;
         }
         return true;

@@ -30,7 +30,7 @@ export interface HagglTokenConfig {
  */
 export function getHagglTokenConfig(): HagglTokenConfig | null {
   const address = process.env.NEXT_PUBLIC_HAGGL_TOKEN_CONTRACT;
-  const usdPriceRaw = process.env.NEXT_PUBLIC_BOLTY_USD_PRICE;
+  const usdPriceRaw = process.env.NEXT_PUBLIC_HAGGL_USD_PRICE;
   if (!address || !/^0x[0-9a-fA-F]{40}$/.test(address)) return null;
   const usdPrice = usdPriceRaw ? Number(usdPriceRaw) : NaN;
   if (!Number.isFinite(usdPrice) || usdPrice <= 0) return null;
@@ -47,7 +47,7 @@ export function getHagglTokenConfig(): HagglTokenConfig | null {
 //
 // When the NEXT_PUBLIC_* env vars aren't set on the deploy (the
 // common case — we'd rather single-source the contract on Render),
-// fetch the live config from the backend's /token/bolty endpoint.
+// fetch the live config from the backend's /token/haggl endpoint.
 // That endpoint already returns the deployed contract address and
 // the live DexScreener priceUsd, both of which we need to quote
 // purchases in ATLAS units.
@@ -56,7 +56,7 @@ export function getHagglTokenConfig(): HagglTokenConfig | null {
 // the lifetime of the page, even if multiple callsites await
 // concurrently (modal opens fire 1–2 calls per purchase flow).
 
-interface BoltyStatsResponse {
+interface HagglStatsResponse {
   contract?: string | null;
   priceUsd?: number | null;
 }
@@ -67,7 +67,7 @@ let inflight: Promise<HagglTokenConfig | null> | null = null;
 
 async function fetchRemoteConfig(): Promise<HagglTokenConfig | null> {
   try {
-    const stats = await api.get<BoltyStatsResponse>('/token/bolty');
+    const stats = await api.get<HagglStatsResponse>('/token/haggl');
     const address = stats?.contract ?? null;
     const priceUsd = typeof stats?.priceUsd === 'number' ? stats.priceUsd : null;
     if (!address || !/^0x[0-9a-fA-F]{40}$/.test(address)) return null;
@@ -81,7 +81,7 @@ async function fetchRemoteConfig(): Promise<HagglTokenConfig | null> {
 /**
  * Resolve the ATLAS token config. Order of precedence:
  *   1. NEXT_PUBLIC_* env vars (sync, no network)
- *   2. Backend /token/bolty endpoint (cached for 60s in-process)
+ *   2. Backend /token/haggl endpoint (cached for 60s in-process)
  *
  * Returns null when neither source has a valid contract + price —
  * callers must hide the ATLAS payment option in that case so the

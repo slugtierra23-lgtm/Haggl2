@@ -490,7 +490,7 @@ import { AnimatedHeading, WordReveal, CharReveal } from '@/components/ui/Animate
   gradientFrom="#a78bfa" 
   gradientTo="#06b6d4"
 >
-  Welcome to Bolty
+  Welcome to haggl
 </AnimatedHeading>
 
 // Word-by-word reveal

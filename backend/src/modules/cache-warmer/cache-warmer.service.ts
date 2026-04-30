@@ -87,8 +87,8 @@ export class CacheWarmerService implements OnModuleInit {
         name: 'repos:list:recent',
         fn: () => this.repos.listRepositories({ page: 1, sortBy: 'recent' }),
       },
-      // /bolty token page header stats
-      { name: 'token:bolty:stats', fn: () => this.token.getBoltyStats() },
+      // /haggl token page header stats
+      { name: 'token:haggl:stats', fn: () => this.token.getHagglStats() },
     ];
 
     let ok = 0;

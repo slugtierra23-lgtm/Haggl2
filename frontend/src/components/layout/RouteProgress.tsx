@@ -33,11 +33,11 @@ export function RouteProgress() {
   useEffect(() => {
     const onStart = () => start();
     const onDone = () => finish();
-    window.addEventListener('bolty:progress-start', onStart);
-    window.addEventListener('bolty:progress-done', onDone);
+    window.addEventListener('haggl:progress-start', onStart);
+    window.addEventListener('haggl:progress-done', onDone);
     return () => {
-      window.removeEventListener('bolty:progress-start', onStart);
-      window.removeEventListener('bolty:progress-done', onDone);
+      window.removeEventListener('haggl:progress-start', onStart);
+      window.removeEventListener('haggl:progress-done', onDone);
     };
   }, []);
 

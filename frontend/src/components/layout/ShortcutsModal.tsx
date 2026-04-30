@@ -84,10 +84,10 @@ export function ShortcutsModal() {
     // PowerNavbar so mobile / mouse-only users can find the modal too.
     const openHandler = () => setOpen(true);
     window.addEventListener('keydown', handler);
-    window.addEventListener('bolty:open-shortcuts', openHandler);
+    window.addEventListener('haggl:open-shortcuts', openHandler);
     return () => {
       window.removeEventListener('keydown', handler);
-      window.removeEventListener('bolty:open-shortcuts', openHandler);
+      window.removeEventListener('haggl:open-shortcuts', openHandler);
     };
   }, [open]);
 

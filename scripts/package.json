@@ -1,7 +1,7 @@
 {
-  "name": "bolty-scripts",
+  "name": "haggl-scripts",
   "version": "1.0.0",
-  "description": "Standalone utility scripts for Bolty (bots, data backfills, etc.)",
+  "description": "Standalone utility scripts for haggl (bots, data backfills, etc.)",
   "private": true,
   "scripts": {
     "daian": "ts-node --transpile-only daian-bot.ts",

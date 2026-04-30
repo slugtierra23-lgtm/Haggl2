@@ -26,8 +26,8 @@ import { AgentXService } from './agent-x.service';
  * The agent contract is intentionally narrow:
  *
  *   POST <listing.agentEndpoint>
- *   X-Bolty-Event: x_decide_post
- *   X-Bolty-Signature: t=…,v1=…
+ *   X-Haggl-Event: x_decide_post
+ *   X-Haggl-Signature: t=…,v1=…
  *   { tokenAddress?, symbol?, name?, screenName, lastPostedAt? }
  *
  *   → { shouldTweet: boolean, text?: string, reason?: string }
@@ -37,7 +37,7 @@ import { AgentXService } from './agent-x.service';
  * on) or as POSTED immediately (gate off → cron tweets right away
  * via {@link AgentXService.postScheduledPost}).
  *
- * Mentions follow the same shape, with `X-Bolty-Event: x_decide_mention`
+ * Mentions follow the same shape, with `X-Haggl-Event: x_decide_mention`
  * and an `inReplyTo` payload. Each mention is queued as a separate row
  * with `triggerType = MENTION_REPLY` so the queue UI is uniform.
  *
@@ -368,12 +368,12 @@ export class AgentXAutonomousService {
     const secret = process.env.AGENT_HMAC_SECRET || '';
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      'X-Bolty-Event': String(body.event),
+      'X-Haggl-Event': String(body.event),
     };
     if (secret) {
       const signed = signRequest(raw, secret);
-      headers['X-Bolty-Signature'] = signed['x-bolty-signature'];
-      headers['X-Bolty-Timestamp'] = signed['x-bolty-timestamp'];
+      headers['X-Haggl-Signature'] = signed['x-haggl-signature'];
+      headers['X-Haggl-Timestamp'] = signed['x-haggl-timestamp'];
     }
 
     let res;

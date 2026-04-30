@@ -1,8 +1,8 @@
 {
-  "name": "bolty-backend",
+  "name": "haggl-backend",
   "version": "1.0.0",
-  "description": "Bolty Platform Backend - NestJS",
-  "author": "Bolty Team",
+  "description": "haggl Platform Backend - NestJS",
+  "author": "haggl Team",
   "private": true,
   "license": "MIT",
   "scripts": {

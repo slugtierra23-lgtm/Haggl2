@@ -33,7 +33,7 @@ export class RaysController {
       packs: packs.map((p) => ({
         pack: p.pack,
         rays: p.rays,
-        boltyPrice: p.boltyPrice,
+         hagglPrice: p.hagglPrice,
       })),
     };
   }
@@ -75,7 +75,7 @@ export class RaysController {
         id: purchase.id,
         raysPack: purchase.raysPack,
         raysAmount: purchase.raysAmount,
-        boltyAmount: purchase.boltyAmount,
+         hagglAmount: purchase.hagglAmount,
         txHash: purchase.txHash,
       },
       agentRays: {

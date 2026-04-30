@@ -1,7 +1,7 @@
 /**
  * One-shot script: flip the Flaunch RevenueManager's protocol fee
  * to 0% on Base mainnet, so the on-chain split actually matches
- * the "Bolty takes 0%" promise the UI now shows.
+ * the "haggl takes 0%" promise the UI now shows.
  *
  * Usage (from backend/):
  *

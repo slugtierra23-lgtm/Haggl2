@@ -46,10 +46,10 @@ export function PaymentConsentModal({
   const escrow = isEscrowEnabled();
 
   const ethTotal = useMemo(() => grossUsdForBase(baseUsd, 'SOL'), [baseUsd]);
-  const boltyTotal = useMemo(() => grossUsdForBase(baseUsd, 'ATLAS'), [baseUsd]);
-  const savingsUsd = ethTotal - boltyTotal;
+  const  hagglTotal = useMemo(() => grossUsdForBase(baseUsd, 'ATLAS'), [baseUsd]);
+  const savingsUsd = ethTotal -  hagglTotal;
 
-  const grossUsd = method === 'ATLAS' ? boltyTotal : ethTotal;
+  const grossUsd = method === 'ATLAS' ?  hagglTotal : ethTotal;
   const platformFeeUsd = useMemo(() => feeUsdForBase(baseUsd, method), [baseUsd, method]);
   const feePct = method === 'SOL' ? '7%' : '3%';
   const currency = method === 'SOL' ? 'SOL' : 'ATLAS';
@@ -215,7 +215,7 @@ export function PaymentConsentModal({
                   active={method === 'ATLAS'}
                   onClick={() => setMethod('ATLAS')}
                   title="ATLAS"
-                  subtitle={`3% fee · you pay $${fmtUsd(boltyTotal)}`}
+                  subtitle={`3% fee · you pay $${fmtUsd(hagglTotal)}`}
                   accent="#14F195"
                   badge={savingsUsd > 0 ? `Save $${fmtUsd(savingsUsd)}` : undefined}
                   highlighted
