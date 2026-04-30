@@ -5,7 +5,7 @@ RUN apk add --no-cache openssl
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --only=production && npm ci
+RUN npm ci --legacy-peer-deps --omit=dev && npm ci --legacy-peer-deps
 
 COPY . .
 RUN rm -f tsconfig.tsbuildinfo src/tsconfig.tsbuildinfo
