@@ -34,7 +34,7 @@ export class EmailService {
 
   constructor(private readonly _config: ConfigService) {
     const apiKey = this._config.get<string>('RESEND_API_KEY', '');
-    this.from = this._config.get<string>('EMAIL_FROM', 'haggl <noreply.haggl.tech>');
+    this.from = this._config.get<string>('EMAIL_FROM', 'haggl <noreply@haggl.tech>');
     this.appUrl = this._config.get<string>('APP_URL', 'https://haggl.tech');
     this.logoUrl = `${this.appUrl}/haggl-icon.png`;
 
