@@ -18,13 +18,13 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install backend dependencies
-        run: cd backend && npm ci
+        run: cd backend && npm ci --legacy-peer-deps
 
       - name: Install frontend dependencies
-        run: cd frontend && npm ci
+        run: cd frontend && npm ci --legacy-peer-deps
 
       # ESLint is reported but not gated on for now — frontend has a
       # backlog of `any`/unused-import warnings the cleanup of which is
@@ -49,13 +49,13 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install backend dependencies
-        run: cd backend && npm ci
+        run: cd backend && npm ci --legacy-peer-deps
 
       - name: Install frontend dependencies
-        run: cd frontend && npm ci
+        run: cd frontend && npm ci --legacy-peer-deps
 
       - name: Run tests
         run: npm run test:cov || true
@@ -82,13 +82,13 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install backend dependencies
-        run: cd backend && npm ci
+        run: cd backend && npm ci --legacy-peer-deps
 
       - name: Install frontend dependencies
-        run: cd frontend && npm ci
+        run: cd frontend && npm ci --legacy-peer-deps
 
       - name: npm audit (root)
         run: npm audit --audit-level=moderate || true
@@ -111,13 +111,13 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Install backend dependencies
-        run: cd backend && npm ci
+        run: cd backend && npm ci --legacy-peer-deps
 
       - name: Install frontend dependencies
-        run: cd frontend && npm ci
+        run: cd frontend && npm ci --legacy-peer-deps
 
       - name: Build backend
         run: npm run build:backend
