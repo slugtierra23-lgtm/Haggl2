@@ -113,10 +113,10 @@ export function isMetaMaskInstalled(): boolean {
 }
 
 /**
- * Phantom — primarily a Solana wallet, but ships an EVM provider on
- * `window.phantom.ethereum` (and can also coexist on `window.ethereum`
- * via EIP-5749). We grab the dedicated namespaced one when available
- * so the choice is explicit.
+ * Phantom — its EVM provider is published on `window.phantom.ethereum`
+ * (and can also coexist on `window.ethereum` via EIP-5749). We grab the
+ * dedicated namespaced one when available so the choice is explicit.
+ * On haggl we use Phantom in EVM mode to sign Base transactions.
  */
 export function getPhantomProvider(): EthereumProvider | null {
   if (typeof window === 'undefined') return null;

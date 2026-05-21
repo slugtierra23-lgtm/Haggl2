@@ -170,7 +170,7 @@ img {
   --text-secondary: #c5c9d1;
   --text-muted: #8b92a0;
 
-  /* ── Brand: Solana green (#14F195) — Atlas runs on Solana, brand is the chain ── */
+  /* ── Brand: green accent (#14F195) — kept from legacy theme; haggl runs on Base ── */
   --brand: #14f195;
   --brand-hover: #6ee7b7;
   --brand-active: #00c853;
@@ -240,7 +240,7 @@ img {
   --text: #111827;
   --text-secondary: #4b5563;
   --text-muted: #6b7280;
-  /* Solana green darkened for AA contrast on white surfaces. */
+  /* Brand green darkened for AA contrast on white surfaces. */
   --brand: #00a046;
   --brand-dim: rgba(0, 160, 70, 0.08);
   --brand-hover: #00c853;
@@ -449,7 +449,7 @@ textarea {
     border-radius: 12px;
   }
 
-  /* Primary — solid Solana green, black ink. The "do this" button. */
+  /* Primary — solid brand green, black ink. The "do this" button. */
   .a-btn-primary {
     background: var(--brand);
     color: #042417;

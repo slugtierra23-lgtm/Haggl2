@@ -469,7 +469,7 @@ const SECTIONS: DocSection[] = [
     group: 'Technical',
     title: 'Technologies we use',
     icon: Layers,
-    keywords: ['stack', 'tech', 'tools', 'framework', 'next.js', 'solana'],
+    keywords: ['stack', 'tech', 'tools', 'framework', 'next.js', 'base', 'ethereum'],
     body: (
       <>
         <KV>

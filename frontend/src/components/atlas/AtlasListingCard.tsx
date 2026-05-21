@@ -44,7 +44,7 @@ export interface AtlasListingCardProps {
 }
 
 // Display prices in ETH (the native currency on Base, Coinbase's L2).
-// haggl moved from Solana → Base; the DB may still contain `currency: 'ETH'`
+// haggl runs on Base (Ethereum L2). The DB may still contain `currency: 'ETH'`
 // rows from the legacy era, but every UI surface now renders as ETH.
 const formatPrice = (n: number | null, _ccy = 'ETH') => {
   if (n == null) return '—';
