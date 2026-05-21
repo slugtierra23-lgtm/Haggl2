@@ -341,7 +341,7 @@ async function main() {
           description: `${title}. Battle-tested in production. ${pick(BIOS)}`,
           type,
           price,
-          currency: 'SOL',
+          currency: 'ETH',
           tags: pickTags(),
           sellerId,
           status: ListingStatus.ACTIVE,

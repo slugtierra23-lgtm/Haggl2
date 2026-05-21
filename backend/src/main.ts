@@ -71,6 +71,15 @@ async function bootstrap(): Promise<void> {
         },
       },
       crossOriginEmbedderPolicy: false,
+      // CORP cross-origin so the frontend (haggl.tech) can embed assets
+      // and JSON responses from this API (api.haggl.tech). Defaults to
+      // same-origin in Helmet 6+, which blocks <img>/<script> loads
+      // from another origin even when they're served with permissive
+      // CORS — see the avatar 404 ERR_BLOCKED_BY_RESPONSE.NotSameOrigin
+      // issue. cross-origin is safe here because all sensitive endpoints
+      // are JWT-gated; public assets (avatars, etc.) are intentionally
+      // shareable.
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
     }),
   );
 
