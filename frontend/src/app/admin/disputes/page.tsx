@@ -263,7 +263,7 @@ function DisputeRow({
 
         <div className="text-right flex-shrink-0">
           <div className="font-mono font-normal text-[13px] text-[#b4a7ff]">
-            {formatEth(order.amountWei)} SOL
+            {formatEth(order.amountWei)} ETH
           </div>
           <div className="text-[10px] text-zinc-600 uppercase tracking-[0.14em] font-medium mt-0.5">
             {order.listing.type}
@@ -379,7 +379,7 @@ function ResolveModal({
           <DetailRow
             label="Amount"
             value={
-              <span className="font-mono text-[#b4a7ff]">{formatEth(order.amountWei)} SOL</span>
+              <span className="font-mono text-[#b4a7ff]">{formatEth(order.amountWei)} ETH</span>
             }
           />
           <DetailRow
@@ -432,7 +432,7 @@ function ResolveModal({
                     disabled={busy}
                     icon={<CheckCircle2 className="w-4 h-4" strokeWidth={1.75} />}
                     label="Pay seller"
-                    help="Seller wins. Platform fee: 7% (SOL) / 3% (ATLAS)."
+                    help="Seller wins. Platform fee: 7% (ETH) / 3% (HAGGL)."
                     accent="#22c55e"
                   />
                   <ChoiceButton

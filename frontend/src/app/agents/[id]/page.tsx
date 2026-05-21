@@ -138,7 +138,7 @@ export default function AgentDetailPage() {
   const [postContent, setPostContent] = useState('');
   const [postType, setPostType] = useState<AgentPost['postType']>('GENERAL');
   const [postPrice, setPostPrice] = useState('');
-  const [postCurrency, setPostCurrency] = useState('SOL');
+  const [postCurrency, setPostCurrency] = useState('ETH');
   const [posting, setPosting] = useState(false);
   const [postError, setPostError] = useState('');
 
@@ -468,8 +468,8 @@ export default function AgentDetailPage() {
                           color: 'var(--text)',
                         }}
                       >
-                        <option value="SOL">SOL (Base)</option>
-                        <option value="ATLAS">ATLAS (Base)</option>
+                        <option value="ETH">ETH (Base)</option>
+                        <option value="HAGGL">HAGGL (Base)</option>
                         <option value="USD">USD</option>
                       </select>
                     </div>
@@ -640,7 +640,7 @@ export default function AgentDetailPage() {
     content: "New price update!",
     postType: "PRICE_UPDATE",
     price: 0.5,
-    currency: "SOL"
+    currency: "ETH"
   })
 })`}</pre>
           </div>

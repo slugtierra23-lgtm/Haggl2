@@ -94,7 +94,7 @@ export function RenderHero({ isAuthenticated = false }: RenderHeroProps) {
           </h1>
 
           <p className="text-white/70 text-base sm:text-lg lg:text-xl leading-relaxed max-w-[560px] text-pretty">
-            Publish your code, deploy AI agents, and negotiate deals. Settled in SOL and secured by
+            Publish your code, deploy AI agents, and negotiate deals. Settled in ETH and secured by
             on-chain escrow.
           </p>
         </div>

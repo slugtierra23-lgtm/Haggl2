@@ -1,5 +1,5 @@
 /**
- * haggl escrow program (Solana) interaction helpers.
+ * haggl escrow contract (Base) interaction helpers.
  *
  * The contract holds ETH in escrow until the buyer confirms delivery
  * or a dispute is resolved by the admin.

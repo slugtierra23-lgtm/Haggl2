@@ -441,7 +441,7 @@ export default function ReposPage() {
       return;
     }
     if (!sellerWallet) {
-      setError('Seller has no Solana wallet linked');
+      setError('Seller has no wallet linked');
       return;
     }
     const ethereum = getMetaMaskProvider();
@@ -477,9 +477,9 @@ export default function ReposPage() {
     }
     const platformWallet = process.env.NEXT_PUBLIC_PLATFORM_WALLET;
 
-    const hagglCfg = method === 'ATLAS' ? await loadHagglTokenConfig() : null;
-    if (method === 'ATLAS' && !hagglCfg) {
-      setError('ATLAS payments are not enabled — please retry with SOL');
+    const hagglCfg = method === 'HAGGL' ? await loadHagglTokenConfig() : null;
+    if (method === 'HAGGL' && !hagglCfg) {
+      setError('HAGGL payments are not enabled — please retry with ETH');
       return;
     }
 

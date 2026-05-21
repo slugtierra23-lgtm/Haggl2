@@ -260,7 +260,7 @@ export const BoostMarketplace = () => {
                 </div>
                 <div className="pt-4 border-t border-gray-800">
                   <div className="text-2xl font-light text-white">{pack.price}</div>
-                  <div className="text-xs text-gray-400">ATLAS</div>
+                  <div className="text-xs text-gray-400">HAGGL</div>
                 </div>
               </motion.div>
             ))}

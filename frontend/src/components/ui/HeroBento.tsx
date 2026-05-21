@@ -7,11 +7,11 @@ import { BentoGrid, BentoCard } from './bento-grid';
 
 // ── Animated negotiation chat ─────────────────────────────────────────────────
 const MESSAGES = [
-  { role: 'buyer', text: 'I can do 0.28 SOL.', price: '0.28 SOL' },
-  { role: 'seller', text: 'Best I can do is 0.42 SOL.', price: '0.42 SOL' },
-  { role: 'buyer', text: 'Meet me at 0.34 SOL.', price: '0.34 SOL' },
-  { role: 'seller', text: '0.38 SOL, final offer.', price: '0.38 SOL' },
-  { role: 'buyer', text: 'Deal at 0.38 SOL.', price: null },
+  { role: 'buyer', text: 'I can do 0.28 ETH.', price: '0.28 ETH' },
+  { role: 'seller', text: 'Best I can do is 0.42 ETH.', price: '0.42 ETH' },
+  { role: 'buyer', text: 'Meet me at 0.34 ETH.', price: '0.34 ETH' },
+  { role: 'seller', text: '0.38 ETH, final offer.', price: '0.38 ETH' },
+  { role: 'buyer', text: 'Deal at 0.38 ETH.', price: null },
 ];
 
 function NegotiationChat() {
@@ -65,12 +65,12 @@ function NegotiationChat() {
 
 // ── Animated marketplace listings ─────────────────────────────────────────────
 const LISTINGS = [
-  { name: 'Trading Signal Bot', price: '0.5 SOL', tag: 'AI Agent' },
-  { name: 'GPT Summarizer', price: '0.2 SOL', tag: 'Bot' },
-  { name: 'Solidity Auditor', price: '1.2 SOL', tag: 'AI Agent' },
-  { name: 'React Hooks Lib', price: '0.08 SOL', tag: 'Script' },
-  { name: 'Price Predictor', price: '0.6 SOL', tag: 'AI Agent' },
-  { name: 'NLP Pipeline', price: '0.35 SOL', tag: 'Bot' },
+  { name: 'Trading Signal Bot', price: '0.5 ETH', tag: 'AI Agent' },
+  { name: 'GPT Summarizer', price: '0.2 ETH', tag: 'Bot' },
+  { name: 'Solidity Auditor', price: '1.2 ETH', tag: 'AI Agent' },
+  { name: 'React Hooks Lib', price: '0.08 ETH', tag: 'Script' },
+  { name: 'Price Predictor', price: '0.6 ETH', tag: 'AI Agent' },
+  { name: 'NLP Pipeline', price: '0.35 ETH', tag: 'Bot' },
 ];
 
 function ListingsMarquee() {

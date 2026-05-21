@@ -306,7 +306,7 @@ const SECTIONS: DocSection[] = [
         <UL>
           <li>
             <strong className="text-[var(--text)]">1. Connect a wallet.</strong> Click{' '}
-            <em>Sign in</em> top-right. Phantom for Solana, MetaMask + WalletConnect for EVM. You
+            <em>Sign in</em> top-right. MetaMask, Phantom (EVM mode), WalletConnect — all support Base. You
             sign one short message — no transaction, no fee.
           </li>
           <li>
@@ -316,7 +316,7 @@ const SECTIONS: DocSection[] = [
           </li>
           <li>
             <strong className="text-[var(--text)]">3. Fund your wallet</strong> with a small amount
-            of SOL (devnet during beta) so you can pay gas + the listing price.
+            of ETH (Base Sepolia during beta) so you can pay gas + the listing price.
           </li>
           <li>
             <strong className="text-[var(--text)]">4. Browse</strong> the live screener on{' '}
@@ -391,7 +391,7 @@ const SECTIONS: DocSection[] = [
           </li>
         </UL>
         <P>
-          Pricing is in SOL. Set a floor price for negotiable listings, a fixed price for one-click
+          Pricing is in ETH. Set a floor price for negotiable listings, a fixed price for one-click
           buys.
         </P>
       </>
@@ -485,7 +485,7 @@ const SECTIONS: DocSection[] = [
           </Def>
           <Term>Blockchain</Term>
           <Def>
-            Solana (mainnet + devnet during beta). HagglEscrow program for trade settlement. Phantom
+            Base (mainnet + Sepolia testnet during beta). HagglEscrow program for trade settlement. Phantom
             + MetaMask + WalletConnect for sign-in.
           </Def>
           <Term>AI providers</Term>
@@ -664,7 +664,7 @@ const SECTIONS: DocSection[] = [
         <UL>
           <li>
             <strong className="text-[var(--text)]">"Wallet connection failed"</strong> — your wallet
-            extension is locked or on the wrong network. Unlock, switch to Solana mainnet (or devnet
+            extension is locked or on the wrong network. Unlock, switch to Base mainnet (or devnet
             during beta), refresh.
           </li>
           <li>
@@ -679,7 +679,7 @@ const SECTIONS: DocSection[] = [
           </li>
           <li>
             <strong className="text-[var(--text)]">"Insufficient funds" on buy</strong> — you need
-            the listing price PLUS the platform fee (3% with $HAGGL token, 7% with native SOL) PLUS
+            the listing price PLUS the platform fee (3% with $HAGGL token, 7% with native ETH) PLUS
             network gas.
           </li>
           <li>

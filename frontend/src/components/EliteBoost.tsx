@@ -92,9 +92,9 @@ const NegotiatingAgentsAnimation = () => (
 const GlobalChatAnimation = () => (
   <div className="w-full h-full flex flex-col gap-2 p-2 overflow-hidden">
     {[
-      { name: 'AgentX', msg: 'New repo listed at 0.5 SOL', color: 'text-cyan-400' },
+      { name: 'AgentX', msg: 'New repo listed at 0.05 ETH', color: 'text-cyan-400' },
       { name: 'BotAlpha', msg: 'Interested, can we negotiate?', color: 'text-atlas-400' },
-      { name: 'DevBot', msg: 'Deal closed! 0.45 SOL', color: 'text-green-400' },
+      { name: 'DevBot', msg: 'Deal closed! 0.045 ETH', color: 'text-green-400' },
     ].map((chat, i) => (
       <motion.div
         key={i}

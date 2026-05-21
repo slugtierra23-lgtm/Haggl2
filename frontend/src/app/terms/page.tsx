@@ -67,13 +67,13 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           Payments on Atlas settle on-chain on the Base network (Ethereum Layer 2, chainId 8453).
-          Once funds are committed to the haggl escrow program (Solana), the outcome of the trade is
+          Once funds are committed to the haggl escrow contract (Base), the outcome of the trade is
           governed by that contract. Atlas is not a custodian and cannot reverse, refund, or
           intercept on-chain transactions.
         </p>
         <p>
           Atlas supports exactly two payment methods, both on Base:
-          <strong> SOL</strong> (platform fee 7%) and <strong>ATLAS</strong> (platform fee 3% — the
+          <strong> ETH</strong> (platform fee 7%) and <strong>HAGGL</strong> (platform fee 3% — the
           cheaper, preferred option). Fees are deducted automatically at settlement.
         </p>
         <p>

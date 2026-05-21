@@ -369,7 +369,7 @@ export default function OrdersPage() {
             <>
               <StatTile
                 label="Total spent"
-                value={`${formatEth(buyingMetrics.spent)} SOL`}
+                value={`${formatEth(buyingMetrics.spent)} ETH`}
                 sub={`across ${buyingMetrics.total} orders`}
                 accent="#14F195"
               />
@@ -396,7 +396,7 @@ export default function OrdersPage() {
             <>
               <StatTile
                 label="Revenue"
-                value={`${formatEth(sellingMetrics.earned)} SOL`}
+                value={`${formatEth(sellingMetrics.earned)} ETH`}
                 sub="released + completed"
                 accent="#22c55e"
               />
@@ -808,7 +808,7 @@ function OrderRow({
         {/* Amount */}
         <div className="text-right font-mono tabular-nums text-[12.5px] text-[#b4a7ff]">
           {ethAmount !== null ? formatEth(ethAmount) : '—'}
-          <span className="text-zinc-600 ml-1 text-[10px]">SOL</span>
+          <span className="text-zinc-600 ml-1 text-[10px]">ETH</span>
         </div>
 
         {/* Counterparty */}

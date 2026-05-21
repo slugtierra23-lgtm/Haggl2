@@ -739,7 +739,7 @@ export default function OrderDetailPage() {
             {[
               { label: 'Listing', value: order.listing.title, mono: false },
               { label: 'Type', value: order.listing.type, mono: false },
-              { label: 'Amount', value: `${ethAmount} SOL`, mono: true },
+              { label: 'Amount', value: `${ethAmount} ETH`, mono: true },
               { label: 'Date', value: new Date(order.createdAt).toLocaleDateString(), mono: false },
             ].map(({ label, value, mono }) => (
               <div

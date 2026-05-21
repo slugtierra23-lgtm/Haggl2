@@ -585,7 +585,7 @@ function PurchaseRow({
             </span>
             <span className="text-zinc-700">·</span>
             <span className="font-mono tabular-nums text-[#b4a7ff]">
-              {formatEth(amountWei)} SOL
+              {formatEth(amountWei)} ETH
             </span>
             <span className="text-zinc-700">·</span>
             <a

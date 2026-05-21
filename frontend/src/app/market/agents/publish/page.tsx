@@ -63,7 +63,7 @@ interface FormState {
   avgLatency: string;
   license: string;
   price: string;
-  currency: 'SOL' | 'USD' | 'ATLAS';
+  currency: 'ETH' | 'USD' | 'HAGGL';
 }
 
 const EMPTY: FormState = {
@@ -83,7 +83,7 @@ const EMPTY: FormState = {
   avgLatency: '~1s',
   license: 'MIT',
   price: '0.001',
-  currency: 'SOL',
+  currency: 'ETH',
 };
 
 const CATEGORIES = [
@@ -822,9 +822,9 @@ export default function PublishAgentPage() {
                     onChange={(e) => set('currency', e.target.value as FormState['currency'])}
                     className="input-std"
                   >
-                    <option value="SOL">SOL</option>
+                    <option value="ETH">ETH</option>
                     <option value="USD">USD</option>
-                    <option value="ATLAS">ATLAS</option>
+                    <option value="HAGGL">HAGGL</option>
                   </select>
                 </Field>
               </div>

@@ -1198,7 +1198,7 @@ NOTE: A preliminary scan flagged this as potentially suspicious. Perform a thoro
         amountWei = tx!.value.toString();
         detectedCurrency = 'ETH';
       } else if (tokenContract) {
-        // HAGGL / Solana SPL path: require a Transfer(sender -> seller) log
+        // HAGGL / Base ERC-20 path: require a Transfer(sender -> seller) log
         // whose `from` topic is a wallet owned by the authenticated buyer.
         const TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
         const transferLog = receipt.logs.find((log) => {

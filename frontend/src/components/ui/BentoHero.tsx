@@ -51,7 +51,7 @@ export function BentoHero() {
           </h1>
           <p className="text-lg text-gray-400">
             The developer platform for publishing code, deploying AI agents, and earning from your
-            work. Connect your stack, reach buyers, get paid in SOL.
+            work. Connect your stack, reach buyers, get paid in ETH.
           </p>
         </motion.div>
 
@@ -91,14 +91,14 @@ export function BentoHero() {
             </div>
           </BentoCard>
 
-          {/* Card 3: SOL Payment Node (2x1) */}
+          {/* Card 3: ETH Payment Node (2x1) — Base L2 */}
           <BentoCard colSpan={2} delay={0.2}>
             <div className="h-full flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="w-4 h-4 text-green-400" />
                   <span className="text-xs uppercase tracking-wider text-gray-500">
-                    SOL Payment Node
+                    ETH Payment Node
                   </span>
                 </div>
                 <div className="text-sm text-green-400 font-light">Available</div>
@@ -157,7 +157,7 @@ export function BentoHero() {
         >
           {[
             { value: 'Beta', label: 'Platform Status' },
-            { value: 'SOL', label: 'On-chain Payments' },
+            { value: 'ETH', label: 'On-chain Payments' },
             { value: 'Free', label: 'To Join' },
             { value: '24/7', label: 'Available' },
           ].map((stat, i) => (

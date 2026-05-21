@@ -43,7 +43,7 @@ export class HolderGateService {
       'https://mainnet.base.org';
     this.tokenAddress = this.config.get<string>('HAGGL_TOKEN_ADDRESS') ?? null;
     const minRaw = this.config.get<string>('HAGGLGUARD_MIN_HOLDING') ?? '1000';
-    // Default 1,000 HAGGL in 6-decimal SPL units. Override via env.
+    // Default 1,000 HAGGL — ERC-20 on Base with 18 decimals. Override via env.
     this.minHolding = ethers.parseUnits(minRaw, 18);
 
     this.provider = rpc ? new ethers.JsonRpcProvider(rpc) : null;

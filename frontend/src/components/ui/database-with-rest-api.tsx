@@ -147,7 +147,7 @@ const DatabaseWithRestApi = ({
           </span>
         </div>
         <div className="absolute -bottom-8 z-30 grid h-[60px] w-[60px] place-items-center rounded-full border-t border-white/10 bg-[#141516] font-light text-xs text-atlas-400">
-          {circleText ? circleText : 'SOL'}
+          {circleText ? circleText : 'ETH'}
         </div>
         <div className="relative z-10 flex h-[150px] w-full items-center justify-center overflow-hidden rounded-lg border border-white/08 bg-black/80 shadow-md">
           <div className="absolute bottom-8 left-12 z-10 h-7 rounded-full bg-[#101112] px-3 text-xs border border-white/10 flex items-center gap-2">

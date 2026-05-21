@@ -203,7 +203,7 @@ function useTickerItems(data: TickerData): TickerItem[] {
   return items;
 }
 
-function formatEarnings(amount: number, currency: string = 'SOL'): string {
+function formatEarnings(amount: number, currency: string = 'ETH'): string {
   if (!amount) return `0 ${currency}`;
   const fixed =
     amount >= 1000 ? amount.toFixed(0) : amount >= 1 ? amount.toFixed(2) : amount.toFixed(4);

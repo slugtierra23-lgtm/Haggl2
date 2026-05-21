@@ -253,7 +253,7 @@ export default function AgentDetailPage() {
   const [buyConsentData, setBuyConsentData] = useState<{
     sellerWallet: string;
     buyerAddress: string;
-    /** Seller's net amount in SOL (the listing price). Wei is computed at sign time. */
+    /** Seller's net amount in ETH (the listing price). Wei is computed at sign time. */
     baseEth: number;
     baseUsd: number;
     hagglDisabled: boolean;
@@ -325,7 +325,7 @@ export default function AgentDetailPage() {
     }
     // Hard guard against double-pay: if we already own this listing,
     // skip the MetaMask flow entirely and hop to the order page. The
-    // backend rejects too, but by then the SOL has already left the
+    // backend rejects too, but by then the ETH has already left the
     // buyer's wallet on the second tx.
     if (ownership?.purchased && ownership.orderId) {
       router.push(`/orders/${ownership.orderId}`);
@@ -401,9 +401,9 @@ export default function AgentDetailPage() {
       return;
     }
 
-    const hagglCfg = paymentMethod === 'ATLAS' ? await loadHagglTokenConfig() : null;
-    if (paymentMethod === 'ATLAS' && !hagglCfg) {
-      setBuyError('ATLAS payments are not enabled — please retry with SOL');
+    const hagglCfg = paymentMethod === 'HAGGL' ? await loadHagglTokenConfig() : null;
+    if (paymentMethod === 'HAGGL' && !hagglCfg) {
+      setBuyError('HAGGL payments are not enabled — please retry with ETH');
       return;
     }
 
@@ -1360,11 +1360,11 @@ function PricingCard({
           <p className="text-4xl font-light text-[var(--text)] tabular-nums tracking-[-0.02em]">
             {listing.price}
           </p>
-          <p className="text-sm text-[var(--text-muted)]">SOL</p>
+          <p className="text-sm text-[var(--text-muted)]">ETH</p>
         </div>
       )}
       {listing.minPrice !== null && listing.minPrice !== undefined && listing.minPrice > 0 && (
-        <p className="text-xs text-[var(--text-muted)] mt-1.5">Floor · {listing.minPrice} SOL</p>
+        <p className="text-xs text-[var(--text-muted)] mt-1.5">Floor · {listing.minPrice} ETH</p>
       )}
       {isOwner ? (
         <>

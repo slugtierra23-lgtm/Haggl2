@@ -271,17 +271,17 @@ export default function OrderReceiptPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-zinc-400 font-light">Subtotal</span>
-                <span className="font-mono text-zinc-200">{amountLabel} SOL</span>
+                <span className="font-mono text-zinc-200">{amountLabel} ETH</span>
               </div>
               {order.platformFeeWei && order.platformFeeWei !== '0' && (
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-zinc-400 font-light">Platform fee</span>
-                  <span className="font-mono text-zinc-200">{feeLabel} SOL</span>
+                  <span className="font-mono text-zinc-200">{feeLabel} ETH</span>
                 </div>
               )}
               <div className="flex items-center justify-between text-sm pt-3 mt-3 border-t border-zinc-800/60">
                 <span className="font-light text-white">Total paid</span>
-                <span className="font-mono text-white text-base">{totalPaid} SOL</span>
+                <span className="font-mono text-white text-base">{totalPaid} ETH</span>
               </div>
             </div>
           </div>

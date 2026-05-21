@@ -981,7 +981,7 @@ function PublishRepoModal({
           {lockType === 'locked' && (
             <div>
               <label className="text-xs text-zinc-500 font-mono block mb-1.5">
-                Price in USD <span className="text-zinc-700">(paid via SOL on Base)</span>
+                Price in USD <span className="text-zinc-700">(paid via ETH on Base)</span>
               </label>
               <div
                 className="flex items-center gap-2 rounded-xl px-3 py-2.5 border"
@@ -1240,7 +1240,7 @@ function ReposMarketPageContent() {
   const [ghLoading, setGhLoading] = useState(false);
 
   // Payment — wei amounts are computed at sign time so we can apply the
-  // chosen method's fee model (ATLAS 3% / SOL 7%) to the seller's base.
+  // chosen method's fee model (ATLAS 3% / ETH 7%) to the seller's base.
   const [consentModal, setConsentModal] = useState<{
     repo: Repository;
     sellerWallet: string;
@@ -1404,9 +1404,9 @@ function ReposMarketPageContent() {
     }
     const platformWallet = process.env.NEXT_PUBLIC_PLATFORM_WALLET;
 
-    const hagglCfg = method === 'ATLAS' ? await loadHagglTokenConfig() : null;
-    if (method === 'ATLAS' && !hagglCfg) {
-      setError('ATLAS payments are not enabled — please retry with SOL');
+    const hagglCfg = method === 'HAGGL' ? await loadHagglTokenConfig() : null;
+    if (method === 'HAGGL' && !hagglCfg) {
+      setError('HAGGL payments are not enabled — please retry with ETH');
       return;
     }
 

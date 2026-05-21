@@ -111,7 +111,7 @@ export function NegotiationPopToast() {
         body: n.body ?? '',
         url: n.url ?? '/orders',
         counterparty: m?.counterparty ?? '',
-        priceLabel: m?.agreedPrice != null ? `${m.agreedPrice} ${m.currency ?? 'SOL'}` : null,
+        priceLabel: m?.agreedPrice != null ? `${m.agreedPrice} ${m.currency ?? 'ETH'}` : null,
       });
     });
 

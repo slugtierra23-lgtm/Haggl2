@@ -247,10 +247,10 @@ export default function RepoDetailPage() {
     // Compute on-chain amounts now that the method is known. The seller
     // always receives `baseUsd` worth of the chosen currency; the platform
     // fee is added on top so ATLAS (3%) is strictly cheaper for the buyer
-    // than SOL (7%).
-    const hagglCfg = method === 'ATLAS' ? await loadHagglTokenConfig() : null;
-    if (method === 'ATLAS' && !hagglCfg) {
-      setError('ATLAS payments are not enabled — please retry with SOL');
+    // than ETH (7%).
+    const hagglCfg = method === 'HAGGL' ? await loadHagglTokenConfig() : null;
+    if (method === 'HAGGL' && !hagglCfg) {
+      setError('HAGGL payments are not enabled — please retry with ETH');
       return;
     }
 
@@ -276,7 +276,7 @@ export default function RepoDetailPage() {
     }
 
     try {
-      // Build the seller-payment tx. SOL → plain value transfer. ATLAS →
+      // Build the seller-payment tx. ETH → plain value transfer. ATLAS →
       // eth_sendTransaction to the token contract with encoded
       // transfer(seller, amount) calldata, value 0.
       let txHash: string;
@@ -861,7 +861,7 @@ function ActionsCard({
             }}
           >
             <Lock className="w-4 h-4" />
-            Unlock — choose SOL or ATLAS
+            Unlock — choose ETH or ATLAS
           </button>
           <button
             onClick={onRecover}
@@ -923,7 +923,7 @@ function ActionsCard({
       {locked && (
         <p className="text-[11px] text-zinc-600 mt-2.5 text-center leading-relaxed">
           <Shield className="inline w-3 h-3 mr-1 -mt-0.5" />
-          Base network · Platform fee: 7% (SOL) or 3% (ATLAS).
+          Base network · Platform fee: 7% (ETH) or 3% (HAGGL).
         </p>
       )}
     </div>

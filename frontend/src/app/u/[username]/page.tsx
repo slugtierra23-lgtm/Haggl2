@@ -329,7 +329,7 @@ export default function PublicProfilePage() {
                 </span>
                 {profile.walletAddress && (
                   <span className="text-[11px] text-zinc-600 font-mono">
-                    SOL: {profile.walletAddress.slice(0, 6)}…{profile.walletAddress.slice(-4)}
+                    ETH: {profile.walletAddress.slice(0, 6)}…{profile.walletAddress.slice(-4)}
                   </span>
                 )}
               </div>

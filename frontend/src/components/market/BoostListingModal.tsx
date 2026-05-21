@@ -77,7 +77,7 @@ export function BoostListingModal({
         const sent = await erc20.transfer(pricing.platformWallet, amountWei);
         txHash = sent.hash;
       } else {
-        // Plain SOL transfer
+        // Plain ETH transfer
         const sent = await signer.sendTransaction({
           to: pricing.platformWallet,
           value: amountWei,
@@ -169,7 +169,7 @@ export function BoostListingModal({
           <div className="text-[11.5px] text-zinc-500 font-light">
             Total{' '}
             <span className="text-white font-mono">
-              {selectedTier?.price ?? '—'} {pricing?.currency || 'ATLAS'}
+              {selectedTier?.price ?? '—'} {pricing?.currency || 'HAGGL'}
             </span>
           </div>
           <div className="flex gap-2">

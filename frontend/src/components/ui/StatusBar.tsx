@@ -5,7 +5,7 @@ import React from 'react';
 
 const STATS = [
   { value: 'Beta', label: 'Platform Status', indicator: true },
-  { value: 'SOL', label: 'On-chain Payments', indicator: true },
+  { value: 'ETH', label: 'On-chain Payments', indicator: true },
   { value: 'Free', label: 'To Join', indicator: false },
   { value: '24/7', label: 'Platform Available', indicator: true },
 ];

@@ -404,7 +404,7 @@ function MarketScreener() {
   }, [flash.size]);
 
   // Merge live listings into the main table, then apply the client-side
-  // price-band filter (free / <1 SOL / 1–10 SOL / >10 SOL).
+  // price-band filter (free / <1 ETH / 1–10 ETH / >10 ETH).
   const mergedListings = useMemo(() => {
     const seen = new Set(listings.map((l) => l.id));
     const fresh = liveListings.filter((l) => !seen.has(l.id));
@@ -548,7 +548,7 @@ function MarketScreener() {
                 <>
                   <CountUp value={pulse?.stats.volumeEth24h || 0} decimals={2} duration={1.4} />
                   <span className="ml-1 text-base text-[var(--text-muted)] font-medium tracking-normal">
-                    SOL
+                    ETH
                   </span>
                 </>
               }
@@ -653,9 +653,9 @@ function MarketScreener() {
                 clearable
                 options={[
                   { value: 'free', label: 'Free' },
-                  { value: 'lt1', label: '< 1 SOL' },
-                  { value: '1to10', label: '1–10 SOL' },
-                  { value: 'gt10', label: '> 10 SOL' },
+                  { value: 'lt1', label: '< 1 ETH' },
+                  { value: '1to10', label: '1–10 ETH' },
+                  { value: 'gt10', label: '> 10 ETH' },
                 ]}
               />
             </div>
@@ -748,7 +748,7 @@ function TradeTickerTape({ trades }: { trades: Pulse['recentTrades'] }) {
             <ArrowUpRight className="w-3 h-3 text-[var(--text-muted)]" strokeWidth={2} />
             <span className="text-[var(--text)] truncate max-w-[200px]">{t.listing.title}</span>
             <span className="text-[var(--brand)] tabular-nums font-medium">
-              {formatEth(t.priceEth)} SOL
+              {formatEth(t.priceEth)} ETH
             </span>
             <span className="text-[var(--text-muted)]">·</span>
             <span className="text-[var(--text-muted)]">{timeAgo(t.createdAt)}</span>
@@ -877,7 +877,7 @@ function NewLaunchesTicker({
                   <span className="text-zinc-500">{timeAgo(item.createdAt)} ago</span>
                   <span className="text-zinc-700">·</span>
                   <span className="font-mono tabular-nums text-zinc-400">
-                    {formatEth(item.price)} SOL
+                    {formatEth(item.price)} ETH
                   </span>
                 </Link>
               );
@@ -1129,7 +1129,7 @@ function Row({
 
         <div className="text-right font-mono tabular-nums text-[12.5px] text-[#b4a7ff]">
           {formatEth(listing.price)}
-          <span className="text-zinc-300 ml-1 text-[10px]">SOL</span>
+          <span className="text-zinc-300 ml-1 text-[10px]">ETH</span>
         </div>
 
         <div className="text-right font-mono tabular-nums text-[12px]">

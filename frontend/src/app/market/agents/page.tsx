@@ -1018,7 +1018,7 @@ function AgentsPageContent() {
   const [buyConsentData, setBuyConsentData] = useState<{
     sellerWallet: string;
     buyerAddress: string;
-    /** Seller's net amount in SOL (the listing price) — wei is computed at sign time. */
+    /** Seller's net amount in ETH (the listing price) — wei is computed at sign time. */
     baseEth: number;
     baseUsd: number;
     hagglDisabled: boolean;
@@ -1270,9 +1270,9 @@ function AgentsPageContent() {
       return;
     }
 
-    const hagglCfg = paymentMethod === 'ATLAS' ? await loadHagglTokenConfig() : null;
-    if (paymentMethod === 'ATLAS' && !hagglCfg) {
-      setBuyError('ATLAS payments are not enabled — please retry with SOL');
+    const hagglCfg = paymentMethod === 'HAGGL' ? await loadHagglTokenConfig() : null;
+    if (paymentMethod === 'HAGGL' && !hagglCfg) {
+      setBuyError('HAGGL payments are not enabled — please retry with ETH');
       return;
     }
 

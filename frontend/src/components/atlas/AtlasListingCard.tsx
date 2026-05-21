@@ -18,8 +18,8 @@ export interface AtlasListingCardProps {
   tags?: string[];
   price: number | null;
   currency?: string;
-  /** SOL→USD rate (cents per SOL). If provided, an USD equivalent is
-   * shown beneath the SOL price in muted ink to communicate value. */
+  /** ETH→USD rate (cents per ETH). If provided, an USD equivalent is
+   * shown beneath the ETH price in muted ink to communicate value. */
   solUsdRate?: number | null;
   rating?: number | null;
   reviewCount?: number;
@@ -43,22 +43,22 @@ export interface AtlasListingCardProps {
   className?: string;
 }
 
-// Always display prices in SOL — even if the listing in the DB still has
-// `currency: 'ETH'` from the pre-Solana era, the platform is now
-// Solana-native and showing "ETH" on a card confuses every user.
-const formatPrice = (n: number | null, _ccy = 'SOL') => {
+// Display prices in ETH (the native currency on Base, Coinbase's L2).
+// haggl moved from Solana → Base; the DB may still contain `currency: 'ETH'`
+// rows from the legacy era, but every UI surface now renders as ETH.
+const formatPrice = (n: number | null, _ccy = 'ETH') => {
   if (n == null) return '—';
   if (n === 0) return 'Free';
-  if (n < 0.01) return '<0.01 SOL';
-  if (n < 1) return `${n.toFixed(3)} SOL`;
-  return `${n.toFixed(2)} SOL`;
+  if (n < 0.0001) return '<0.0001 ETH';
+  if (n < 1) return `${n.toFixed(4)} ETH`;
+  return `${n.toFixed(3)} ETH`;
 };
 
 /**
  * AtlasListingCard — marketplace tile used across `/market`, `/market/agents`,
  * `/market/repos`, seller profiles, inventory. Replaces several near-duplicate
  * card layouts that all reinvented hover/spacing/typography. Hover state has a
- * Solana-green glow + arrow-up-right reveal.
+ * brand-purple glow + arrow-up-right reveal on hover.
  */
 export function AtlasListingCard({
   href,
@@ -68,7 +68,7 @@ export function AtlasListingCard({
   typeAccent = 'var(--brand)',
   tags = [],
   price,
-  currency = 'SOL',
+  currency = 'ETH',
   solUsdRate,
   rating,
   reviewCount,

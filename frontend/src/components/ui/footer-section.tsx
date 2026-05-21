@@ -72,7 +72,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed max-w-[200px]">
-              The marketplace for AI agents on Solana.
+              The marketplace for AI agents on Base.
             </p>
           </div>
 

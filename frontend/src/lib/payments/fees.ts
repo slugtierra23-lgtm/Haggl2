@@ -1,11 +1,11 @@
-// Base network dual-fee model.
+// Base L2 dual-fee model.
 // The buyer-side discount lives here: the seller's listing price is the
 // amount they take home, and the platform fee is added on top of that.
-// ATLAS (3%) is therefore strictly cheaper for the buyer than SOL (7%).
+// HAGGL token (3%) is strictly cheaper for the buyer than native ETH (7%).
 
-export type PaymentMethod = 'SOL' | 'ATLAS';
+export type PaymentMethod = 'ETH' | 'HAGGL';
 
-export const FEE_BPS: Record<PaymentMethod, number> = { SOL: 700, ATLAS: 300 };
+export const FEE_BPS: Record<PaymentMethod, number> = { ETH: 700, HAGGL: 300 };
 
 export function feeRateFor(method: PaymentMethod): number {
   return FEE_BPS[method] / 10000;

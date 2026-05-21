@@ -41,18 +41,18 @@ export function PaymentConsentModal({
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState('');
   // Default to ATLAS when available — it's the strictly cheaper option.
-  const [method, setMethod] = useState<PaymentMethod>(hagglDisabled ? 'SOL' : 'ATLAS');
+  const [method, setMethod] = useState<PaymentMethod>(hagglDisabled ? 'ETH' : 'HAGGL');
 
   const escrow = isEscrowEnabled();
 
-  const ethTotal = useMemo(() => grossUsdForBase(baseUsd, 'SOL'), [baseUsd]);
-  const  hagglTotal = useMemo(() => grossUsdForBase(baseUsd, 'ATLAS'), [baseUsd]);
+  const ethTotal = useMemo(() => grossUsdForBase(baseUsd, 'ETH'), [baseUsd]);
+  const  hagglTotal = useMemo(() => grossUsdForBase(baseUsd, 'HAGGL'), [baseUsd]);
   const savingsUsd = ethTotal -  hagglTotal;
 
-  const grossUsd = method === 'ATLAS' ?  hagglTotal : ethTotal;
+  const grossUsd = method === 'HAGGL' ?  hagglTotal : ethTotal;
   const platformFeeUsd = useMemo(() => feeUsdForBase(baseUsd, method), [baseUsd, method]);
-  const feePct = method === 'SOL' ? '7%' : '3%';
-  const currency = method === 'SOL' ? 'SOL' : 'ATLAS';
+  const feePct = method === 'ETH' ? '7%' : '3%';
+  const currency = method === 'ETH' ? 'ETH' : 'HAGGL';
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -87,12 +87,12 @@ export function PaymentConsentModal({
             '3. I can open a dispute if the seller does not deliver.',
             '4. After 14 days without dispute, funds auto-release to the seller.',
             '5. Disputes are resolved by the Atlas admin.',
-            '6. Smart contract interactions on Base require gas fees (paid in SOL).',
+            '6. Smart contract interactions on Base require gas fees (paid in ETH).',
             '7. This cryptographic signature constitutes irrevocable proof of my consent.',
             '8. I have the technical knowledge required to conduct this transaction.',
           ]
         : [
-            '1. This is a voluntary peer-to-peer transaction on Base (Solana Layer 2).',
+            '1. This is a voluntary peer-to-peer transaction on Base (Ethereum L2).',
             '2. Blockchain transactions are FINAL and IRREVERSIBLE once confirmed.',
             '3. Atlas Platform is NOT a custodian and does NOT hold or escrow funds.',
             '4. Atlas Platform bears NO liability for disputes, fraud, or losses.',
@@ -106,8 +106,8 @@ export function PaymentConsentModal({
         `=== ATLAS PLATFORM — PAYMENT CONSENT DOCUMENT${escrow ? ' (ESCROW)' : ''} ===`,
         '',
         `Date: ${timestamp}`,
-        'Network: Base (Solana L2, chainId 8453)',
-        `Payment method: ${method}${method === 'ATLAS' ? ' (ERC-20, lower fee)' : ' (native)'}`,
+        'Network: Base (Ethereum L2, chainId 8453)',
+        `Payment method: ${method}${method === 'HAGGL' ? ' (ERC-20, lower fee)' : ' (native)'}`,
         `Buyer wallet:  ${buyerAddress}`,
         `Seller wallet: ${sellerAddress}`,
         `Listing: ${listingTitle}`,
@@ -204,17 +204,17 @@ export function PaymentConsentModal({
             </p>
             <div className={`grid gap-2.5 ${hagglDisabled ? 'grid-cols-1' : 'grid-cols-2'}`}>
               <MethodCard
-                active={method === 'SOL'}
-                onClick={() => setMethod('SOL')}
-                title="SOL"
+                active={method === 'ETH'}
+                onClick={() => setMethod('ETH')}
+                title="ETH"
                 subtitle={`7% fee · you pay $${fmtUsd(ethTotal)}`}
                 accent="#60a5fa"
               />
               {!hagglDisabled && (
                 <MethodCard
-                  active={method === 'ATLAS'}
-                  onClick={() => setMethod('ATLAS')}
-                  title="ATLAS"
+                  active={method === 'HAGGL'}
+                  onClick={() => setMethod('HAGGL')}
+                  title="HAGGL"
                   subtitle={`3% fee · you pay $${fmtUsd(hagglTotal)}`}
                   accent="#14F195"
                   badge={savingsUsd > 0 ? `Save $${fmtUsd(savingsUsd)}` : undefined}
